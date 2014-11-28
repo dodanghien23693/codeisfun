@@ -1,7 +1,12 @@
-<?php
-/* 
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
+@if (Session::has('message'))
+  <div>{{ Session::get('message') }}</div>
+@endif
+ 
+<table>
+  <tr>
+    <th>Name</th>
+    <td>{{ $post->title}}</td>
+    <td>{{ $post->description }}</td>
+    
+  </tr>
+</table>

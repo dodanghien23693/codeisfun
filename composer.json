@@ -8,7 +8,11 @@
                 "laravelbook/ardent": "dev-master",
                 "barryvdh/laravel-debugbar": "1.7.*",
                 "mccool/laravel-auto-presenter": "2.2.*",
-                "artdarek/oauth-4-laravel": "dev-master"
+                "artdarek/oauth-4-laravel": "dev-master",
+		"barryvdh/laravel-ide-helper": "~1.11",
+		"doctrine/dbal": "~2.3",
+                "frozennode/administrator": "dev-master",
+                "fzaninotto/faker": "1.4.*@dev"
 	},
         "require-dev": {
         "way/generators": "~2.0",
@@ -23,7 +27,8 @@
 			"app/models",
 			"app/database/migrations",
 			"app/database/seeds",
-			"app/tests/TestCase.php"
+			"app/tests/TestCase.php",
+                        "app/lib"
 		]
 	},
 	"scripts": {
@@ -33,6 +38,7 @@
 		],
 		"post-update-cmd": [
 			"php artisan clear-compiled",
+                        "php artisan ide-helper:generate",
 			"php artisan optimize"
 		],
 		"post-create-project-cmd": [

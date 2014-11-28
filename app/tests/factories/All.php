@@ -39,7 +39,8 @@ Muffin::define('User', array(
     'password_confirmation' => $p,   
     'first_name'    => 'firstName',
     'last_name'     => 'lastName',
-    'role_id'       => 'factory|Role'
+    'role_id'       => 'factory|Role',
+    'user_type'     => 'codeisfun'
 ));
 
 

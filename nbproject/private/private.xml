@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <coverage xmlns="http://www.netbeans.org/ns/code-coverage/1" enabled="false"/>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/C:/codeisfun/laravel/app/config/database.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_styles.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/vendor/frozennode/administrator/src/controllers/AdminController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/codeisfun/articles.html</file>
+            <file>file:/C:/codeisfun/laravel/app/config/packages/frozennode/administrator/administrator.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_scripts.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/auth/login_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/index.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_header.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/vendor/frozennode/administrator/src/views/layouts/default.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/public/assets/polymer/elements/cif-post.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/codeisfun/index.html</file>
+            <file>file:/C:/codeisfun/laravel/app/routes.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/PostController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/default.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/public/assets/cif/css/stylesheet.css</file>
+            <file>file:/C:/codeisfun/laravel/app/config/app.php</file>
+            <file>file:/C:/codeisfun/laravel/app/config/administrator/post.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/HomeController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/posts/index.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/public/assets/polymer/elements/cif-post-list.php</file>
+        </group>
+    </open-files>
+</project-private>

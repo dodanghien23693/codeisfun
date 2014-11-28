@@ -1,27 +1,36 @@
 <html>
 <head>
+   
+    
     <meta charset="utf-8">
-    <title>{{-- Services\MenuManager::getTitle($title) --}}</title>
+    <title></title>
     
     @section('meta_description')
-    {{-- here goes the meta_description --}}
+    
     @show
     
     @section('meta-keywords')   
-    {{-- Here goes the meta_keywords --}}
+    
     @show
     
     <!-- Mobile Specific Metas
   ================================================== -->
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
+    @section('head')
+    
+    @show
+    
+    
     <!-- CSS
   ================================================== -->
     @include("public.layouts._styles")
-
+    
+    
+    
     <!-- Favicons
     ================================================== -->
-    <link rel="shortcut icon" href="{{URL::to("assets/favicon.ico")}}">
+    <link rel="shortcut icon" href="<?php echo URL::to("assets/favicon.ico"); ?>" />
           
           
 </head>
@@ -38,19 +47,21 @@
             <!-- END HEADER -->
 
             @section('slider')
-                {{-- Here goes the slider --}}
+               
             @show
 
             @section('heading')
-                {{-- Here goes the heading --}}
+                
             @show
 
             <!-- BEGIN CONTENT HOLDER -->
-            <div id="content-wrapper" class="large-text">
-
+           
+                <div class="row">
+                    <div class="col-sm-10 col-sm-offset-1">
                 @yield('content')
-
-            </div>
+                    </div>
+                <div>
+            
             <!-- END CONTENT HOLDER -->
 
             @include("public.layouts._footer")

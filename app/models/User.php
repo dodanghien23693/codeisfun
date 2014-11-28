@@ -19,11 +19,11 @@ class User extends Ardent implements UserInterface, RemindableInterface {
      */
     protected $table = 'users';
 
-    protected $fillable = array ('username','email','password','first_name',
+    protected $fillable = array ('username','email','first_name',
         'last_name','gender','birthday','about_me','facebook_link',
         'googleplus_link','twitter_link','website_url','photo_url','user_type') ;
 
-    //protected fields: password, password_confirmation, role_id, created_at, updated_at
+    //protected fields: password,  role_id, created_at, updated_at
     
     protected $hidden = array();
 
@@ -36,17 +36,22 @@ class User extends Ardent implements UserInterface, RemindableInterface {
     /**
      * Ardent validation rules
      */
+
+
+
     public static $rules = array(
-        'username'      => 'required|min:6|max:50',
-        'email'         => 'required|email|unique',
-        'password'      => '',
+        'username'      => 'required|min:6|max:50|unique:users,username|alpha_dash',
+        'email'         => 'required|unique:users,email',
+        'password'      => 'required',
         'first_name'    => 'required|between:2,30',
         'last_name'     => 'required|between:2,30',
         'gender'        => 'in:male,female',
-        'facebook_link' => 'active_url',
-        'googleplus_link' => 'active_url',
+        'facebook_link' => 'url',
+        'googleplus_link' => 'url',
         'twitter_link'  => 'active_url',
-        'website_url'   => 'active_url'
+        'website_url'   => 'active_url',
+        'user_type'     => 'in:codeisfun,facebook,google'
+        
         
     );
 
@@ -81,6 +86,22 @@ class User extends Ardent implements UserInterface, RemindableInterface {
         return $this->belongsToMany("Category", "user_category");
     }
 
+    
+    public function hasRole($value){
+        
+
+        return ($this->role()->first()->name == $value)?true:false;
+    }
+    
+    public function hasRoles($roles){
+        foreach ($roles as $role)
+        {
+            if($this->hasRole($role)) return true;
+        }
+        return false;
+        
+    }
+    
     /** Role
      * 
      */
@@ -115,6 +136,8 @@ class User extends Ardent implements UserInterface, RemindableInterface {
         return $this->belongsToMany("Course", "course_instructor");
     }
 
+    
+    
     /**
      * 
      */

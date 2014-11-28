@@ -12,14 +12,7 @@ class ExceptionTest extends PHPUnit_Framework_TestCase{
         throw new InvalidArgumentException('Some Message', 10);
     }
 
-    /**
-     * @expectedException              InvalidArgumentException
-     * @expectedExceptionMessageRegExp /So** Message/
-     */
-    public function testExceptionMessageMatchesRegExp()
-    {
-        throw new InvalidArgumentException('Some Message', 10);
-    }
+
 
     /**
      * @expectedException     InvalidArgumentException
