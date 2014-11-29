@@ -86,4 +86,5 @@ Route::get('getuser','UserController@index');
  * 
  */
 Route::get('admin', 'AdminController@getIndex');
-
+Route::get('admin/user/profile',array('as'=>'user-profile','uses' => 'AuthController@getLogin'));
+Route::get('admin/user/profile',array('as'=>'edit-profile','uses' => 'AuthController@getLogin'));

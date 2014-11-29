@@ -6,7 +6,7 @@
 (function ($) {
     "use strict";
 
-    $.fn.select2.locales['gl'] = {
+    $.extend($.fn.select2.defaults, {
         formatNoMatches: function () {
             return "Non se atoparon resultados";
         },
@@ -34,12 +34,10 @@
             }
         },
         formatLoadMore: function (pageNumber) {
-            return "Cargando máis resultados…";
+            return "Cargando máis resultados...";
         },
         formatSearching: function () {
-            return "Buscando…";
+            return "Buscando...";
         }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['gl']);
+    });
 })(jQuery);

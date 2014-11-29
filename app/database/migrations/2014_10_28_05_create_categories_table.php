@@ -19,7 +19,6 @@ class CreateCategoriesTable extends Migration {
                         $table->string('slug', 200);
 			$table->text('description')->nullable();
 			$table->string('image_url', 500)->nullable();
-			$table->integer('parent_category_id')->unsigned();
 			$table->integer('order_of_category')->default(0);                       
 			$table->timestamps();
 		});

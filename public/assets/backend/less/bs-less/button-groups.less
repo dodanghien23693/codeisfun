@@ -2,12 +2,45 @@
 // Button groups
 // --------------------------------------------------
 
+// Button carets
+//
+// Match the button text color to the arrow/caret for indicating dropdown-ness.
+
+.caret {
+  .btn-default & {
+    border-top-color: @btn-default-color;
+  }
+  .btn-primary &,
+  .btn-success &,
+  .btn-warning &,
+  .btn-danger &,
+  .btn-info & {
+    border-top-color: #fff;
+  }
+}
+.dropup {
+  .btn-default .caret {
+    border-bottom-color: @btn-default-color;
+  }
+  .btn-primary,
+  .btn-success,
+  .btn-warning,
+  .btn-danger,
+  .btn-info {
+   .caret {
+      border-bottom-color: #fff;
+    }
+  }
+}
+
 // Make the div behave like a button
 .btn-group,
 .btn-group-vertical {
   position: relative;
   display: inline-block;
   vertical-align: middle; // match .btn alignment given font-size hack above
+  .clearfix;
+  
   > .btn {
     position: relative;
     float: left;
@@ -20,13 +53,28 @@
     }
     &:focus {
       // Remove focus outline when dropdown JS adds it after closing the menu
-      outline: 0;
+      outline: none;
     }
   }
 }
 
 // Prevent double borders when buttons are next to each other
 .btn-group {
+
+  &.left-dropdown {
+	  
+	  .btn {
+		  float: right;
+		  .border-radius(~"0 @{border-radius-base} @{border-radius-base} 0 !important");
+		  
+		  &.dropdown-toggle {
+			  float: left;
+			  .border-radius(~"@{border-radius-base} 0 0 @{border-radius-base} !important");
+			  border-left: 0;
+		  }
+	  }
+  }
+	
   .btn + .btn,
   .btn + .btn-group,
   .btn-group + .btn,
@@ -37,17 +85,18 @@
 
 // Optional: Group multiple button groups together for a toolbar
 .btn-toolbar {
-  margin-left: -5px; // Offset the first child's margin
-  &:extend(.clearfix all);
+  .clearfix();
 
-  .btn-group,
-  .input-group {
+  .btn-group {
     float: left;
   }
+  // Space out series of button groups
   > .btn,
-  > .btn-group,
-  > .input-group {
-    margin-left: 5px;
+  > .btn-group {
+    + .btn,
+    + .btn-group {
+      margin-left: 5px;
+    }
   }
 }
 
@@ -96,9 +145,9 @@
 //
 // Remix the default button sizing classes into new ones for easier manipulation.
 
-.btn-group-xs > .btn { &:extend(.btn-xs); }
-.btn-group-sm > .btn { &:extend(.btn-sm); }
-.btn-group-lg > .btn { &:extend(.btn-lg); }
+.btn-group-xs > .btn { .btn-xs(); }
+.btn-group-sm > .btn { .btn-sm(); }
+.btn-group-lg > .btn { .btn-lg(); }
 
 
 // Split button dropdowns
@@ -146,8 +195,7 @@
 
 .btn-group-vertical {
   > .btn,
-  > .btn-group,
-  > .btn-group > .btn {
+  > .btn-group {
     display: block;
     float: none;
     width: 100%;
@@ -156,7 +204,7 @@
 
   // Clear floats so dropdown menus can be properly placed
   > .btn-group {
-    &:extend(.clearfix all);
+    .clearfix();
     > .btn {
       float: none;
     }
@@ -187,13 +235,13 @@
 .btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {
   border-radius: 0;
 }
-.btn-group-vertical > .btn-group:first-child:not(:last-child) {
+.btn-group-vertical > .btn-group:first-child {
   > .btn:last-child,
   > .dropdown-toggle {
     .border-bottom-radius(0);
   }
 }
-.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {
+.btn-group-vertical > .btn-group:last-child > .btn:first-child {
   .border-top-radius(0);
 }
 
@@ -207,34 +255,16 @@
   width: 100%;
   table-layout: fixed;
   border-collapse: separate;
-  > .btn,
-  > .btn-group {
+  .btn {
     float: none;
     display: table-cell;
     width: 1%;
-  }
-  > .btn-group .btn {
-    width: 100%;
-  }
-
-  > .btn-group .dropdown-menu {
-    left: auto;
   }
 }
 
 
 // Checkbox and radio options
-//
-// In order to support the browser's form validation feedback, powered by the
-// `required` attribute, we have to "hide" the inputs via `opacity`. We cannot
-// use `display: none;` or `visibility: hidden;` as that also hides the popover.
-// This way, we ensure a DOM element is visible to position the popover from.
-//
-// See https://github.com/twbs/bootstrap/pull/12794 for more.
-
 [data-toggle="buttons"] > .btn > input[type="radio"],
 [data-toggle="buttons"] > .btn > input[type="checkbox"] {
-  position: absolute;
-  z-index: -1;
-  .opacity(0);
+  display: none;
 }

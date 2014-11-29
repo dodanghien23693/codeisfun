@@ -30,17 +30,15 @@
   
 </head>
 
-<body class="page-body settings-pane-open" >
+<body class="page-body" >
     <!-- Primary Page Layout
     ================================================== -->
     
-    <!-- settings pane -->
-    @include("admin.layouts._settings")    
-   <!-- end settings pane -->
+
    <div class="page-container">
        @include("admin.menu.menu")
        
-       <div class="main-content">
+       <div class="main-content" style="min-height: 1620px">
            @include("admin.layouts._notification")
            
              <!-- main content -->

@@ -35,16 +35,13 @@ class Category extends Ardent{
         return $this->belongsToMany("User", "user_category");
     }
 
-    public function parentCategory(){
-        return $this->belongsTo('Category', 'parent_category_id');
-    }
-    
-    public function childCategories(){
-        return $this->hasMany('Category', 'parent_category_id');
-    }
-    
-    
 
+    public static function getList(){
+        
+        $categories = Category::orderBy('order_of_category')->get(array('id','order_of_category','name','slug','description'))->toArray();
+        
+        return $categories;
+    }
 
 
 

@@ -12,7 +12,7 @@
                 <div class="user-info">
 
                     <div class="user-image">
-                        <a href="extra-profile.html">
+                        <a href="<?php echo route('edit-profile') ?>">
                             <img src="assets/backend/images/user-2.png" class="img-responsive img-circle">
                         </a>
                     </div>
@@ -20,7 +20,7 @@
                     <div class="user-details">
 
                         <h3>
-                            <a href="extra-profile.html">John Smith</a>
+                            <a href="<?php echo url('user/profile') ?>">John Smith</a>
 
                             <!-- Available statuses: is-online, is-idle, is-busy and is-offline -->
                             <span class="user-status is-online"></span>
@@ -29,8 +29,8 @@
                         <p class="user-title">Web Developer</p>
 
                         <div class="user-links">
-                            <a href="extra-profile.html" class="btn btn-primary">Edit Profile</a>
-                            <a href="extra-profile.html" class="btn btn-success">Upgrade</a>
+                            <a href="<?php echo url('user/profile') ?>" class="btn btn-primary">Edit Profile</a>
+                            <a href="<?php echo url('user/profile') ?>" class="btn btn-success">Upgrade</a>
                         </div>
 
                     </div>

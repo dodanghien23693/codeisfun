@@ -1,323 +1,481 @@
-<nav class="navbar user-info-navbar" role="navigation">
+<div class="row">
 
-    <!-- Left links for user info navbar -->
-    <ul class="user-info-menu left-links list-inline list-unstyled">
+    <!-- Profile Info and Notifications -->
+    <div class="col-md-6 col-sm-8 clearfix">
 
-        <li class="hidden-sm hidden-xs" style="min-height: 76px;">
-            <a href="#" data-toggle="sidebar">
-                <i class="fa-bars"></i>
-            </a>
-        </li>
+        <ul class="user-info pull-left pull-none-xsm">
 
-        <li class="dropdown hover-line" style="min-height: 76px;">
-            
-            <a href="#" data-toggle="dropdown">
-                <i class="fa-envelope-o"></i>
-                <span class="badge badge-green">15</span>
-            </a>
-            
-            <ul class="dropdown-menu messages">
-                <li>
+            <!-- Profile Info -->
+            <li class="profile-info dropdown">
+                <!-- add class "pull-right" if you want to place this from right -->
 
-                    <ul class="dropdown-menu-list list-unstyled ps-scrollbar ps-container">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img src="assets/backend/images/thumb-1@2x.png" alt="" class="img-circle" width="44">
+                    Art Ramadani
+                </a>
 
-                        <li class="active"><!-- "active" class means message is unread -->
-                            <a href="#">
-                                <span class="line">
-                                    <strong>Luc Chartier</strong>
-                                    <span class="light small">- yesterday</span>
-                                </span>
+                <ul class="dropdown-menu">
 
-                                <span class="line desc small">
-                                    This ain’t our first item, it is the best of the rest.
-                                </span>
-                            </a>
-                        </li>
+                    <!-- Reverse Caret -->
+                    <li class="caret">
+                    </li>
 
-                        <li class="active">
-                            <a href="#">
-                                <span class="line">
-                                    <strong>Salma Nyberg</strong>
-                                    <span class="light small">- 2 days ago</span>
-                                </span>
+                    <!-- Profile sub-links -->
+                    <li>
+                        <a href="extra-timeline.html">
+                            <i class="entypo-user">
+                            </i>
+                            Edit Profile
+                        </a>
+                    </li>
 
-                                <span class="line desc small">
-                                    Oh he decisively impression attachment friendship so if everything. 
-                                </span>
-                            </a>
-                        </li>
+                    <li>
+                        <a href="mailbox.html">
+                            <i class="entypo-mail">
+                            </i>
+                            Inbox
+                        </a>
+                    </li>
 
-                        <li>
-                            <a href="#">
-                                <span class="line">
-                                    Hayden Cartwright
-                                    <span class="light small">- a week ago</span>
-                                </span>
+                    <li>
+                        <a href="extra-calendar.html">
+                            <i class="entypo-calendar">
+                            </i>
+                            Calendar
+                        </a>
+                    </li>
 
-                                <span class="line desc small">
-                                    Whose her enjoy chief new young. Felicity if ye required likewise so doubtful.
-                                </span>
-                            </a>
-                        </li>
+                    <li>
+                        <a href="#">
+                            <i class="entypo-clipboard">
+                            </i>
+                            Tasks
+                        </a>
+                    </li>
+                </ul>
+            </li>
 
-                        <li>
-                            <a href="#">
-                                <span class="line">
-                                    Sandra Eberhardt
-                                    <span class="light small">- 16 days ago</span>
-                                </span>
+        </ul>
 
-                                <span class="line desc small">
-                                    On so attention necessary at by provision otherwise existence direction.
-                                </span>
-                            </a>
-                        </li>
+        <ul class="user-info pull-left pull-right-xs pull-none-xsm">
 
-                        <!-- Repeated -->
+            <!-- Raw Notifications -->
+            <li class="notifications dropdown">
 
-                        <li class="active"><!-- "active" class means message is unread -->
-                            <a href="#">
-                                <span class="line">
-                                    <strong>Luc Chartier</strong>
-                                    <span class="light small">- yesterday</span>
-                                </span>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <i class="entypo-attention">
+                    </i>
+                    <span class="badge badge-info">6</span>
+                </a>
 
-                                <span class="line desc small">
-                                    This ain’t our first item, it is the best of the rest.
-                                </span>
-                            </a>
-                        </li>
+                <ul class="dropdown-menu">
+                    <li class="top">
+                        <p class="small">
+                            <a href="#" class="pull-right">Mark all Read</a>
+                            You have <strong>3</strong> new notifications.
+                        </p>
+                    </li>
 
-                        <li class="active">
-                            <a href="#">
-                                <span class="line">
-                                    <strong>Salma Nyberg</strong>
-                                    <span class="light small">- 2 days ago</span>
-                                </span>
+                    <li>
+                        <ul class="dropdown-menu-list scroller" tabindex="5001" style="overflow: hidden; outline: none;">
+                            <li class="unread notification-success">
+                                <a href="#">
+                                    <i class="entypo-user-add pull-right">
+                                    </i>
 
-                                <span class="line desc small">
-                                    Oh he decisively impression attachment friendship so if everything. 
-                                </span>
-                            </a>
-                        </li>
+                                    <span class="line">
+                                        <strong>New user registered</strong>
+                                    </span>
 
-                        <li>
-                            <a href="#">
-                                <span class="line">
-                                    Hayden Cartwright
-                                    <span class="light small">- a week ago</span>
-                                </span>
+                                    <span class="line small">
+                                        30 seconds ago
+                                    </span>
+                                </a>
+                            </li>
 
-                                <span class="line desc small">
-                                    Whose her enjoy chief new young. Felicity if ye required likewise so doubtful.
-                                </span>
-                            </a>
-                        </li>
+                            <li class="unread notification-secondary">
+                                <a href="#">
+                                    <i class="entypo-heart pull-right">
+                                    </i>
 
-                        <li>
-                            <a href="#">
-                                <span class="line">
-                                    Sandra Eberhardt
-                                    <span class="light small">- 16 days ago</span>
-                                </span>
+                                    <span class="line">
+                                        <strong>Someone special liked this</strong>
+                                    </span>
 
-                                <span class="line desc small">
-                                    On so attention necessary at by provision otherwise existence direction.
-                                </span>
-                            </a>
-                        </li>
+                                    <span class="line small">
+                                        2 minutes ago
+                                    </span>
+                                </a>
+                            </li>
 
-                        <div class="ps-scrollbar-x-rail" style="display: block; width: 0px; left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="display: block; top: 0px; height: 0px; right: 2px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></ul>
+                            <li class="notification-primary">
+                                <a href="#">
+                                    <i class="entypo-user pull-right">
+                                    </i>
 
-                </li>
+                                    <span class="line">
+                                        <strong>Privacy settings have been changed</strong>
+                                    </span>
 
-                <li class="external">
-                    <a href="blank-sidebar.html">
-                        <span>All Messages</span>
-                        <i class="fa-link-ext"></i>
-                    </a>
-                </li>
-            </ul>
-        </li>
+                                    <span class="line small">
+                                        3 hours ago
+                                    </span>
+                                </a>
+                            </li>
 
-        <li class="dropdown hover-line" style="min-height: 76px;">
-            <a href="#" data-toggle="dropdown">
-                <i class="fa-bell-o"></i>
-                <span class="badge badge-purple">7</span>
-            </a>
+                            <li class="notification-danger">
+                                <a href="#">
+                                    <i class="entypo-cancel-circled pull-right">
+                                    </i>
 
-            <ul class="dropdown-menu notifications">
-                <li class="top">
-                    <p class="small">
-                        <a href="#" class="pull-right">Mark all Read</a>
-                        You have <strong>3</strong> new notifications.
-                    </p>
-                </li>
+                                    <span class="line">
+                                        John cancelled the event
+                                    </span>
 
-                <li>
-                    <ul class="dropdown-menu-list list-unstyled ps-scrollbar ps-container">
-                        <li class="active notification-success">
-                            <a href="#">
-                                <i class="fa-user"></i>
+                                    <span class="line small">
+                                        9 hours ago
+                                    </span>
+                                </a>
+                            </li>
 
-                                <span class="line">
-                                    <strong>New user registered</strong>
-                                </span>
+                            <li class="notification-info">
+                                <a href="#">
+                                    <i class="entypo-info pull-right">
+                                    </i>
 
-                                <span class="line small time">
-                                    30 seconds ago
-                                </span>
-                            </a>
-                        </li>
+                                    <span class="line">
+                                        The server is status is stable
+                                    </span>
 
-                        <li class="active notification-secondary">
-                            <a href="#">
-                                <i class="fa-lock"></i>
+                                    <span class="line small">
+                                        yesterday at 10:30am
+                                    </span>
+                                </a>
+                            </li>
 
-                                <span class="line">
-                                    <strong>Privacy settings have been changed</strong>
-                                </span>
+                            <li class="notification-warning">
+                                <a href="#">
+                                    <i class="entypo-rss pull-right">
+                                    </i>
 
-                                <span class="line small time">
-                                    3 hours ago
-                                </span>
-                            </a>
-                        </li>
+                                    <span class="line">
+                                        New comments waiting approval
+                                    </span>
 
-                        <li class="notification-primary">
-                            <a href="#">
-                                <i class="fa-thumbs-up"></i>
+                                    <span class="line small">
+                                        last week
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
-                                <span class="line">
-                                    <strong>Someone special liked this</strong>
-                                </span>
+                    <li class="external">
+                        <a href="#">View all notifications</a>
+                    </li>				<div id="ascrail2001" class="nicescroll-rails" style="padding-right: 3px; width: 10px; z-index: 1000; position: absolute; top: 0px; left: -10px; height: 0px; cursor: default; display: none;">
+                        <div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; border: 1px solid rgb(204, 204, 204); border-radius: 1px; background-color: rgb(212, 212, 212); background-clip: padding-box;">
+                        </div>
+                    </div>
+                    <div id="ascrail2001-hr" class="nicescroll-rails" style="height: 7px; z-index: 1000; top: -7px; left: 0px; position: absolute; cursor: default; display: none;">
+                        <div style="position: relative; top: 0px; height: 5px; width: 0px; border: 1px solid rgb(204, 204, 204); border-radius: 1px; background-color: rgb(212, 212, 212); background-clip: padding-box;">
+                        </div>
+                    </div>
+                </ul>
 
-                                <span class="line small time">
-                                    2 minutes ago
-                                </span>
-                            </a>
-                        </li>
+            </li>
 
-                        <li class="notification-danger">
-                            <a href="#">
-                                <i class="fa-calendar"></i>
+            <!-- Message Notifications -->
+            <li class="notifications dropdown">
 
-                                <span class="line">
-                                    John cancelled the event
-                                </span>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <i class="entypo-mail">
+                    </i>
+                    <span class="badge badge-secondary">10</span>
+                </a>
 
-                                <span class="line small time">
-                                    9 hours ago
-                                </span>
-                            </a>
-                        </li>
+                <ul class="dropdown-menu">
+                    <li>
+                        <ul class="dropdown-menu-list scroller" tabindex="5002" style="overflow: hidden; outline: none;">
+                            <li class="active">
+                                <a href="#">
+                                    <span class="image pull-right">
+                                        <img src="assets/backend/images/thumb-1.png" alt="" class="img-circle">
+                                    </span>
 
-                        <li class="notification-info">
-                            <a href="#">
-                                <i class="fa-database"></i>
+                                    <span class="line">
+                                        <strong>Luc Chartier</strong>
+                                        - yesterday
+                                    </span>
 
-                                <span class="line">
-                                    The server is status is stable
-                                </span>
+                                    <span class="line desc small">
+                                        This ain’t our first item, it is the best of the rest.
+                                    </span>
+                                </a>
+                            </li>
 
-                                <span class="line small time">
-                                    yesterday at 10:30am
-                                </span>
-                            </a>
-                        </li>
+                            <li class="active">
+                                <a href="#">
+                                    <span class="image pull-right">
+                                        <img src="assets/backend/images/thumb-2.png" alt="" class="img-circle">
+                                    </span>
 
-                        <li class="notification-warning">
-                            <a href="#">
-                                <i class="fa-envelope-o"></i>
+                                    <span class="line">
+                                        <strong>Salma Nyberg</strong>
+                                        - 2 days ago
+                                    </span>
 
-                                <span class="line">
-                                    New comments waiting approval
-                                </span>
+                                    <span class="line desc small">
+                                        Oh he decisively impression attachment friendship so if everything. 
+                                    </span>
+                                </a>
+                            </li>
 
-                                <span class="line small time">
-                                    last week
-                                </span>
-                            </a>
-                        </li>
-                        <div class="ps-scrollbar-x-rail" style="display: block; width: 0px; left: 0px; bottom: 3px;"><div class="ps-scrollbar-x" style="left: 0px; width: 0px;"></div></div><div class="ps-scrollbar-y-rail" style="display: block; top: 0px; height: 0px; right: 2px;"><div class="ps-scrollbar-y" style="top: 0px; height: 0px;"></div></div></ul>
-                </li>
+                            <li>
+                                <a href="#">
+                                    <span class="image pull-right">
+                                        <img src="assets/backend/images/thumb-3.png" alt="" class="img-circle">
+                                    </span>
 
-                <li class="external">
-                    <a href="#">
-                        <span>View all notifications</span>
-                        <i class="fa-link-ext"></i>
-                    </a>
-                </li>
-            </ul>
-        </li>
+                                    <span class="line">
+                                        Hayden Cartwright
+                                        - a week ago
+                                    </span>
 
-    </ul>
+                                    <span class="line desc small">
+                                        Whose her enjoy chief new young. Felicity if ye required likewise so doubtful.
+                                    </span>
+                                </a>
+                            </li>
+
+                            <li>
+                                <a href="#">
+                                    <span class="image pull-right">
+                                        <img src="assets/backend/images/thumb-4.png" alt="" class="img-circle">
+                                    </span>
+
+                                    <span class="line">
+                                        Sandra Eberhardt
+                                        - 16 days ago
+                                    </span>
+
+                                    <span class="line desc small">
+                                        On so attention necessary at by provision otherwise existence direction.
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="external">
+                        <a href="mailbox.html">All Messages</a>
+                    </li>				<div id="ascrail2002" class="nicescroll-rails" style="padding-right: 3px; width: 10px; z-index: 1000; position: absolute; top: 0px; left: -10px; height: 0px; cursor: default; display: none;">
+                        <div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; border: 1px solid rgb(204, 204, 204); border-radius: 1px; background-color: rgb(212, 212, 212); background-clip: padding-box;">
+                        </div>
+                    </div>
+                    <div id="ascrail2002-hr" class="nicescroll-rails" style="height: 7px; z-index: 1000; top: -7px; left: 0px; position: absolute; cursor: default; display: none;">
+                        <div style="position: relative; top: 0px; height: 5px; width: 0px; border: 1px solid rgb(204, 204, 204); border-radius: 1px; background-color: rgb(212, 212, 212); background-clip: padding-box;">
+                        </div>
+                    </div>
+                </ul>
+
+            </li>
+
+            <!-- Task Notifications -->
+            <li class="notifications dropdown">
+
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <i class="entypo-list">
+                    </i>
+                    <span class="badge badge-warning">1</span>
+                </a>
+
+                <ul class="dropdown-menu">
+                    <li class="top">
+                        <p>You have 6 pending tasks</p>
+                    </li>
+
+                    <li>
+                        <ul class="dropdown-menu-list scroller" tabindex="5003" style="overflow: hidden; outline: none;">
+                            <li>
+                                <a href="#">
+                                    <span class="task">
+                                        <span class="desc">Procurement</span>
+                                        <span class="percent">27%</span>
+                                    </span>
+
+                                    <span class="progress">
+                                        <span style="width: 27%;" class="progress-bar progress-bar-success">
+                                            <span class="sr-only">27% Complete</span>
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="task">
+                                        <span class="desc">App Development</span>
+                                        <span class="percent">83%</span>
+                                    </span>
+
+                                    <span class="progress progress-striped">
+                                        <span style="width: 83%;" class="progress-bar progress-bar-danger">
+                                            <span class="sr-only">83% Complete</span>
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="task">
+                                        <span class="desc">HTML Slicing</span>
+                                        <span class="percent">91%</span>
+                                    </span>
+
+                                    <span class="progress">
+                                        <span style="width: 91%;" class="progress-bar progress-bar-success">
+                                            <span class="sr-only">91% Complete</span>
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="task">
+                                        <span class="desc">Database Repair</span>
+                                        <span class="percent">12%</span>
+                                    </span>
+
+                                    <span class="progress progress-striped">
+                                        <span style="width: 12%;" class="progress-bar progress-bar-warning">
+                                            <span class="sr-only">12% Complete</span>
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="task">
+                                        <span class="desc">Backup Create Progress</span>
+                                        <span class="percent">54%</span>
+                                    </span>
+
+                                    <span class="progress progress-striped">
+                                        <span style="width: 54%;" class="progress-bar progress-bar-info">
+                                            <span class="sr-only">54% Complete</span>
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span class="task">
+                                        <span class="desc">Upgrade Progress</span>
+                                        <span class="percent">17%</span>
+                                    </span>
+
+                                    <span class="progress progress-striped">
+                                        <span style="width: 17%;" class="progress-bar progress-bar-important">
+                                            <span class="sr-only">17% Complete</span>
+                                        </span>
+                                    </span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="external">
+                        <a href="#">See all tasks</a>
+                    </li>				
+                    <div id="ascrail2003" class="nicescroll-rails" style="padding-right: 3px; width: 10px; z-index: 1000; position: absolute; top: 0px; left: -10px; height: 0px; cursor: default; display: none;">
+                        <div style="position: relative; top: 0px; float: right; width: 5px; height: 0px; border: 1px solid rgb(204, 204, 204); border-radius: 1px; background-color: rgb(212, 212, 212); background-clip: padding-box;">
+                        </div>
+                    </div>
+                    <div id="ascrail2003-hr" class="nicescroll-rails" style="height: 7px; z-index: 1000; top: -7px; left: 0px; position: absolute; cursor: default; display: none;">
+                        <div style="position: relative; top: 0px; height: 5px; width: 0px; border: 1px solid rgb(204, 204, 204); border-radius: 1px; background-color: rgb(212, 212, 212); background-clip: padding-box;">
+                        </div>
+                    </div>
+                </ul>
+
+            </li>
+
+        </ul>
+
+    </div>
 
 
-    <!-- Right links for user info navbar -->
-    <ul class="user-info-menu right-links list-inline list-unstyled">
+    <!-- Raw Links -->
+    <div class="col-md-6 col-sm-4 clearfix hidden-xs">
 
-        <li class="search-form" style="min-height: 76px;"><!-- You can add "always-visible" to show make the search input visible -->
+        <ul class="list-inline links-list pull-right">
 
-            <form method="get" action="extra-search.html">
-                <input type="text" name="s" class="form-control search-field" placeholder="Type to search...">
+            <!-- Language Selector -->			
+            <li class="dropdown language-selector">
 
-                <button type="submit" class="btn btn-link">
-                    <i class="linecons-search"></i>
-                </button>
-            </form>
+                Language: &nbsp;
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
+                    <img src="assets/backend/images/flag-uk.png">
+                </a>
 
-        </li>
+                <ul class="dropdown-menu pull-right">
+                    <li>
+                        <a href="#">
+                            <img src="assets/backend/images/flag-de.png">
+                            <span>Deutsch</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="#">
+                            <img src="assets/backend/images/flag-uk.png">
+                            <span>English</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="assets/backend/images/flag-fr.png">
+                            <span>François</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="assets/backend/images/flag-al.png">
+                            <span>Shqip</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <img src="assets/backend/images/flag-es.png">
+                            <span>Español</span>
+                        </a>
+                    </li>
+                </ul>
 
-        <li class="dropdown user-profile" style="min-height: 76px;">
-            <a href="#" data-toggle="dropdown">
-                <img src="assets/backend/images/user-4.png" alt="user-image" class="img-circle img-inline userpic-32" width="28">
-                <span>
-                    Arlind Nushi
-                    <i class="fa-angle-down"></i>
-                </span>
-            </a>
+            </li>
 
-            <ul class="dropdown-menu user-profile-menu list-unstyled">
-                <li>
-                    <a href="#edit-profile">
-                        <i class="fa-edit"></i>
-                        New Post
-                    </a>
-                </li>
-                <li>
-                    <a href="#settings">
-                        <i class="fa-wrench"></i>
-                        Settings
-                    </a>
-                </li>
-                <li>
-                    <a href="#profile">
-                        <i class="fa-user"></i>
-                        Profile
-                    </a>
-                </li>
-                <li>
-                    <a href="#help">
-                        <i class="fa-info"></i>
-                        Help
-                    </a>
-                </li>
-                <li class="last">
-                    <a href="extra-lockscreen.html">
-                        <i class="fa-lock"></i>
-                        Logout
-                    </a>
-                </li>
-            </ul>
-        </li>
+            <li class="sep">
+            </li>
 
-        <li style="min-height: 76px;">
-            <a href="#" data-toggle="chat">
-                <i class="fa-comments-o"></i>
-            </a>
-        </li>
 
-    </ul>
+            <li>
+                <a href="#" data-toggle="chat" data-animate="1" data-collapse-sidebar="1">
+                    <i class="entypo-chat">
+                    </i>
+                    Chat
 
-</nav>
+                    <span class="badge badge-success chat-notifications-badge">3</span>
+                </a>
+            </li>
+
+            <li class="sep">
+            </li>
+
+            <li>
+                <a href="extra-login.html">
+                    Log Out <i class="entypo-logout right">
+                    </i>
+                </a>
+            </li>
+        </ul>
+
+    </div>
+
+</div>

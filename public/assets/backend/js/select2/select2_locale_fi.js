@@ -3,7 +3,7 @@
  */
 (function ($) {
     "use strict";
-    $.fn.select2.locales['fi'] = {
+    $.extend($.fn.select2.defaults, {
         formatNoMatches: function () {
             return "Ei tuloksia";
         },
@@ -19,12 +19,10 @@
             return "Voit valita ainoastaan " + limit + " kpl";
         },
         formatLoadMore: function (pageNumber) {
-            return "Ladataan lisää tuloksia…";
+            return "Ladataan lisää tuloksia...";
         },
         formatSearching: function () {
-            return "Etsitään…";
+            return "Etsitään...";
         }
-    };
-
-    $.extend($.fn.select2.defaults, $.fn.select2.locales['fi']);
+    });
 })(jQuery);
