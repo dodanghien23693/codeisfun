@@ -80,3 +80,10 @@ Route::post('getuser','UserController@getUser');
 Route::get('getuser','UserController@index');
 
 //
+
+
+/*
+ * 
+ */
+Route::get('admin', 'AdminController@getIndex');
+

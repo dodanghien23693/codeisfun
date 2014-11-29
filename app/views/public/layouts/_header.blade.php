@@ -83,8 +83,8 @@
                     <input class="col-sm-12 form-control" type="text" placeholder="Username Or Email" id="identifier" name="identifier">
                     <br>
                     <input  class="col-sm-12 form-control" type="password" placeholder="Password" id="password" name="password">
-                    <input type="checkbox" name="remember" id="remember-me" value="0" placeholder="Remember me">
-                    <label class="control-label " class="string optional" for="user_remember_me"> Remember me</label>
+                    <input type="checkbox" name="remember" id="remember" value="0" placeholder="Remember me">
+                    <label class="control-label " class="string optional" for="remember">Remember me</label>
                     <input class="btn btn-primary btn-block form-control" type="submit" id="sign-in" value="Sign In">
                    
                     <h4></h4>
@@ -107,11 +107,10 @@
     </div>
 </div>
 
-<!-- end login form modal -->
 
 
 
-<!-- login form modal -->
+<!-- signup form modal -->
 <div class="modal fade" id="signupbtn" tabindex="1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="row">  
     <div class="modal-dialog ">
@@ -150,14 +149,14 @@
             <div class="col-sm-8">
             {{ Form::password('password','',array('class'=>'form-control')); }}
             </div>
-            <input type="password"
+           
             {{ Form::label('password_confirmation','Password confirm',array('class'=>'control-label col-sm-4')); }}
-            <div class="col-sm-8">
+           
             {{ Form::password('password_confirmation','',array('class'=>'form-control')); }}
-            </div>
-             <div class="col-sm-8">
+          
+           
             {{ Form::submit('Register',array('class'=>'form-control')); }}
-            </div>
+          
         
             
             
@@ -165,16 +164,12 @@
         {{ Form::close(); }}
 
         Already have an account? {{ link_to_route('login','Login') }}
-                </div>
-            <div class="modal-footer">
-            <button style="margin-top:10px; position: relative" type="button" class="btn btn-default" >Create new Account</button>   
-            </div>      
-        </div>
+
     </div>
     </div>
 </div>
 
-<!-- end login form modal -->
+<!-- end signup form modal -->
 @section('script')
 
 

@@ -125,7 +125,7 @@ return array(
             'Barryvdh\Debugbar\ServiceProvider',
             'Artdarek\OAuth\OAuthServiceProvider',
             'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-            'Frozennode\Administrator\AdministratorServiceProvider',
+            
 
 	),
 

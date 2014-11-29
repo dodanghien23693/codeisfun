@@ -6,25 +6,33 @@
         <group>
             <file>file:/C:/codeisfun/laravel/app/config/database.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_styles.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/menu.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/writer-menu.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Role.php</file>
+            <file>file:/C:/codeisfun/laravel/app/routes.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/PostController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/default.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/public/assets/cif/css/stylesheet.css</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/admin-menu.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/posts/index.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_styles.blade.php</file>
             <file>file:/C:/codeisfun/laravel/vendor/frozennode/administrator/src/controllers/AdminController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/codeisfun/articles.html</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/AuthController.php</file>
             <file>file:/C:/codeisfun/laravel/app/config/packages/frozennode/administrator/administrator.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_scripts.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/public/auth/login_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/public/index.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_header.blade.php</file>
             <file>file:/C:/codeisfun/laravel/vendor/frozennode/administrator/src/views/layouts/default.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/public/assets/polymer/elements/cif-post.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/codeisfun/index.html</file>
-            <file>file:/C:/codeisfun/laravel/app/routes.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/PostController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/default.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/public/assets/cif/css/stylesheet.css</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/manager-menu.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_scripts.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Posts/Post.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/default.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/config/app.php</file>
             <file>file:/C:/codeisfun/laravel/app/config/administrator/post.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/HomeController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/posts/index.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/public/assets/polymer/elements/cif-post-list.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/public/auth/register_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/user-menu.blade.php</file>
         </group>
     </open-files>
 </project-private>
