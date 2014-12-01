@@ -37,7 +37,12 @@ class Lecture extends Ardent{
      */
     public function historyViews()
     {
-        $this->hasMany('LectureViewed');
+        return $this->hasMany('LectureViewed');
+    }
+    
+    public function chapter()
+    {
+        return $this->belongsTo('Chapter', 'chapter_id');
     }
     
 }

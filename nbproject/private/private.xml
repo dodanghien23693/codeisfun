@@ -4,35 +4,35 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/codeisfun/laravel/app/config/database.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_styles.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/composer.json</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/menu/menu.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/writer-menu.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/models/Role.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Category.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Posts/PostStatus.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/categories/_category_chooser.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/CategoryController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Courses/Chapter.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/new_course.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/edit_course.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/config/local/app.php</file>
+            <file>file:/C:/codeisfun/laravel/app/database/migrations/2014_10_28_32_create_resources_table.php</file>
+            <file>file:/C:/codeisfun/laravel/app/database/migrations/2014_10_28_08_create_chapters_table.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Courses/Course.php</file>
             <file>file:/C:/codeisfun/laravel/app/routes.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/PostController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/default.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/public/assets/cif/css/stylesheet.css</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/admin-menu.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/posts/index.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/vendor/laravel/framework/src/Illuminate/Database/Eloquent/SoftDeletingTrait.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_chapter_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/CourseController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/database/migrations/2014_10_28_10_create_post_status_table.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/view_all_course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_styles.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/vendor/frozennode/administrator/src/controllers/AdminController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/AuthController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/config/packages/frozennode/administrator/administrator.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_scripts.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/auth/login_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/index.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/categories/_category.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_lecture_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/ChapterController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/public/layouts/_header.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/vendor/frozennode/administrator/src/views/layouts/default.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/manager-menu.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_course_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/database/migrations/2014_10_28_03_create_courses_table.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_scripts.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/database/migrations/2014_10_28_12_create_posts_table.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Posts/Post.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/default.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/config/app.php</file>
-            <file>file:/C:/codeisfun/laravel/app/config/administrator/post.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/HomeController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/auth/register_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/user-menu.blade.php</file>
         </group>
     </open-files>
 </project-private>

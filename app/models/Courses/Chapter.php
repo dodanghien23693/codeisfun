@@ -29,7 +29,19 @@ class Chapter extends Ardent{
      */
     public function lectures()
     {
-        return $this->hasMany('Lecture');
+        return $this->hasMany('Lecture', 'chapter_id');
     }
 
+    public static function getList($course_id)
+    {
+        
+        $chapters = Chapter::where('course_id','=',$course_id)->orderBy('order_of_chapter')->get(array('id','order_of_chapter','name','description'))->toArray();
+        return $chapters;
+    }
+    
+    public function delete()
+    {
+        $this->lectures()->delete();
+        return parent::delete();
+    }
 }

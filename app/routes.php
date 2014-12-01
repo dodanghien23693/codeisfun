@@ -88,3 +88,97 @@ Route::get('getuser','UserController@index');
 Route::get('admin', 'AdminController@getIndex');
 Route::get('admin/user/profile',array('as'=>'user-profile','uses' => 'AuthController@getLogin'));
 Route::get('admin/user/profile',array('as'=>'edit-profile','uses' => 'AuthController@getLogin'));
+
+
+/**
+ *  categories manager
+ */
+
+//get category form
+Route::get('admin/category', 'CategoryController@getCategoryContent');
+Route::post('admin/get-category-content', 'CategoryController@getCategoryContent');
+//update category order
+Route::post('admin/update-order-category','CategoryController@updateOrderCategory');
+
+//create new category
+Route::post('admin/category/new','CategoryController@createCategory');
+
+//delete category
+Route::post('admin/category/delete','CategoryController@deleteCategory');
+
+
+
+/***
+ *  course manager
+ */
+//view all course
+Route::get('admin/course','CourseController@viewAllCourse');
+
+
+//create new course
+Route::get('admin/course/new',function(){
+    return View::make('admin.courses.new_course');
+});
+Route::post('admin/course/new','CourseController@createCourse');
+
+
+//edit course
+Route::get('admin/course/edit/{id}',function($id){
+    $course = Course::find($id);
+    if($course){
+        return View::make('admin.courses.edit_course')->with('course', $course);
+    }
+    else{
+     return Redirect::to('admin/course');
+    } 
+});
+Route::post('admin/course/edit/{id}','CourseController@updateCourse');
+
+
+//delete course
+Route::get('admin/course/delete','CourseController@deleteCourse');
+
+//restore course
+Route::get('admin/course/restore/{id}',function($id){
+   
+   
+   $course_trashed = Course::onlyTrashed()->where('id','=',$id)->first();
+   $course_trashed->restore();
+  
+   return Redirect::to('admin/course');
+   
+});
+
+
+
+/**
+ *  chapter manager
+ */
+
+//create new chapter
+Route::post('admin/chapter/new','ChapterController@createChapter');
+
+//update order of chapter
+Route::post('admin/course/update-order-chapter','CourseController@updateOrderOfChapter');
+
+//delete chapter
+Route::post('admin/chapter/delete','ChapterController@deleteChapter');
+
+//get edit chapter form
+Route::get('admin/chapter/get-edit-chapter-form','ChapterController@getEditChapterForm');
+
+/**
+ *  lecture manager
+ */
+//create new lecture
+Route::post('admin/lecture/new', 'LectureController@createLecture');
+
+//delete lecture
+Route::post('admin/lecture/delete','LectureController@deleteLecture');
+
+//update order of lecture
+Route::post('admin/chapter/update-order-lecture','ChapterController@updateOrderOfLecture');
+
+
+
+

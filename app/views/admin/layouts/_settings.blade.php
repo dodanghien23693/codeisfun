@@ -13,7 +13,7 @@
 
                     <div class="user-image">
                         <a href="<?php echo route('edit-profile') ?>">
-                            <img src="assets/backend/images/user-2.png" class="img-responsive img-circle">
+                            <img src="<?php echo asset('assets/backend/images/user-2.png" class="img-responsive img-circle'); ?>">
                         </a>
                     </div>
 

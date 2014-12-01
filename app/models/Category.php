@@ -5,7 +5,7 @@ class Category extends Ardent{
     
     protected $table = "categories";
     
-    protected $fillable = array('name','slug','description','image_url','parent_category_id','order_of_category');
+    protected $fillable = array('name','slug','description','image_url','order_of_category');
     
     /**
     * Ardent validation rules
@@ -13,8 +13,7 @@ class Category extends Ardent{
     public static $rules = array(
         'name'        => 'required',
         'slug'        => 'required',  
-        'description' => 'required',
-        'parent_category_id'    => 'required|integer',
+        
         'order_of_category'     => 'integer'
         
     );

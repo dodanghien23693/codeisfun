@@ -68,13 +68,7 @@ class Post extends Ardent {
         return $this->belongsTo("PostStatus","post_status_id");
     }
     
-    /* visibility
-     * 
-     */
-    public function visibility(){
-        return $this->belongsTo("PostVisibility","post_visibility_id");
-    }
-    
+
     
     /* ratings
      * 

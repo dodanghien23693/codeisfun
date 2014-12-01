@@ -38,13 +38,18 @@
    <div class="page-container">
        @include("admin.menu.menu")
        
-       <div class="main-content" style="min-height: 1620px">
+       <div class="main-content" style="height: 600px !important" >
            @include("admin.layouts._notification")
            
+           <div id="main-content-ajax">
              <!-- main content -->
-           @yield('content')
+
+           @section('content')
+              
+           
+           @show
              <!-- end main content -->
-             
+           </div>  
            @include("admin.layouts._footer")  
        </div>
        
@@ -54,7 +59,7 @@
        
    </div>
 
-    ================================================== -->
+   
     @include("admin.layouts._scripts")    
 </body>
 

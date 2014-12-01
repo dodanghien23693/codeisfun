@@ -17,10 +17,11 @@ class CreateCoursesTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 300);
                         $table->string('short_name',200); // tên rút ngắn cho địa chỉ url
-			$table->dateTime('start_day');
-			$table->dateTime('end_day');
+			$table->date('start_day');
+			$table->date('end_day');
 			$table->text('about_the_course');
-			$table->float('cost', 6,2);
+			$table->float('cost', 6,2)->default(0.0);
+                        $table->softDeletes();
 			$table->timestamps();
 		});
 	}

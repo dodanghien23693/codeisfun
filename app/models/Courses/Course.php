@@ -1,21 +1,18 @@
 <?php
 
-use LaravelBook\Ardent\Ardent;
+use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
-class Course extends Ardent{
+class Course extends Eloquent{
+    use SoftDeletingTrait;
     
     protected $table = "courses";
-    
-    protected $fillable = array('name','start_day','end_day','about_the_course','cost');
+    protected $dates = ['deleted_at'];
+    protected $fillable = array('name','short_name','start_day','end_day','about_the_course','cost','deleted_at');
     
     //protected fileds : id
     
-    /**
-    * Ardent validation rules
-    */
-    public static $rules = array(
-      
-    );
+    
+    
     
     /**
      * belong to many Categories via course_category
