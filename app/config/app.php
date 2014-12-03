@@ -126,6 +126,7 @@ return array(
             'Artdarek\OAuth\OAuthServiceProvider',
             'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
             
+            
 
 	),
 

@@ -1,35 +1,21 @@
 <?php
 
-use \CodeIsFun\Repositories\PostRepository;
 
-class PostController extends BaseController{
-    
-    protected $postRepository;
-    
-    
-    /**
-     * inject the PostRepository
-     * 
-     * @param CodeIsFun\Repositories\PostsRepository $postRepository
-     * @return void
-     */
-    public function __construct(PostRepository $postRepository)
-    {
-        $this->postRepository = $postRepository;
-    }
 
-    /**
+class PostController extends BaseController {
+
+     /**
      * Return a listing of all Posts
      * 
      * @return View
      */
-    public function index()
-    {
-        
+    public function index() {
+
         $posts = Post::all();
-        return View::make('public.posts.index')->with('posts', $posts);
+        //$posts=Post::where('id','>','0')->get();
+        return View::make('admin.posts.index', compact("posts"));
     }
-    
+
     /**
      * Display a single post by id
      * 
@@ -37,48 +23,51 @@ class PostController extends BaseController{
      * @param string $slug
      * @return View
      */
-    public function show($categorySlug, $slug)
-    {
-        $post = Post::where('categories.slug','=',$categorySlug)
-                ->where('slug','=',$slug)
-                ->first();
-        if($post)
-        {
-            return View::make('public.posts.show')->with('post',$post);
-        }
-        else
-        {
+    public function show($id) {
+        $post = Post::find($id);
+        if ($post) {
+            return View::make('admin.posts.show')->with('post', $post);
+        } else {
             App::abort(404);
         }
-        
     }
-    
+
     /**
      * Display the form to create a new post
      * 
      * @retrun View
      */
-    public function create()
-    {
+    public function create() {
         return View::make('admin.posts.create');
     }
-    
+
     /**
      * Strore a new Post
      * 
      * @return Redirect
      */
-    public function store()
-    {
-        $post = $this->postRepository->create(Input::all());
-        if($post)
-        {
-            return Redirect::route('post.show',$post->id )->with('message' ,'bài viết đã được tạo thành công!');
-            
-        }
-        else
-        {
-            Redirect::route('post.create')->withInput()->withErrors($this->postRepository->errors());
+    public function store() {
+        $input = array_except(Input::all(), array('_method', '_token', 'cover_image_file','post_category','post_tag'));
+                $post = Post::create($input);
+$post=Post::find($post->id);
+        if ($post) {
+
+$post->tags()->sync(array_merge(array(),(array)Input::get('post_tag')));
+
+$post->categories()->sync(array_merge(array(),(array)Input::get('post_category')));
+$post->save();
+            if (Input::hasFile('cover_image_file')) {
+                $file = Input::file('cover_image_file');
+                $destinationPath = public_path() . '/img/';
+                $assetPath = '/img/';
+                $filename = str_random(6) . '_' . $file->getClientOriginalName();
+                $uploadSuccess = $file->move($destinationPath, $filename);
+                Post::where('id', '=', $post->id)->update(array('cover_image_url' => $assetPath . '/' . $filename));
+            }
+
+            return Redirect::route('post.show', $post->id)->with('message', 'bài viết đã được tạo thành công!');
+        } else {
+            return Redirect::route('post.create')->withInput()->withErrors(Post::errors());
         }
     }
 
@@ -88,74 +77,76 @@ class PostController extends BaseController{
      * @param int $id
      * @return View
      */
-    public function edit($id)
-    {
-        
-         return View::make('admin.posts.edit');
-         
-        $post = $this->postRepository->find($id);
-        if($post)
-        {
-            return View::make('admin.posts.edit',compact('post'));
-        }
-        else
-        {
+    public function edit($id) {
+
+        //  return View::make('admin.posts.edit');
+
+        $post = Post::find($id);
+        if ($post) {
+            return View::make('admin.posts.edit', compact('post'));
+        } else {
             App:abort(404);
         }
     }
-    
+
     /**
      * Update an existring Post
      * 
      * @param int $id
      * @return Redirect
      */
-    public function update($id)
-    {
-        $post = $this->postRepository->where('id','=',$id)
-                ->update(Input::all());
-        if($post)
-        {
-            return Redirect::route('admin.post.show', $id)->with('message', 'Cập nhật bài viết thành công!');
-        }
-        else
-        {
-            return Redirect::route('post.edit', $id)->withInput()->withErrors($this->postRepository->errors());
+    public function update($id) {
+        $input = array_except(Input::all(), array('_method', '_token', 'cover_image_file','post_category','post_tag'));
+        
+        $post = Post::find($id);
+                $post->update($input);
+
+$post->tags()->sync(array_merge(array(),(array)Input::get('post_tag')));
+
+$post->categories()->sync(array_merge(array(),(array)Input::get('post_category')));
+$post->save();
+        if ($post) {
+            if (Input::hasFile('cover_image_file')) {
+                $file = Input::file('cover_image_file');
+                $destinationPath = public_path() . '/img/';
+                $assetPath = '/img/';
+                $filename = str_random(6) . '_' . $file->getClientOriginalName();
+                $uploadSuccess = $file->move($destinationPath, $filename);
+                Post::where('id', '=', $id)->update(array('cover_image_url' => $assetPath . '/' . $filename));
+            }
+            return Redirect::route('post.index')->with('message', 'Cập nhật bài viết thành công!');
+        } else {
+
+            return Redirect::route('post.edit', $id)->withInput()->withErrors(Post::errors());
         }
     }
-    
+
     /**
      * Display the form to delete a Post
      * 
      * @return View
      */
-    public function delete($id)
-    {
-        $post = $this->postRepository->find($id);
-        if($post)
-        {
-            return View::make('post.delete',  compact('post'));
-        }
-        else
-        {
+    public function delete($id) {
+        $post = Post::find($id);
+        if ($post) {
+            return View::make('post.delete', compact('post'));
+        } else {
             App::abort(404);
         }
     }
-    
+
     /**
      * Destroy a Post
      * 
      * @return Redirect
      */
-    public function destroy($id)
-    {
-        $post = $this->postRepository->find($id);
-        
-        if($post)
-        {
+    public function destroy($id) {
+        $post = Post::find($id);
+
+        if ($post) {
+            $post->delete();
             return Redirect::route('post.index')->with('message', "Bài viết: '$post->title' đã được xóa");
         }
     }
-
 
 }

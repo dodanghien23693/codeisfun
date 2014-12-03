@@ -68,16 +68,6 @@ Route::post('login', 'AuthController@login');
     
 });
 
-// posts
-Route::resource('post', 'PostController');
-
-Route::get('elfinder', 'Barryvdh\Elfinder\ElfinderController@showIndex');
-Route::any('elfinder/connector', 'Barryvdh\Elfinder\ElfinderController@showConnector');
-Route::get('elfinder/tinymce', 'Barryvdh\Elfinder\ElfinderController@showTinyMCE4');
-
-//ajax in polymer
-Route::post('getuser','UserController@getUser');
-Route::get('getuser','UserController@index');
 
 //
 
@@ -106,6 +96,11 @@ Route::post('admin/category/new','CategoryController@createCategory');
 //delete category
 Route::post('admin/category/delete','CategoryController@deleteCategory');
 
+//get edit category form modal
+Route::get('admin/category/get-edit-category-form','CategoryController@getEditCategoryForm');
+
+//update category
+Route::post('admin/category/edit/','CategoryController@updateCategory');
 
 
 /***
@@ -167,6 +162,7 @@ Route::post('admin/chapter/delete','ChapterController@deleteChapter');
 //get edit chapter form
 Route::get('admin/chapter/get-edit-chapter-form','ChapterController@getEditChapterForm');
 
+
 /**
  *  lecture manager
  */
@@ -179,6 +175,25 @@ Route::post('admin/lecture/delete','LectureController@deleteLecture');
 //update order of lecture
 Route::post('admin/chapter/update-order-lecture','ChapterController@updateOrderOfLecture');
 
+//get create lecture form
+Route::get('admin/lecture/get-create-lecture-form','LectureController@getCreateLectureForm');
 
 
 
+
+
+
+
+
+Route::group(array('prefix'=>'admin'), function(){
+    Route::resource('post', 'PostController');
+    Route::resource('user', 'UserController');
+    Route::resource('tag', 'TagController');
+});
+
+
+
+//file manager
+Route::get('elfinder', 'Barryvdh\Elfinder\ElfinderController@showIndex');
+Route::any('elfinder/connector', 'Barryvdh\Elfinder\ElfinderController@showConnector');
+Route::get('elfinder/tinymce', 'Barryvdh\Elfinder\ElfinderController@showTinyMCE4');

@@ -1125,6 +1125,7 @@ return array(
     'League\\FactoryMuffin\\Generators\\Factory' => $vendorDir . '/league/factory-muffin/src/Generators/Factory.php',
     'League\\FactoryMuffin\\Generators\\Generic' => $vendorDir . '/league/factory-muffin/src/Generators/Generic.php',
     'Lecture' => $baseDir . '/app/models/Courses/Lecture.php',
+    'LectureController' => $baseDir . '/app/controllers/LectureController.php',
     'LectureViewed' => $baseDir . '/app/models/Courses/LectureViewed.php',
     'Lio\\Core\\Exceptions\\EntityNotFoundException' => $baseDir . '/app/lib/CodeIsFun/Exceptions/EntityNotFoundException.php',
     'Lio\\Core\\Exceptions\\NoValidationRulesFoundException' => $baseDir . '/app/lib/CodeIsFun/Exceptions/NoValidationRulesFoundException.php',

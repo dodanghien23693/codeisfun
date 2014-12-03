@@ -51,12 +51,12 @@
             </a>
             <ul>
                 <li id="all-post">
-                    <a href="layout-api.html">
+                    <a href="{{URL::action('PostController@index')}}">
                         <span style="">All Posts</span>
                     </a>
                 </li>
                 <li id="new-post">
-                    <a href="layout-collapsed-sidebar.html">
+                    <a href="{{URL::action('PostController@create')}}">
                         <span style="">New Post</span>
                     </a>
                 </li>
@@ -96,7 +96,7 @@
         </li>
 
         <li class="root-level" id="tags">
-            <a href="index.html" target="_blank">
+            <a href="{{URL::action('TagController@index')}}" >
                 <i class="entypo-tag"></i>
                 <span style="">Tags</span>
             </a>
@@ -117,7 +117,7 @@
         </li>
 
         <li class="root-level" id="user-manager">
-            <a href="index.html" target="_blank">
+            <a href="{{URL::action('UserController@index')}}" >
                 <i class="entypo-users"></i>
                 <span style="">User Manager</span>
             </a>

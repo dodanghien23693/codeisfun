@@ -30,7 +30,7 @@ $lectures = Lecture::where('chapter_id','=',$chapter->id)->orderBy('order_of_lec
             <label class="col-sm-1 control-label" for="lecture-name">New lecture</label>
             
             <input id="lecture-name" name='lecture-name' type='text' class="col-sm-5 form-control" placeholder="name" />
-            <div  class="btn btn-info create-lecture-btn form-control" >Create new chapter</div>
+            <div  class="btn btn-info create-lecture-btn form-control" >Create new lecture</div>
         </form>
 
         
@@ -69,30 +69,6 @@ $lectures = Lecture::where('chapter_id','=',$chapter->id)->orderBy('order_of_lec
 @endforeach
 
 
-
-<div class="modal fade" id="create-lecture-modal" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title">Create new Lecture</h4>
-			</div>
-			
-			<div class="modal-body">
-			
-                            
-				
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button id="create-lecture-modal-btn" type="button" class="btn btn-info">Save changes</button>
-			</div>
-		</div>
-	</div>
-</div>
-
 <script>
     
     $(document).ready(function(){
@@ -117,13 +93,21 @@ $lectures = Lecture::where('chapter_id','=',$chapter->id)->orderBy('order_of_lec
                 });
             }
            });
+           
+           
         }
         registerEventLecture();
+        
+        
+        function showCreateLectureModal(chapter_id){
+         $("#create-lecture-modal").modal('show');
+         $("#create-lecture-form-modal input[name='chapter_id']").val(chapter_id);
+           
+        }
+        
         $(".create-lecture-btn").click(function(){
-            alert('mo form de tao');
-            $("#create-lecture-modal").modal('show', {backdrop : 'static'});
             
-            /*
+           
            var lecture_list = $(this).closest(".panel-body").find(".list-lecture ul");
            var chapter_id =  $(this).closest("#lecture-form").attr('chapter-id');
            var lecture_name = $(this).closest("#create-lecture-form").find("input[name='lecture-name']").val();
@@ -157,8 +141,25 @@ $lectures = Lecture::where('chapter_id','=',$chapter->id)->orderBy('order_of_lec
                }
            });
            
-           */
+          
            
+        });
+        
+        $("#create-lecture-modal-btn").click(function(e){
+            e.preventDefault();
+            
+            var name = $("#create-lecture-form-modal input[name='name']").val();
+                
+            $.post('<?php echo url('admin/lecture/new');?>',{chapter_id : chapter_id,name :name},function(response,status){
+                if(status=='success'){
+                    $("#list-category .dd-item[data-id='"+chapter_id+"'] #category-name").html(name);
+                    $("#create-lecture-modal").modal('toggle');
+                    alert('thanh cong');
+                }
+                if(status=='error'){
+
+                }
+            });
         });
         
      
@@ -183,6 +184,10 @@ $lectures = Lecture::where('chapter_id','=',$chapter->id)->orderBy('order_of_lec
         
         
     });
+    
+    
+   
 </script>
+
 
 

@@ -30,5 +30,13 @@ class LectureController extends BaseController {
         return false;
     }
     
+    public function getCreateLectureForm()
+    {
+        if(Request::ajax()){
+            $chapter_id = Input::get('chapter_id');
+            return View::make('admin.courses._create_lecture_form',array('chapter_id'=>$chapter_id))->render();
+        }
+    }
+    
 
 }

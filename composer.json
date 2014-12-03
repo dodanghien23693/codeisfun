@@ -12,13 +12,14 @@
 		"barryvdh/laravel-ide-helper": "~1.11",
 		"doctrine/dbal": "~2.3",
                 "frozennode/administrator": "dev-master",
-                "fzaninotto/faker": "1.4.*@dev"
+                "fzaninotto/faker": "1.4.*@dev"    
 	},
         "require-dev": {
         "way/generators": "~2.0",
         "phpunit/phpunit": "4.3.*",
         "league/factory-muffin": "~2.0",
         "mockery/mockery": "dev-master"
+        
         },
 	"autoload": {
 		"classmap": [

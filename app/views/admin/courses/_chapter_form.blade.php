@@ -72,7 +72,7 @@
     {
             $('#edit-chapter-modal').modal('show', {backdrop : 'static'});
 
-             $('#edit-chapter-modal .modal-body').html('Is loading.......');
+            $('#edit-chapter-modal .modal-body').html('Is loading.......');
             $.get('<?php echo url('admin/chapter/get-edit-chapter-form'); ?>',{chapter_id : chapter_id},function(response,status){
                 if(status=='success'){
                    
@@ -176,30 +176,3 @@
  });
  
 </script>
-@section('scripts')
-<div class="modal fade" id="edit-chapter-modal" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-				<h4 class="modal-title">Dynamic Content</h4>
-			</div>
-			
-			<div class="modal-body">
-			
-                            <form class="form-horizontal" role='form'>
-                                <label class="control-label" >Name</label>
-                            </form>
-                              
-				
-			</div>
-			
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				<button id="update-chapter-btn" type="button" class="btn btn-info">Save changes</button>
-			</div>
-		</div>
-	</div>
-</div>
-@stop

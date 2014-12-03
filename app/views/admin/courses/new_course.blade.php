@@ -1,4 +1,5 @@
 @extends('admin.layouts.default')
+
 @section('content')
 
 <form role='form' action="<?php echo url('admin/course/new'); ?>" method="post" class="form-horizontal">
@@ -33,8 +34,4 @@
     <input type="submit" class="form-control" value="Create new">
 </form>
 @stop
-@section('scripts')
 
-<script src="<?php echo asset('assets/backend/js/jquery.validate.min.js'); ?>"></script>
- <script src="<?php echo asset('assets/backend/js/neon-custom.js'); ?>"></script>
-@stop

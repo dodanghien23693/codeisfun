@@ -62,3 +62,7 @@
 </div>
 
 @stop
+
+@section('scripts')
+@include('admin.courses._modal_form');
+@stop
