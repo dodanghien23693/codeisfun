@@ -33,9 +33,8 @@
     </tbody>
 </table>
 
-<hr>
-<h1>Trased Courses</h1>
-<table id='course-trashed-table' class="table danger datatable">
+
+<table id='course-trashed-table' class="table datatable">
     <thead>
         <tr>
             <th>id</th>
