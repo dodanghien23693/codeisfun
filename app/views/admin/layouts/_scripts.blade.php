@@ -26,7 +26,10 @@
       
     <!-- END GLOBAL SCRIPTS -->
 
-
+<script type="text/javascript">
+editor_config.selector = "textarea";
+tinymce.init(editor_config);
+</script>
     <!-- PAGE LEVEL SCRIPTS -->
     @section('scripts')
    

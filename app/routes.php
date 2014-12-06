@@ -111,9 +111,7 @@ Route::post('admin/course','CourseController@viewAllCourse');
 
 
 //create new course
-Route::get('admin/course/new',function(){
-    return View::make('admin.courses.new_course');
-});
+Route::get('admin/course/new','CourseController@getCourseForm');
 Route::post('admin/course/new','CourseController@createCourse');
 Route::post('admin/course/get-list-chapter','CourseController@getListChapter');
 Route::get('admin/course/get-list-chapter','CourseController@getListChapter');
@@ -122,7 +120,10 @@ Route::get('admin/course/get-list-chapter','CourseController@getListChapter');
 Route::get('admin/course/edit/{id}',function($id){
     $course = Course::find($id);
     if($course){
-        return View::make('admin.courses.edit_course')->with('course', $course);
+        return View::make('admin.courses.edit_course')->with(array(
+            'course'=> $course,
+            'list_category' => Category::all()
+            ));
     }
     else{
      return Redirect::to('admin/course');

@@ -4,8 +4,7 @@
 
 class TagController extends BaseController{
     
-   
-   
+
 
     /**
      * Return a listing of all Tags
@@ -60,12 +59,12 @@ class TagController extends BaseController{
         $tag = Tag::create(Input::all());
         if($tag)
         {
-            return Redirect::route('tag.show',$tag->id )->with('message' ,'bài viết đã được tạo thành công!');
+            return Redirect::route('admin.tag.show',$tag->id )->with('message' ,'bài viết đã được tạo thành công!');
             
         }
         else
         {
-            Redirect::route('tag.create')->withInput()->withErrors($this->tagRepository->errors());
+            Redirect::route('admin.tag.create')->withInput()->withErrors(Tag::errors());
         }
     }
 
@@ -99,7 +98,7 @@ class TagController extends BaseController{
      */
     public function update($id)
     {
-        $tag =Tag::where('id','=',$id)
+        $tag = Tag::where('id','=',$id)
                 ->update(Input::all());
         if($tag)
         {
@@ -107,7 +106,7 @@ class TagController extends BaseController{
         }
         else
         {
-            return Redirect::route('tag.edit', $id)->withInput()->withErrors($this->tagRepository->errors());
+            return Redirect::route('admin.tag.edit', $id)->withInput()->withErrors(Tag::errors());
         }
     }
     
@@ -121,7 +120,7 @@ class TagController extends BaseController{
         $tag = Tag::find($id);
         if($tag)
         {
-            return View::make('tag.delete',  compact('tag'));
+            return View::make('admin.tag.delete',  compact('tag'));
         }
         else
         {
@@ -141,7 +140,7 @@ class TagController extends BaseController{
         if($tag)
         {
             $tag->delete();
-            return Redirect::route('tag.index')->with('message', "Tag '$tag->name' đã được xóa");
+            return Redirect::route('admin.tag.index')->with('message', "Tag '$tag->name' đã được xóa");
         }
     }
 

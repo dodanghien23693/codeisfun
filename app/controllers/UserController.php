@@ -7,7 +7,7 @@ class UserController extends BaseController {
 	 *
 	 * @return Response
 	 */
-	public function search()
+public function search()
 {
     $name = Input::get('character');
     $searchResult = User::where('email', 'like', "%".$name."%")->paginate(10);
@@ -56,10 +56,10 @@ class UserController extends BaseController {
 			//dd($e);
 			}
 
-			return Redirect::route('user.index');
+			return Redirect::route('admin.user.index');
 		}
 
-		return Redirect::route('user.create')
+		return Redirect::route('admin.user.create')
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -90,7 +90,7 @@ class UserController extends BaseController {
 
 		if (is_null($user))
 		{
-			return Redirect::route('user.index');
+			return Redirect::route('admin.user.index');
 		}
 
 		return View::make('admin.users.edit', compact('user'));
@@ -118,10 +118,10 @@ class UserController extends BaseController {
 			$user = User::find($id);
 			$user->update($input);
 
-			return Redirect::route('user.show', $id);
+			return Redirect::route('admin.user.show', $id);
 		}
 
-		return Redirect::route('user.edit', $id)
+		return Redirect::route('admin.user.edit', $id)
 			->withInput()
 			->withErrors($validation)
 			->with('message', 'There were validation errors.');
@@ -137,7 +137,7 @@ class UserController extends BaseController {
 	{
 		User::find($id)->delete();
 
-		return Redirect::route('user.index');
+		return Redirect::route('admin.user.index');
 	}
 
 }

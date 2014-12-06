@@ -18,13 +18,13 @@ class User extends Ardent implements UserInterface, RemindableInterface {
      * @var string
      */
     protected $table = 'users';
-    
-    protected $fillable = array ('username','email','first_name',//viet het cac field cua table nay vao day thi dc, ko thi thoi.
-         'last_name','gender','birthday','about_me','facebook_link',
-         'googleplus_link','twitter_link','website_url','photo_url','user_type','role_id','gender','password') ;
-     
+
+    protected $fillable = array ('username','email','first_name',
+        'last_name','gender','birthday','about_me','facebook_link',
+        'googleplus_link','twitter_link','website_url','photo_url','user_type') ;
+
     //protected fields: password,  role_id, created_at, updated_at
-    protected $guarded=array(''); 
+    
     protected $hidden = array();
 
 
@@ -40,7 +40,7 @@ class User extends Ardent implements UserInterface, RemindableInterface {
 
 
     public static $rules = array(
-        'username'      => 'required|alpha_dash|min:6|max:50|unique:users,username',
+        'username'      => 'required|min:6|max:50|unique:users,username|alpha_dash',
         'email'         => 'required|unique:users,email',
         'password'      => 'required',
         'first_name'    => 'required|between:2,30',
@@ -55,7 +55,7 @@ class User extends Ardent implements UserInterface, RemindableInterface {
         
     );
 
-        
+    
     /**
      * 
      * 
@@ -86,6 +86,22 @@ class User extends Ardent implements UserInterface, RemindableInterface {
         return $this->belongsToMany("Category", "user_category");
     }
 
+    
+    public function hasRole($value){
+        
+
+        return ($this->role()->first()->name == $value)?true:false;
+    }
+    
+    public function hasRoles($roles){
+        foreach ($roles as $role)
+        {
+            if($this->hasRole($role)) return true;
+        }
+        return false;
+        
+    }
+    
     /** Role
      * 
      */
@@ -120,6 +136,8 @@ class User extends Ardent implements UserInterface, RemindableInterface {
         return $this->belongsToMany("Course", "course_instructor");
     }
 
+    
+    
     /**
      * 
      */

@@ -16,7 +16,7 @@
     </div>
 </div>
 
-{{ Form::model($post, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('post.update', $post->id),'files'=>'true'))}}
+{{ Form::model($post, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('admin.post.update', $post->id),'files'=>'true'))}}
 <div class="form-group">
     {{ Form::label('user_id', 'User_name:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
@@ -122,7 +122,7 @@
     <label class="col-sm-2 control-label">&nbsp;</label>
     <div class="col-sm-10">
         {{ Form::submit('Update', array('class' => 'btn btn-lg btn-primary')) }}
-        {{ link_to_route('post.show', 'Cancel', $post->id, array('class' => 'btn btn-lg btn-default')) }}
+        {{ link_to_route('admin.post.show', 'Cancel', $post->id, array('class' => 'btn btn-lg btn-default')) }}
     </div>
 </div>
 <script type="text/javascript" src="{{asset('')}}/ckeditor/sample.js"></script>

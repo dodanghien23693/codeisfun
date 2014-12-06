@@ -16,7 +16,7 @@
     </div>
 </div>
 
-{{ Form::model($tag, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('tag.update', $tag->id))) }}
+{{ Form::model($tag, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('admin.tag.update', $tag->id))) }}
 
 <div class="form-group">
     {{ Form::label('name', 'Name:', array('class'=>'col-md-2 control-label')) }}
@@ -32,7 +32,7 @@
     <label class="col-sm-2 control-label">&nbsp;</label>
     <div class="col-sm-10">
         {{ Form::submit('Update', array('class' => 'btn btn-lg btn-primary')) }}
-        {{ link_to_route('tag.show', 'Cancel', $tag->id, array('class' => 'btn btn-lg btn-default')) }}
+        {{ link_to_route('admin.tag.show', 'Cancel', $tag->id, array('class' => 'btn btn-lg btn-default')) }}
     </div>
 </div>
 

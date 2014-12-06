@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
         <h1>Edit User</h1>
@@ -16,7 +17,7 @@
     </div>
 </div>
 
-{{ Form::model($user, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('user.update', $user->id))) }}
+{{ Form::model($user, array('class' => 'form-horizontal', 'method' => 'PATCH', 'route' => array('admin.user.update', $user->id))) }}
 
          <div class="form-group">
             {{ Form::label('username', 'Username:', array('class'=>'col-md-2 control-label')) }}
@@ -67,7 +68,7 @@
     <label class="col-sm-2 control-label">&nbsp;</label>
     <div class="col-sm-10">
       {{ Form::submit('Update', array('class' => 'btn btn-lg btn-primary')) }}
-      {{ link_to_route('user.show', 'Cancel', $user->id, array('class' => 'btn btn-lg btn-default')) }}
+      {{ link_to_route('admin.user.show', 'Cancel', $user->id, array('class' => 'btn btn-lg btn-default')) }}
     </div>
 </div>
 

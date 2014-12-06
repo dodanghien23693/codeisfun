@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <h1>Show User</h1>
 
 <p>{{ link_to_route('admin.user.index', 'Return to All users', null, array('class'=>'btn btn-lg btn-primary')) }}</p>

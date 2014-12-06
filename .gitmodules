@@ -1,0 +1,3 @@
+[submodule "vendor/pqb/filemanager-laravel"]
+	path = vendor/pqb/filemanager-laravel
+	url = git://github.com/guillermomartinez/filemanager-laravel.git

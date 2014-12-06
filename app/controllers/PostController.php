@@ -4,7 +4,8 @@
 
 class PostController extends BaseController {
 
-     /**
+
+    /**
      * Return a listing of all Posts
      * 
      * @return View
@@ -65,9 +66,9 @@ $post->save();
                 Post::where('id', '=', $post->id)->update(array('cover_image_url' => $assetPath . '/' . $filename));
             }
 
-            return Redirect::route('post.show', $post->id)->with('message', 'bài viết đã được tạo thành công!');
+            return Redirect::route('admin.post.show', $post->id)->with('message', 'bài viết đã được tạo thành công!');
         } else {
-            return Redirect::route('post.create')->withInput()->withErrors(Post::errors());
+            return Redirect::route('admin.post.create')->withInput()->withErrors(Post::errors());
         }
     }
 
@@ -114,10 +115,10 @@ $post->save();
                 $uploadSuccess = $file->move($destinationPath, $filename);
                 Post::where('id', '=', $id)->update(array('cover_image_url' => $assetPath . '/' . $filename));
             }
-            return Redirect::route('post.index')->with('message', 'Cập nhật bài viết thành công!');
+            return Redirect::route('admin.post.index')->with('message', 'Cập nhật bài viết thành công!');
         } else {
 
-            return Redirect::route('post.edit', $id)->withInput()->withErrors(Post::errors());
+            return Redirect::route('admin.post.edit', $id)->withInput()->withErrors(Post::errors());
         }
     }
 
@@ -145,7 +146,7 @@ $post->save();
 
         if ($post) {
             $post->delete();
-            return Redirect::route('post.index')->with('message', "Bài viết: '$post->title' đã được xóa");
+            return Redirect::route('admin.post.index')->with('message', "Bài viết: '$post->title' đã được xóa");
         }
     }
 
