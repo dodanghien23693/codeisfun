@@ -127,6 +127,7 @@ return array(
             'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
             'Pqb\FilemanagerLaravel\FilemanagerLaravelServiceProvider',
             
+            
 
 	),
 

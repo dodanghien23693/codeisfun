@@ -21,10 +21,5 @@ class Role extends Ardent{
         return $this->belongsTo("User");
     }
     
-    public static function name($id){
-    dd($id);
-        return Role::find($id)->name;
-    }
-    
 
 }

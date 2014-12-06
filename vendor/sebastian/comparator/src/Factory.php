@@ -60,11 +60,6 @@ class Factory
     private $comparators = array();
 
     /**
-     * @var Factory
-     */
-    private static $instance;
-
-    /**
      * Constructs a new factory.
      */
     public function __construct()
@@ -81,18 +76,6 @@ class Factory
         $this->register(new DOMNodeComparator);
         $this->register(new MockObjectComparator);
         $this->register(new DateTimeComparator);
-    }
-
-    /**
-     * @return Factory
-     */
-    public static function getInstance()
-    {
-        if (self::$instance === null) {
-            self::$instance = new Factory;
-        }
-
-        return self::$instance;
     }
 
     /**

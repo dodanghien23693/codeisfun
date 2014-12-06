@@ -571,6 +571,10 @@ class PHP_CodeCoverage
             foreach ($this->getLinesToBeIgnored($filename) as $line) {
                 unset($data[$filename][$line]);
             }
+
+            if (empty($data[$filename])) {
+                unset($data[$filename]);
+            }
         }
     }
 

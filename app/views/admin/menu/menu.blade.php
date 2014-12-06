@@ -51,12 +51,12 @@
             </a>
             <ul>
                 <li id="all-post">
-                    <a href="<?php echo url('admin/post');?>">
+                    <a href="{{URL::action('PostController@index')}}">
                         <span style="">All Posts</span>
                     </a>
                 </li>
                 <li id="new-post">
-                    <a href="<?php echo url('admin/post/create');?>">
+                    <a href="{{URL::action('PostController@create')}}">
                         <span style="">New Post</span>
                     </a>
                 </li>
@@ -96,28 +96,28 @@
         </li>
 
         <li class="root-level" id="tags">
-            <a href="<?php echo url('admin/tag');?>" >
+            <a href="{{URL::action('TagController@index')}}" >
                 <i class="entypo-tag"></i>
                 <span style="">Tags</span>
             </a>
         </li>
 
         <li class="root-level" id="comments">
-            <a href="index.html" >
+            <a href="index.html" target="_blank">
                 <i class="entypo-comment"></i>
                 <span style="">Comments</span>
             </a>
         </li>
 
         <li class="root-level" id="media-manager">
-            <a href="/filemanager/dialog.php" \>
+            <a href="/filemanager/dialog.php" target="_blank">
                 <i class="entypo-video"></i>
                 <span style="">Media Manager</span>
             </a>
         </li>
 
         <li class="root-level" id="user-manager">
-            <a href="<?php echo url('admin/user') ?>" >
+            <a href="{{URL::action('UserController@index')}}" >
                 <i class="entypo-users"></i>
                 <span style="">User Manager</span>
             </a>

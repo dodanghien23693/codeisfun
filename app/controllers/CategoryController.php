@@ -50,5 +50,31 @@ class CategoryController extends BaseController {
         }
     }
     
+    public function getEditCategoryForm()
+    {
+        if(Request::ajax()){
+            $category_id = Input::get('category_id');
+            $category = Category::find($category_id);
+            return View::make('admin.categories._edit_category_form',array('category'=>$category))->render();
+        }
+    }
+    
+    public function updateCategory()
+    {
+        if(Request::ajax()){
+            $category_id = Input::get('category_id');
+            $category = Category::find($category_id);
+            $category->name = Input::get('name');
+            $category->slug = Input::get('slug');
+            $category->description = Input::get('description');
+            if($category->save()){
+                return Response::json(array(
+                    'message'=>'thanh cong',
+
+                ));
+            }
+        }
+    }
+    
 
 }

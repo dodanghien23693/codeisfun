@@ -10,8 +10,8 @@
 
 namespace DebugBar\Bridge\Twig;
 
-use Twig_Template;
 use Twig_TemplateInterface;
+use Twig_Template;
 
 /**
  * Wraps a Twig_Template to add profiling features
@@ -28,11 +28,6 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
     {
         $this->env = $env;
         $this->template = $template;
-    }
-
-    public function __call($name, $arguments)
-    {
-        return call_user_func_array(array($this->template, $name), $arguments);
     }
 
     public function getTemplateName()
@@ -60,9 +55,9 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
         $this->template->displayParentBlock($name, $context, $blocks);
     }
 
-    public function displayBlock($name, array $context, array $blocks = array(), $useBlocks = true)
+    public function displayBlock($name, array $context, array $blocks = array())
     {
-        $this->template->displayBlock($name, $context, $blocks, $useBlocks);
+        $this->template->displayBlock($name, $context, $blocks);
     }
 
     public function renderParentBlock($name, array $context, array $blocks = array())
@@ -70,9 +65,9 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
         return $this->template->renderParentBlock($name, $context, $blocks);
     }
 
-    public function renderBlock($name, array $context, array $blocks = array(), $useBlocks = true)
+    public function renderBlock($name, array $context, array $blocks = array())
     {
-        return $this->template->renderBlock($name, $context, $blocks, $useBlocks);
+        return $this->template->renderBlock($name, $context, $blocks);
     }
 
     public function hasBlock($name)
@@ -126,6 +121,6 @@ class TraceableTwigTemplate implements Twig_TemplateInterface
 
     public static function clearCache()
     {
-        Twig_Template::clearCache();
+        $this->template->clearCache();
     }
 }

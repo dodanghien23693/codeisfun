@@ -10,6 +10,8 @@
 
 namespace DebugBar\DataCollector;
 
+use Exception;
+
 /**
  * Collects info about the current localization state
  */

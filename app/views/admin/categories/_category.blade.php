@@ -72,7 +72,7 @@
                     </div>
                     <div class="dd-content">
                        
-                        <div class="col-sm-10">
+                        <div id="category-name" class="col-sm-10">
                         {{ $category['name'] }}
                         </div>
                         <div class="btn btn-info edit-category-btn">Edit</div>
@@ -115,9 +115,26 @@
             }
         });
         });
+        
+        $(".edit-category-btn").click(function(){
+            var category_id = $(this).closest('.dd-item').attr('data-id');
+            showEditCategoryModal(category_id);
+           
+        });
     }
     registerEventCategory();
     
+    function showEditCategoryModal(category_id){
+        
+        $("#edit-category-modal .modal-body").html('Loading....');
+        $("#edit-category-modal").modal('show');
+        $.get('<?php echo url('admin/category/get-edit-category-form');?>',{category_id:category_id},function(response,status){
+            if(status=='success'){
+                $("#edit-category-modal .modal-body").html(response);
+            }
+            
+        });
+      }
         $('#update-order-category').click(function(){
         var order = window.JSON.stringify($('.dd').nestable('serialize'));
         $.post('<?php echo url('admin/update-order-category') ?>',{data: order },function(result){
@@ -140,7 +157,7 @@
                         
                     +'</div>'
                     +'<div class="dd-content">'
-                        +'<div class="col-sm-10">'
+                        +'<div id="category-name" class="col-sm-10">'
                            + name
                         +'</div>'
                         +'<div class="btn btn-info edit-category-btn">Edit</div>'
@@ -159,11 +176,56 @@
        
     });
     
+    
+    
+    $("#update-category-modal-btn").click(function(e){
+        e.preventDefault();
+        var category_id = $("#category-form-modal input[name='id']").val();
+        var name = $("#category-form-modal input[name='name']").val();
+        var slug = $("#category-form-modal input[name='slug']").val();
+        var description = $("#category-form-modal input[name='description']").val();
+        $.post('<?php echo url('admin/category/edit');?>',{category_id : category_id,name :name, slug : slug, description : description},function(response,status){
+            if(status=='success'){
+                $("#list-category .dd-item[data-id='"+category_id+"'] #category-name").html(name);
+                $("#edit-category-modal").modal('toggle');
+                alert('thanh cong');
+            }
+            if(status=='error'){
+                
+            }
+        });
+    });
+    
     });
     
 
 </script>
 
  
+<div class="modal fade" id="edit-category-modal" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				<h4 class="modal-title">Dynamic Content</h4>
+			</div>
+			
+			<div class="modal-body">
+			
+                            <form class="form-horizontal" role='form'>
+                                <label class="control-label" >Name</label>
+                            </form>
+                              
+				
+			</div>
+			
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				<button id="update-category-modal-btn" type="button" class="btn btn-info">Save changes</button>
+			</div>
+		</div>
+	</div>
+</div>
 @stop
 

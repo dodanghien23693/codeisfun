@@ -10,15 +10,15 @@
 
 namespace DebugBar\Bridge;
 
+use Propel;
+use PropelPDO;
+use PropelConfiguration;
 use BasicLogger;
-use DebugBar\DataCollector\AssetProvider;
 use DebugBar\DataCollector\DataCollector;
 use DebugBar\DataCollector\Renderable;
-use Propel;
-use PropelConfiguration;
-use PropelPDO;
-use Psr\Log\LogLevel;
+use DebugBar\DataCollector\AssetProvider;
 use Psr\Log\LoggerInterface;
+use Psr\Log\LogLevel;
 
 /**
  * A Propel logger which acts as a data collector
@@ -191,7 +191,7 @@ class PropelCollector extends DataCollector implements BasicLogger, Renderable, 
             $memory = (float) $matches[1];
             if ($matches[2] == 'KB') {
                 $memory *= 1024;
-            } elseif ($matches[2] == 'MB') {
+            } else if ($matches[2] == 'MB') {
                 $memory *= 1024 * 1024;
             }
         }

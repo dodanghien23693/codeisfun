@@ -13,8 +13,7 @@
 		"doctrine/dbal": "~2.3",
                 
                 "fzaninotto/faker": "1.4.*@dev" ,
-                "pqb/filemanager-laravel": "dev-master",
-		"barryvdh/laravel-debugbar": "~1.8"
+                "pqb/filemanager-laravel": "dev-master"
 	},
         "require-dev": {
         "way/generators": "~2.0",

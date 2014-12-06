@@ -10,17 +10,17 @@
 
 namespace DebugBar\Bridge\Twig;
 
-use DebugBar\DataCollector\TimeDataCollector;
-use Twig_CompilerInterface;
 use Twig_Environment;
-use Twig_ExtensionInterface;
 use Twig_LexerInterface;
-use Twig_LoaderInterface;
-use Twig_NodeInterface;
-use Twig_NodeVisitorInterface;
 use Twig_ParserInterface;
-use Twig_TokenParserInterface;
 use Twig_TokenStream;
+use Twig_CompilerInterface;
+use Twig_NodeInterface;
+use Twig_LoaderInterface;
+use Twig_ExtensionInterface;
+use Twig_TokenParserInterface;
+use Twig_NodeVisitorInterface;
+use DebugBar\DataCollector\TimeDataCollector;
 
 /**
  * Wrapped a Twig Environment to provide profiling features
@@ -41,11 +41,6 @@ class TraceableTwigEnvironment extends Twig_Environment
     {
         $this->twig = $twig;
         $this->timeDataCollector = $timeDataCollector;
-    }
-
-    public function __call($name, $arguments)
-    {
-        return call_user_func_array(array($this->twig, $name), $arguments);
     }
 
     public function getRenderedTemplates()

@@ -29,32 +29,8 @@
             <input  id="end_day" name="end_day" value='{{$course->end_day}}' class="form-control" type="date">
         </div>        
     </div>
-    
-    <div class="form-group">
-        <label for="about_the_course" class="control-label col-sm-4">About the course</label>
-        <div class="col-sm-8">
-            <textarea  name="about_the_course"  class="form-control" >{{$course->about_the_course}}</textarea>
-        </div>        
-    </div>
 
-    <div class="form-group">
-        <label for="cover_image_url" class="control-label col-sm-4">Cover image</label>
-        <div class="col-sm-8">
-            <input   name="cover_image_url" value='{{$course->cover_image_url}}' class="form-control" type="text">
-        </div>        
-    </div>
    
-    <div class="form-group">
-        <label for="list_category" class="control-label col-sm-4">Cover image</label>
-        <div class="col-sm-8">
-            <select  name="list_category" class="form-control" >
-                @foreach($list_category as $category)
-                <option value="{{$category->id}}">{{$category->name}}</option>
-                @endforeach
-            </select>
-        </div>        
-    </div>
-    
     <div  id='update-course'  class="btn btn-info col-sm-offset-4">Update</div>
     <div  id='delete-course'  class="btn btn-info ">Delete</div>
    

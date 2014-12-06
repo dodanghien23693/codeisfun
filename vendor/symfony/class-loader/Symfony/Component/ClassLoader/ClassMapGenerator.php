@@ -11,12 +11,10 @@
 
 namespace Symfony\Component\ClassLoader;
 
-if (!defined('SYMFONY_TRAIT')) {
-    if (PHP_VERSION_ID >= 50400) {
-        define('SYMFONY_TRAIT', T_TRAIT);
-    } else {
-        define('SYMFONY_TRAIT', 0);
-    }
+if (PHP_VERSION_ID >= 50400) {
+    define('SYMFONY_TRAIT', T_TRAIT);
+} else {
+    define('SYMFONY_TRAIT', 0);
 }
 
 /**

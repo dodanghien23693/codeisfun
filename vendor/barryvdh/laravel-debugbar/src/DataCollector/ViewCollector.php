@@ -2,13 +2,12 @@
 
 namespace Barryvdh\Debugbar\DataCollector;
 
-use Barryvdh\Debugbar\DataCollector\Util\ValueExporter;
-use DebugBar\Bridge\Twig\TwigCollector;
+use DebugBar\DataCollector\ConfigCollector;
 use Illuminate\View\View;
 
-class ViewCollector extends TwigCollector
+class ViewCollector extends ConfigCollector
 {
-    protected $templates = array();
+    protected $views = array();
     protected $collect_data;
 
     /**
@@ -20,29 +19,7 @@ class ViewCollector extends TwigCollector
     {
         $this->collect_data = $collectData;
         $this->name = 'views';
-        $this->templates = array();
-        $this->exporter = new ValueExporter();
-    }
-
-    public function getName()
-    {
-        return 'views';
-    }
-
-    public function getWidgets()
-    {
-        return array(
-            'views' => array(
-                'icon' => 'leaf',
-                'widget' => 'PhpDebugBar.Widgets.TemplatesWidget',
-                'map' => 'views',
-                'default' => '[]'
-            ),
-            'views:badge' => array(
-                'map' => 'views.nb_templates',
-                'default' => 0
-            )
-        );
+        $this->data = array();
     }
 
     /**
@@ -53,35 +30,22 @@ class ViewCollector extends TwigCollector
     public function addView(View $view)
     {
         $name = $view->getName();
-        $type = pathinfo($view->getPath(), PATHINFO_EXTENSION);
-
         if (!$this->collect_data) {
-            $params = array_keys($view->getData());
+            $this->data[$name] = $name;
         } else {
             $data = array();
             foreach ($view->getData() as $key => $value) {
-                if (is_object($value) && method_exists($value, 'toArray')) {
-                    $value = $value->toArray();
+                if (is_object($value)) {
+                    if (method_exists($value, 'toArray')) {
+                        $data[$key] = $value->toArray();
+                    } else {
+                        $data[$key] = "Object (" . get_class($value) . ")";
+                    }
+                } else {
+                    $data[$key] = $value;
                 }
-                $data[$key] = $this->exporter->exportValue($value);
             }
-            $params = $data;
+            $this->data[$name] = $data;
         }
-        $this->templates[] = array(
-            'name' => $name,
-            'param_count' => count($params),
-            'params' => $params,
-            'type' => $type,
-        );
-    }
-
-    public function collect()
-    {
-        $templates = $this->templates;
-
-        return array(
-            'nb_templates' => count($templates),
-            'templates' => $templates,
-        );
     }
 }

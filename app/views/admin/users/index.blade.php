@@ -2,9 +2,8 @@
 
 @section('content')
 
-
 <h1>List Users</h1>
-<form id="custom-search-form" class="form-search form-horizontal pull-right" action="{{URL::action('UserController@search')}}" method="get">
+<form id="custom-search-form" class="form-search form-horizontal pull-right" action="" method="get">
     <div class="input-append spancustom">
         <input type="text" class="search-query" name="character" placeholder="Search">
         <button type="submit" class="btn">Search<i class="icon-search"></i></button>
