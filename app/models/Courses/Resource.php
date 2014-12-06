@@ -6,7 +6,7 @@ class Resource extends Ardent{
     
     protected $table = "resources";
     
-    protected $fillable = array('path');
+    protected $fillable = array('path','resource_type_id','lecture_id');
     
     //protected fields : id, lecture_id, resource_type_id
     

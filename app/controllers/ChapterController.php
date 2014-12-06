@@ -7,7 +7,7 @@ class ChapterController extends BaseController {
             $course_id = Input::get('course_id');
             
             $chapter = new Chapter();
-            $chapter->name = Input::get('chapter-name');
+            $chapter->name = Input::get('name');
             $chapter->order_of_chapter = Chapter::where('course_id','=',$course_id)->count();
            
          
@@ -21,8 +21,7 @@ class ChapterController extends BaseController {
                     'chapter_id' => $chapter->id,
                     ));
             };
-            
-
+           
     }
     
     public function deleteChapter()
@@ -47,7 +46,7 @@ class ChapterController extends BaseController {
             Lecture::where('id','=',$item->id)->update(array('order_of_lecture'=>$i));
             $i++;
         }
-        return 'Cập nhật thành công';
+        return 'cap nhat thanh cong';
     }
 
     public function getEditChapterForm()
@@ -58,4 +57,21 @@ class ChapterController extends BaseController {
             return View::make('admin.courses._edit_chapter_form',array('chapter'=>$chapter))->render();
         }
     }
+    
+    public function getCreateChapterForm()
+    {
+        return View::make('admin.courses._create_chapter_form');
+        
+    }
+    
+    public function updateChapter()
+    {
+        $chapter = Chapter::find(Input::get('id'));
+        $chapter->name = Input::get('name');
+        if($chapter->save()){
+            return 'thanh cong';
+        }
+        
+    }
+    
 }

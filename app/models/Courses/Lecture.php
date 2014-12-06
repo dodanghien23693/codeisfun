@@ -29,7 +29,7 @@ class Lecture extends Ardent{
      */
     public function resources()
     {
-        return $this->hasMany('Resource');
+        return $this->hasMany('Resource','lecture_id');
     }
 
     /**
@@ -45,4 +45,11 @@ class Lecture extends Ardent{
         return $this->belongsTo('Chapter', 'chapter_id');
     }
     
+    public function delete()
+    {
+        $this->resources()->delete();
+        return parent::delete();
+    }
+
+
 }

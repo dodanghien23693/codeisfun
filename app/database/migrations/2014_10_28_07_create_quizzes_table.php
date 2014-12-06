@@ -17,10 +17,10 @@ class CreateQuizzesTable extends Migration {
 			$table->increments('id');
 			$table->integer('course_id')->unsigned()->index();
 			$table->string('name', 300);
-			$table->integer('max_attampts');
+			$table->integer('max_attempts');
 			$table->integer('duration_minus');
-			$table->dateTime('due_date');
-			$table->dateTime('hard_deadline');
+			$table->date('due_date');
+			$table->date('hard_deadline');
 			$table->string('description', 500);
 			$table->timestamps();
                         

@@ -4,65 +4,44 @@
 <?php 
    
     $chapters = $course->chapters()->orderBy('order_of_chapter')->get();
-    
+    $quizzes = Quiz::where('course_id','=',$course->id)->get();
 ?>
 
-<div id='course-tab' class="panel panel-primary" data-collapsed="0">
+<div class="tabs-vertical-env">
 
-    <div class="panel-heading">
-        <div class="panel-title">
-            Course info
+    <ul class="nav tabs-vertical"><!-- available classes "right-aligned" -->
+        <li class="active"><a href="#course-tab-content" data-toggle="tab">Course Info</a></li>
+        <li class=""><a href="#chapter-tab-content" data-toggle="tab">Chapters</a></li>
+        <li><a href="#lecture-tab-content" data-toggle="tab">Lectures</a></li>
+        <li><a href="#quiz-tab-content" data-toggle="tab">Quizzes</a></li>
+        <li><a href="#question-tab-content" data-toggle="tab">Questions</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="course-tab-content">   
+          
+            @include("admin.courses._course_form")
         </div>
-
-        <div class="panel-options">
-            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
+        <div class="tab-pane" id="chapter-tab-content">
+            @include("admin.courses._chapter_form")
+        </div>
+        <div class="tab-pane" id="lecture-tab-content">
+            @include("admin.courses._lecture_form")
+        </div>
+        <div class="tab-pane" id="quiz-tab-content">
+            @include("admin.courses._quiz_form")
+        </div>
+        
+        <div class="tab-pane" id="question-tab-content">
+            @include("admin.courses._question_form")
         </div>
     </div>
-    
-    <div id="course-tab-content" class="panel-body">
-        @include("admin.courses._course_form")
-    </div>
+
 </div>
 
-
-<div id='chapter-tab' class="panel panel-info" data-collapsed="0">
-
-    <div class="panel-heading">
-        <div class="panel-title">
-            Edit chapter
-        </div>
-
-        <div class="panel-options">
-            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-        </div>
-    </div>
-    
-    <div id="chapter-tab-content" class="panel-body">
-        @include("admin.courses._chapter_form")
-    </div>
-</div>
-
-
-
-<div id='lecture-tab' class="panel panel-warning" data-collapsed="0">
-
-    <div class="panel-heading">
-        <div class="panel-title">
-            Edit lecture
-        </div>
-
-        <div class="panel-options">
-            <a href="#" data-rel="collapse"><i class="entypo-down-open"></i></a>
-        </div>
-    </div>
-    
-    <div id="lecture-tab-content" class="panel-body">
-        @include("admin.courses._lecture_form")
-    </div>
-</div>
 
 @stop
 
 @section('scripts')
-@include('admin.courses._modal_form');
+    @include('admin.courses._modal_form')
 @stop

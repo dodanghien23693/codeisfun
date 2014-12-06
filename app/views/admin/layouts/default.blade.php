@@ -38,8 +38,8 @@
    <div class="page-container">
        @include("admin.menu.menu")
        
-       <div class="main-content" style="height: 600px !important" >
-           @include("admin.layouts._notification")
+       <div class="main-content"  >
+          <?php // @include("admin.layouts._notification") ?>
            
            <div id="main-content-ajax">
              <!-- main content -->
@@ -50,11 +50,11 @@
            @show
              <!-- end main content -->
            </div>  
-           @include("admin.layouts._footer")  
+         <?php //  @include("admin.layouts._footer")  ?>
        </div>
        
        <!-- chat section -->
-       @include("admin.layouts._chat")
+      <?php // @include("admin.layouts._chat") ?>
        <!-- end chat section -->
        
    </div>

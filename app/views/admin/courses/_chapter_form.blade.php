@@ -4,11 +4,10 @@
 
 
     
-<form id='create-chapter-form' class="form-inline" method="POST" action=''>
-    <label class="col-sm-3">New chapter</label>
-    <input id="chapter-name" name='chapter-name' type='text' class="col-sm-4" placeholder="name" class="form-control" />
-    <div  class="btn btn-info create-chapter-btn" >Create new chapter</div>
-</form>
+
+<div  class="btn btn-info create-chapter-btn" >Create new chapter</div>
+    
+
 
 <div id='chapter_form' class="panel panel-primary" data-collapsed="0">
 
@@ -37,9 +36,10 @@
                     
                     <div class="dd-content">
                         <div class="row">
-                        <div class="col-sm-10">
+                        <div class="col-sm-10 chapter-name">
                             {{$chapter->name}}
                         </div>
+                           
                         <div class=" btn btn-info edit-chapter-btn" >Edit</div>
                         <div class=" btn btn-danger delete-chapter-btn" >Delete</div>
                          </div>
@@ -61,40 +61,22 @@
 
 <script>   
  $(document).ready(function(){
-     
+ 
+
      
     $(".list-chapter").nestable({
         maxDepth : 1,
     });
     
     
-    function showEditChapterModal(chapter_id)
-    {
-            $('#edit-chapter-modal').modal('show', {backdrop : 'static'});
-
-            $('#edit-chapter-modal .modal-body').html('Is loading.......');
-            $.get('<?php echo url('admin/chapter/get-edit-chapter-form'); ?>',{chapter_id : chapter_id},function(response,status){
-                if(status=='success'){
-                   
-                    $('#edit-chapter-modal .modal-body').html(response);
-                }
-            });
-            
-
-    }
-    
-    $('.edit-chapter-btn').click(function(){
-        var chapter_id = $(this).closest(".dd-item").attr('data-id');
-        showEditChapterModal(chapter_id);
-    });
-    
     $('#update-order-chapter').click(function(){
         var order = window.JSON.stringify($('.list-chapter').nestable('serialize'));
-        alert(order);
+       
         $.post('<?php echo url('admin/course/update-order-chapter') ?>',{order_chapter: order,course_id : <?php echo $course->id; ?> },function(response,status){
             if(status=='success'){
                
-                alert(response);
+                $("#lecture-tab-content").html(response.html);
+                alert(response.message);
             }
             if(status=='error'){
                 alert('cập nhật thất bại');
@@ -112,7 +94,7 @@
                 if(status=='success'){
                     $('.dd-item[data-id='+chapter_id+']').remove();
                     
-                    $('#lecture-form[chapter-id="'+chapter_id+'"]').remove();
+                    $('a[href="#chapter'+chapter_id+'"]').closest('li').remove();
                     alert('Xoa thanh cong!');
                 }
                 if(status=='error'){
@@ -121,21 +103,61 @@
             });
         }
         });
+        
+        $('.edit-chapter-btn').click(function(event){
+            event.preventDefault();
+            var chapter_id = $(this).closest(".dd-item").attr('data-id');
+            showEditChapterModal(chapter_id);
+        });
      }
      
+     function showEditChapterModal(chapter_id)
+    {
+            $('#edit-chapter-modal').modal('show');
+
+            $('#edit-chapter-modal .modal-body').html('Is loading.......');
+            $.get('<?php echo url('admin/chapter/get-edit-chapter-form'); ?>',{chapter_id : chapter_id},function(response,status){
+                if(status=='success'){
+                    $('#edit-chapter-modal .modal-body').html(response);
+                }
+            });
+            
+
+    }
      registerEventChapter();
      
      
-    $(".create-chapter-btn").click(function(){
+     $(".create-chapter-btn").on('click',function(e){
+        
+  
+        $("#create-chapter-modal").modal('show');
+
+     });
      
-     
-     var chapter_name = $("#create-chapter-form #chapter-name").val();
-     var course_id = <?php echo $course->id; ?>;
-     var chapter_list = $(".list-chapter");
-     
-     
-     
-     $.post('<?php echo url('admin/chapter/new'); ?>',{'chapter-name' : chapter_name,'course_id':course_id},function(response,status){
+   
+    $('#update-chapter-btn-modal').click(function(){
+        var id =  $(".edit-chapter-form-modal input[name='id']").val();
+        var name =  $(".edit-chapter-form-modal input[name='name']").val();
+        $.post('<?php echo url('admin/chapter/edit') ?>',{id:id, name:name},function(response,status){
+           if(status=='success'){
+               $(".list-chapter .dd-item[data-id='"+id+"'] .chapter-name").html(name);
+               $(".tab-pane a[href='#chapter"+id+"']").html(name);
+              $("#edit-chapter-modal").modal('hide');
+           } 
+           if(status=='error'){
+               alert('that bai');
+           }
+        });
+    });
+
+    
+     $("#create-chapter-modal-btn").click(function(){
+        
+        var name = $("#create-chapter-form-modal input[name='name']").val();
+        var course_id = <?php echo $course->id; ?>;
+        var chapter_list = $(".list-chapter ul");
+        alert(name+':'+course_id);
+         $.post('<?php echo url('admin/chapter/new'); ?>',{name : name, course_id : course_id},function(response,status){
             if(status=='success'){       
 
             var newItem = '<li class="dd-item" data-id="'+response.chapter_id+'" >'
@@ -146,33 +168,27 @@
                   + '</div>' 
                    +'<div class="dd-content">'
                        + '<div class="row">'
-                        +'<div class="col-sm-10">'
-                            + chapter_name
+                        +'<div class="col-sm-10 chapter-name">'
+                            + name
                        +' </div>'
                        +'<div class="btn btn-info edit-chapter-btn" >Edit</div>'
                        +' <div class="btn btn-danger delete-chapter-btn" >Delete</div>'
                         + '</div>'
                     +'</div>'
               + '</li>';
-      
-              $(chapter_list).append(newItem);
-             registerEventChapter();
-           
-          $("#lecture-tab-content").html(response.html);
-            alert(response.message);
+              
+                $(chapter_list).append(newItem);
+                registerEventChapter();
+                $("#lecture-tab-content").html(response.html);
+                $("#create-chapter-modal").modal('hide');
 
-            }    
-            if(status=='error'){
-                alert('Không thành công');
-            }
-        });
-
-    });    
-    
-    
-
-    
-    
+                }    
+        if(status=='error'){
+            alert('Không thành công');
+        }
+            });
+         });
+         
  });
  
 </script>

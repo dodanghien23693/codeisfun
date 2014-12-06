@@ -41,6 +41,11 @@ class Quiz extends Ardent{
         return $this->hasMany('QuizSubmit');
     }
     
+    public function delete()
+    {
+        $this->questions()->delete();
+        return parent::delete();
+    }
 }
 
 

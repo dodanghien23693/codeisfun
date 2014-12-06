@@ -6,7 +6,7 @@
         <!-- logo -->
         <div class="logo" style="">
             <a href="index.html">
-                <img src="<?php echo asset('assets/backend/images/logo@2x.png'); ?>" width="120" alt="">
+                <h2 class="text-primary">CodeIsFun</h2>
             </a>
         </div>
 
@@ -110,7 +110,7 @@
         </li>
 
         <li class="root-level" id="media-manager">
-            <a href="index.html" target="_blank">
+            <a href="/filemanager/dialog.php" target="_blank">
                 <i class="entypo-video"></i>
                 <span style="">Media Manager</span>
             </a>

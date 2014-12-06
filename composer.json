@@ -6,13 +6,14 @@
 	"require": {
 		"laravel/framework": "4.2.*",
                 "laravelbook/ardent": "dev-master",
-                "barryvdh/laravel-debugbar": "1.7.*",
+                
                 "mccool/laravel-auto-presenter": "2.2.*",
                 "artdarek/oauth-4-laravel": "dev-master",
 		"barryvdh/laravel-ide-helper": "~1.11",
 		"doctrine/dbal": "~2.3",
-                "frozennode/administrator": "dev-master",
-                "fzaninotto/faker": "1.4.*@dev"    
+                
+                "fzaninotto/faker": "1.4.*@dev" ,
+                "pqb/filemanager-laravel": "dev-master"
 	},
         "require-dev": {
         "way/generators": "~2.0",

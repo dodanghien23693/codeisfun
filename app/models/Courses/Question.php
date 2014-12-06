@@ -6,7 +6,7 @@ class Question extends Ardent{
     
     protected $table = "questions";
     
-    protected $fillable = array('question','order_of_question');
+    protected $fillable = array('question','order_of_question','quiz_id','question_type_id');
     
     //protected fields : id, quiz_id, question_type_id
     
@@ -32,6 +32,16 @@ class Question extends Ardent{
     {
         return $this->hasMany('Answer');
     }
+    
+    public function answers()
+    {
+        return $this->hasMany('Answer', 'question_id');
+    }
 
+    public function delete()
+    {
+        $this->answers()->delete();
+        return parent::delete();
+    }
     
 }

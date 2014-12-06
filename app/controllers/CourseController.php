@@ -4,10 +4,71 @@ class CourseController extends BaseController {
  
     public function viewAllCourse()
     {
+        
+        if(Input::get('action')=='list'){
+            $data = array();
+            $data['Result'] = 'OK';
+            $data['Records'] = Course::all()->toArray();
+            return json_encode($data);
+        }
+        if(Input::get('action')=='create'){
+            $course = new Course();
+            $course->name = $_POST['name'];
+            $course->short_name = $_POST['short_name'];
+            $course->start_day = $_POST['start_day'];
+            $course->end_day = $_POST['end_day'];
+            $course->save();
+
+            $data = array();
+            $data['Result'] = 'OK';
+            $data['Record'] = $course->toArray();
+            return json_encode($data);
+        }
+        
+        if(Input::get('action')=='update'){
+            $course = Course::find($_POST['id']);
+            $course->name = $_POST['name'];
+            $course->short_name = $_POST['short_name'];
+            $course->start_day = $_POST['start_day'];
+            $course->end_day = $_POST['end_day'];
+            $course->save();
+            
+            $data = array();
+            $data['Result'] = 'OK';
+            return json_encode($data);
+        }
+        
+        if(Input::get('action')=='delete'){
+            $course = Course::find($_POST['id']);
+            $course->delete();
+            
+            $data = array();
+            $data['Result'] = 'OK';
+            return json_encode($data);
+        }
+        
         return View::make('admin.courses.view_all_course')->with(array(
             'courses'=> Course::all(),
             'courses_trashed' => Course::onlyTrashed()->get()
             ));
+    }
+    
+    public function getListChapter()
+    {
+        $chapters = Chapter::all(array('id','name'));
+        
+        $list = $chapters->lists('name', 'DisplayText');
+        $list2 = $chapters->lists('id', 'Value');
+        $options = array();
+        foreach ($chapters as $chapter){
+            $c = array('DisplayText'=>$chapter->name,'Value'=>$chapter->id);
+            array_push($options, $c);
+        }
+   
+        $data = array();
+        $data['Result'] = 'OK';
+        $data['Options'] = $options;
+        return json_encode($data);
     }
     
     public function getCourseForm()
@@ -73,6 +134,10 @@ class CourseController extends BaseController {
             Chapter::where('id','=',$item->id)->update(array('order_of_chapter'=>$i));
             $i++;
         }
-        return 'Cập nhật thành công';
+        $chapters = Course::find($course_id)->chapters()->orderBy('order_of_chapter')->get();
+        return Response::json(array(
+            'html' =>  View::make('admin.courses._lecture_form', array('chapters'=>$chapters))->render(),
+            'message' => 'cap nhat thanh cong'
+        ));
     }
 }

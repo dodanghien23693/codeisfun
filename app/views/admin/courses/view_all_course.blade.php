@@ -60,6 +60,10 @@
                 <a href="<?php echo url('admin/course/restore/'.$course_trash->id) ?>" class="btn-link">
                     Restore
                 </a>
+                |
+                <a href="<?php echo url('admin/course/destroy/'.$course_trash->id) ?>" class="btn-link">
+                    Delete
+                </a>
             </td>
         </tr>
         @endforeach
@@ -70,13 +74,14 @@
 
 
 @section('scripts')
+
 <script src="<?php echo asset('assets/backend/js/datatables/jquery.dataTables.columnFilter.js'); ?>"></script>
 <script src="<?php echo asset('assets/backend/js/datatables/responsive/js/datatables.responsive.js'); ?>"></script>
 
 <script type="text/javascript">
 	jQuery(document).ready(function($)
 	{
-		var table = $("#course-table").dataTable();
+		var table = $("#course-table").dataTable().makeEditable();
 		
 		
 	});

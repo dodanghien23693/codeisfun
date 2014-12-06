@@ -33,5 +33,30 @@
     </div>
     <input type="submit" class="form-control" value="Create new">
 </form>
+
+<a href="/filemng/dialog.php?type=0" class="btn iframe-btn" type="button">Open Filemanager</a>
+
+<script type="text/javascript">
+tinymce.init({
+    selector: "textarea"
+ });
+ 
+ $('.iframe-btn').fancybox({	
+	'width'		: 900,
+	'height'	: 600,
+	'type'		: 'iframe',
+        'autoScale'    	: false
+    });
+</script>
+<textarea></textarea>
+
+<!-- Modal -->
+
+
+
+@stop
+@section('scripts')
+
+
 @stop
 

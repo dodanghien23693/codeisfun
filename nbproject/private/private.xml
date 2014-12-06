@@ -4,37 +4,15 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/codeisfun/laravel/composer.json</file>
-            <file>file:/C:/codeisfun/laravel/public/elfinder/php/MySQLStorage.sql</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/menu.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/categories/_category_chooser.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/CategoryController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/LectureController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/models/Courses/Chapter.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/new_course.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/edit_course.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/filemanager/code/dialog.php</file>
-            <file>file:/C:/codeisfun/laravel/app/routes.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_chapter_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/CourseController.php</file>
-            <file>file:/C:/codeisfun/laravel/public/elfinder/php/connector.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/filemanager/code/config/config.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/categories/_edit_category_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/view_all_course.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/public/elfinder/php/elFinderVolumeDriver.class.php</file>
-            <file>file:/C:/codeisfun/laravel/public/elfinder/php/elFinder.class.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/categories/_category.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_question_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_modal_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/filemanager/code/config/.htaccess</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/elfinder.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/routes.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_lecture_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_chapter_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_edit_chapter_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/ChapterController.php</file>
-            <file>file:/C:/codeisfun/laravel/public/elfinder/src/elFinder/connector.php</file>
-            <file>file:/C:/codeisfun/laravel/public/elfinder/php/connector.minimal.php</file>
-            <file>file:/C:/codeisfun/laravel/public/elfinder/src/Barryvdh/Elfinder/Elfinder.php</file>
-            <file>file:/C:/codeisfun/laravel/app/config/app.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_create_lecture_form.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/CourseController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/edit_course.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_quiz_form.blade.php</file>
         </group>
     </open-files>
 </project-private>

@@ -122,9 +122,10 @@ return array(
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
             'Way\Generators\GeneratorsServiceProvider',
-            'Barryvdh\Debugbar\ServiceProvider',
+            
             'Artdarek\OAuth\OAuthServiceProvider',
             'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
+            'Pqb\FilemanagerLaravel\FilemanagerLaravelServiceProvider',
             
             
 
@@ -195,8 +196,10 @@ return array(
 		'Validator'       => 'Illuminate\Support\Facades\Validator',
 		'View'            => 'Illuminate\Support\Facades\View',
             
-                'Debugbar'        => 'Barryvdh\Debugbar\Facade',
+            
+               
                 'OAuth'           => 'Artdarek\OAuth\Facade\OAuth',
+                'FilemanagerLaravel'=> 'Pqb\FilemanagerLaravel\Facades\FilemanagerLaravel',
             
 
 	),

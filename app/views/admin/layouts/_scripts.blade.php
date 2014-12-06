@@ -18,11 +18,15 @@
 	<script src="<?php echo asset('assets/backend/js/neon-demo.js'); ?>"></script>
         
         
+        <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
+        <script type="text/javascript" src="/tinymce/tinymce_editor.js"></script>
         
-
+        
+       
+      
     <!-- END GLOBAL SCRIPTS -->
 
-    
+
     <!-- PAGE LEVEL SCRIPTS -->
     @section('scripts')
    

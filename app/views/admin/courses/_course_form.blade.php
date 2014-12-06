@@ -60,7 +60,7 @@
        var short_name = $('#course_form #short_name').val();
        var start_day = $('#course_form #start_day').val();
        var end_day = $('#course_form #end_day').val();
-       alert('id:'+id+',name:'+name+short_name+start_day+end_day);
+       
        $.post('<?php echo url('admin/course/edit/'.$course->id); ?>',{
         'course-id':id,
        'course-name' : name, 
