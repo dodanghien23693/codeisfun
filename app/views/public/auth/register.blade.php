@@ -21,24 +21,7 @@ var url = '<?php echo url('register'); ?>';
 	
 <div class="login-container">
 	
-	<div class="login-header login-caret">
-		
-		<div class="login-content">
-			
-			<a href="index.html" class="logo">
-				<img src="assets/images/logo@2x.png" width="120" alt="">
-			</a>
-			
-			<p class="description">Create an account, it's free and takes few moments only!</p>
-			
-			<!-- progress bar indicator -->
-			<div class="login-progressbar-indicator">
-				<h3>0%</h3>
-				<span>logging in...</span>
-			</div>
-		</div>
-		
-	</div>
+	
 	
 	<div class="login-progressbar">
 		<div></div>
@@ -49,7 +32,7 @@ var url = '<?php echo url('register'); ?>';
 		<div class="login-content">		
 			<form method="post" role="form" id="form_register" novalidate="novalidate">
 				
-				<div class="form-register-success">
+				<div class="form-register-success success-bar">
 					<i class="entypo-check"></i>
 					<h3>You have been successfully registered.</h3>
                                         
@@ -58,7 +41,6 @@ var url = '<?php echo url('register'); ?>';
                                 <div class="form-register-success error-bar" style='background:red'>
 					<i class="entypo-cancel" style='background:red'></i>
 					<h3></h3>
-                                        <button id="try-again" class="btn btn-info">Try again</button>
 				</div>
                             
 				<div class="form-steps">
@@ -66,23 +48,15 @@ var url = '<?php echo url('register'); ?>';
 					<div class="step current" id="step-1">
 					
 						<div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">
-									<i class="entypo-user"></i>
-								</div>
+                                                        <div class=" input-group col-sm-6">
+                                                                <input type="text" class="form-control " name="first_name" id="first_name" placeholder="First Name" autocomplete="on">
 								
-								<input type="text" class="form-control" name="first_name" id="first_name" placeholder="First Name" autocomplete="off">
 							</div>
-						</div>
-                                                <div class="form-group">
-							<div class="input-group">
-								<div class="input-group-addon">
-									<i class="entypo-user"></i>
-								</div>
-								
-								<input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last Name" autocomplete="off">
-							</div>
-						</div>
+                                                    <div class="input-group col-sm-6">
+                                                    <input type="text" class="form-control " name="last_name" id="last_name" placeholder="Last Name" autocomplete="off">
+                                                    </div>
+                                                 </div>
+
                                                 <div class="form-group">
 							<div class="input-group">
 								<div class="input-group-addon">
@@ -147,7 +121,7 @@ var url = '<?php echo url('register'); ?>';
 				
 				<br>
 				
-				<a href="#">ToS</a>  - <a href="#">Privacy Policy</a>
+				
 				
 			</div>
 			
@@ -160,14 +134,5 @@ var url = '<?php echo url('register'); ?>';
 
 	@include('admin.layouts._scripts')
         <script src="<?php echo asset('assets/backend/js/neon-register.js');?>"></script>
-        <script>
-            $(document).ready(function(){
-                $("form-register-success #try-again").click(function(e){
-                    e.preventDefault();
-                    $(".login-page .login-header .description").slideDown();
-                    neonLogin.resetProgressBar(true);
-                    neonRegister.setPercentage(0);
-                });
-            });
-            </script>
+
 </body></html>

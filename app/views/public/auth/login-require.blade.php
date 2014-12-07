@@ -12,10 +12,10 @@
 	@include('admin.layouts._styles')
 	
 </head>
-<body class="page-body login-page login-form-fall loaded login-form-fall-init" data-url="http://neon.dev">
+<body class="page-body login-page login-form-fall loaded login-form-fall-init " data-url="http://neon.dev">
 
 <!-- This is needed when you send requests via Ajax --><script type="text/javascript">
-var url = '<?php echo url('login'); ;?>';
+var url = '<?php echo url('login?previous_url='.Session::pull('url.intended', '/')); ;?>';
 </script>
 
 <div class="login-container">
@@ -43,6 +43,7 @@ var url = '<?php echo url('login'); ;?>';
 		<div></div>
 	</div>
 	
+                                
 	<div class="login-form">
 		
 		<div class="login-content">
@@ -88,8 +89,6 @@ var url = '<?php echo url('login'); ;?>';
 				<!-- Implemented in v1.1.4 -->				<div class="form-group">
 					<em>- or -</em>
 				</div>
-				
-				<div class="form-group">
 				<?php 
                                     $previous_url = '';
                                     $intended_url = Session::pull('url.intended', '/'); 
@@ -98,6 +97,8 @@ var url = '<?php echo url('login'); ;?>';
                                     }
                                     
                                 ?>
+				<div class="form-group">
+				
 					<button type="button" class="btn btn-default btn-lg btn-block btn-icon icon-left facebook-button">
                                             <a href="<?php echo url('facebook'.$previous_url); ?>">Login with Facebook</a>
 						<i class="entypo-facebook"></i>
@@ -119,8 +120,6 @@ var url = '<?php echo url('login'); ;?>';
                             <a href="<?php echo url('reset-password'); ?>" class="link">Forgot your password?</a>
 				
 				<br>
-				
-				<a href="#">ToS</a>  - <a href="#">Privacy Policy</a>
 				
 			</div>
 			

@@ -8,30 +8,19 @@ var neonRegister = neonRegister || {};
 	
 	$(document).ready(function()
 	{
-		neonRegister.$container = $("#form_register");
+		neonRegister.$container = $("#form_reset_password");
 		neonRegister.$steps = neonRegister.$container.find(".form-steps");
 		neonRegister.$steps_list = neonRegister.$steps.find(".step");
 		neonRegister.step = 'step-1'; // current step
 		
 		neonRegister.$container.validate({
 			rules: {
-                                first_name: {
-					required: true
-				},
-                                last_name: {
-					required: true
-				},
-                                
-				
+
 				email: {
 					required: true,
 					email: true
 				},
 				
-				username: {
-					required: true,
-                                        minlength:8
-				},
 				
 				password: {
 					required: true,
@@ -73,25 +62,20 @@ var neonRegister = neonRegister || {};
 					{
 						// Send data to the server
                                                 
-                                                var first_name =        $("input#first_name").val(),
-                                                last_name =             $("input#last_name").val(),
-                                                username =		$("input#username").val(),
+                                                var 
                                                 email  =                $("input#email").val(),
                                                 password =              $("input#password").val(),
-                                                password_confirmation = $("input#password_confirmation").val() ;
+                                                password_confirmation = $("input#password_confirmation").val(),
+                                                token                 = $("input#token").val();
 						$.ajax({
 							url: url,
 							method: 'POST',
-							dataType: 'json',
-                                                        
-                                                                                                                
+							dataType: 'json',                                                                                                               
 							data: {
-								first_name: 		first_name,
-                                                                last_name: 		last_name,
-								username: 		username,
 								email:                  email,
 								password:               password,
-                                                                password_confirmation:  password_confirmation
+                                                                password_confirmation:  password_confirmation,
+                                                                token               :   token
 							},
 							error: function()
 							{

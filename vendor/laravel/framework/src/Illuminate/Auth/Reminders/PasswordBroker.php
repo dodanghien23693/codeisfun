@@ -40,7 +40,7 @@ class PasswordBroker {
 	 *
 	 * @var int
 	 */
-	const INVALID_TOKEN = 'Token không hợp lệ';
+	const INVALID_TOKEN = 'invalid token';
 
 	/**
 	 * The password reminder repository.

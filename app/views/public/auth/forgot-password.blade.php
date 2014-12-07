@@ -73,7 +73,7 @@ var url = '<?php echo url('reset-password');?>';
 						
 						<div class="form-group">
 							<button type="submit" class="btn btn-info btn-block btn-login">
-								Complete Registration
+								Send Email
 								<i class="entypo-right-open-mini"></i>
 							</button>
 						</div>
@@ -106,7 +106,7 @@ var url = '<?php echo url('reset-password');?>';
 				
 				<br>
 				
-				<a href="#">ToS</a>  - <a href="#">Privacy Policy</a>
+				
 				
 			</div>
 			

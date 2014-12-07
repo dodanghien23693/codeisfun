@@ -42,7 +42,7 @@ $thumbs_base_path = '../thumbs/'; // relative path from filemanager folder to th
 // filemanager_title:"Filemanager" ,
 // filemanager_access_key:"myPrivateKey" ,
 // ...
-define('USE_ACCESS_KEYS', TRUE); // TRUE or FALSE
+define('USE_ACCESS_KEYS', FALSE); // TRUE or FALSE
 
 // add access keys eg: array('myPrivateKey', 'someoneElseKey');
 // keys should only containt (a-z A-Z 0-9 \ . _ -) characters
@@ -53,10 +53,8 @@ define('USE_ACCESS_KEYS', TRUE); // TRUE or FALSE
 // DO NOT use 'key' as access key!
 // Keys are CASE SENSITIVE!
 
-$access_keys = array('guest');
-if(Auth::check()){
-    $access_keys = array('login');   
-}
+$access_keys = array();   
+
 
 
 //--------------------------------------------------------------------------------------------------------

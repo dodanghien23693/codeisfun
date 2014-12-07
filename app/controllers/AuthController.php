@@ -9,28 +9,32 @@ class AuthController extends BaseController {
 
     public function register()
     {
-   
-        
+    
         if(Request::ajax()){
             $username = Input::get('username');
             $email = Input::get('email');
+            $status = '';
+            $message = '';
+            
             if(User::where('username','=',$username)->count()){
-                return Response::json(array(
-                    'result'=>'error',
-                    'message'=>'username has already exist'
-                ));
+                   $status = 'invalid';
+                   $message = 'username has already exist';
             };
+            
+            if(User::where('email','=',$email)->where('user_type','=','codeisfun')->count()){
+                $status = 'invalid';
+                $message = 'this email has registered! please enter anothor email';
+
+            }
+            
             if(User::where('email','=',$email)->where('user_type','=','facebook')->count()){
-                return Response::json(array(
-                    'result'=>'error',
-                    'message'=>'this email has registered via facebook account! please login with facebook'
-                ));
+                $status = 'invalid';
+                $message = 'this email has registered via facebook account! please login with facebook';
+
             }
             if(User::where('email','=',$email)->where('user_type','=','google')->count()){
-                return Response::json(array(
-                    'result'=>'error',
-                    'message'=>'this email has registered via google+ account! please login with google+'
-                ));
+                $status = 'invalid';
+                $message = 'this email has registered via google+ account! please login with google+';
             }
             
             $user = new User();
@@ -44,11 +48,14 @@ class AuthController extends BaseController {
             $user->setAttribute('user_type' , 'codeisfun');
             
             if($user->save()){
-                return Response::json(array(
-                    'result'=>'success',
-                    'message'=>'Registration has been successful!!'
-                ));
+                $status = 'success';
+                $message = 'Registration has been successful!';
             }
+            
+            return Response::json(array(
+                    'status'=> $status,
+                    'message'=> $message
+                ));
         }
         // ajax response        
         $inputData = Input::get('formData');
@@ -117,12 +124,17 @@ class AuthController extends BaseController {
     public function login()
     {
 
+        
         if(Auth::check())
         {
             return Redirect::to('/');
         }
         
         if(Request::ajax()){
+            
+            $previous_url = Input::get('previous_url');
+            
+            
             $login_status = "";
             $redirect_url ='';
             $message = '';
@@ -148,7 +160,7 @@ class AuthController extends BaseController {
             if (Auth::check())
             {
                 $login_status = 'success';
-                $redirect_url = URL::previous();
+                $redirect_url = $previous_url;
                 //return View::make('public.auth.login_form')->with('success', 'Đăng nhập thành công');
             }
 
@@ -158,6 +170,7 @@ class AuthController extends BaseController {
                 $login_status = 'invalid';
                 
             }
+            
             return Response::json(array(
                 'login_status' => $login_status,
                 'redirect_url' =>$redirect_url
@@ -165,7 +178,6 @@ class AuthController extends BaseController {
         }
        
     }
-
     // logout
     public function logout()
     {
@@ -369,7 +381,6 @@ class AuthController extends BaseController {
     public function requestPassword()
     {
         $credentials = array('email' => Input::get('email'));
-
         
         return Response::json(array(
             'submitted_data' => array(
@@ -380,6 +391,8 @@ class AuthController extends BaseController {
         \Illuminate\Auth\Reminders\PasswordBroker::remind($credentials);
     }
 
+    
+    
     public function resetPassword($token)
     {
         return View::make('public.auth.reset_password')->with('token', $token);
@@ -388,20 +401,42 @@ class AuthController extends BaseController {
     
     public function updatePassword()
     {
-        $credentials = array(
-            'email' => Input::get('email'),
-            'password' => Input::get('password'),
-            'password_confirmation' => Input::get('password_confirmation'),
-            'token' => Input::get('token'));
+    if(Request::ajax()){    
+            $credentials = array(
+                'email' => Input::get('email'),
+                'password' => Input::get('password'),
+                'password_confirmation' => Input::get('password_confirmation'),
+                'token' => Input::get('token'));
+            
+           
+           $status = Password::reset($credentials, function($user, $password) {
 
-
-        return Password::reset($credentials, function($user, $password) {
-
-                    $user->password = Hash::make($password);
-                   
-                    $user->updateUniques();
-                    return Redirect::route('login')->with('success', 'Your password has been reset');
-                });
+                        $user->password = Hash::make($password);   
+                        $user->updateUniques();
+           });
+           
+           if($status=='invalid') //email khong dung
+           {
+               return Response::json(array(
+                   'status' => 'invalid',
+                   'message' => 'Email không hợp lệ. vui lòng nhập lại'
+               ));
+           }
+           if($status=='invalid token'){
+               return Response::json(array(
+                   'status' => 'invalid',
+                   'message' => 'Token invalid or expired'
+               ));
+           }
+           else
+           {
+               return Response::json(array(
+                   'status' => 'success',
+                   'message' => 'Thay Đổi mật khẩu thành công!'
+               ));
+           }
+        }
+        
     }
 
 }
