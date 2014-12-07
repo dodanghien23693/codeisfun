@@ -4,12 +4,52 @@ class AuthController extends BaseController {
 
     public function getRegister()
     {
-        return View::make('public.auth.register_form');
+        return View::make('public.auth.register');
     }
 
     public function register()
     {
-
+   
+        
+        if(Request::ajax()){
+            $username = Input::get('username');
+            $email = Input::get('email');
+            if(User::where('username','=',$username)->count()){
+                return Response::json(array(
+                    'result'=>'error',
+                    'message'=>'username has already exist'
+                ));
+            };
+            if(User::where('email','=',$email)->where('user_type','=','facebook')->count()){
+                return Response::json(array(
+                    'result'=>'error',
+                    'message'=>'this email has registered via facebook account! please login with facebook'
+                ));
+            }
+            if(User::where('email','=',$email)->where('user_type','=','google')->count()){
+                return Response::json(array(
+                    'result'=>'error',
+                    'message'=>'this email has registered via google+ account! please login with google+'
+                ));
+            }
+            
+            $user = new User();
+            
+            $user->setAttribute('first_name',Input::get('first_name'));
+            $user->setAttribute('last_name' ,Input::get('last_name'));
+            $user->setAttribute('username', Input::get('username'));
+            $user->setAttribute('email', Input::get('email'));
+            $user->setAttribute('password' , Hash::make(Input::get('password')));
+            $user->setAttribute('role_id', 1); //role là user
+            $user->setAttribute('user_type' , 'codeisfun');
+            
+            if($user->save()){
+                return Response::json(array(
+                    'result'=>'success',
+                    'message'=>'Registration has been successful!!'
+                ));
+            }
+        }
         // ajax response        
         $inputData = Input::get('formData');
 
@@ -82,33 +122,46 @@ class AuthController extends BaseController {
             return Redirect::to('/');
         }
         
-        $user = User::where('username', '=', Input::get('identifier'))->first();
-        if (!isset($user))
-        {
-            $user = User::where('email', '=', Input::get('identifier'))
-                    ->where('user_type', '=', 'codeisfun')
-                    ->first();
-        }
-
-        if (isset($user))
-        {
-            if (Hash::check(Input::get('password'), $user->password))
+        if(Request::ajax()){
+            $login_status = "";
+            $redirect_url ='';
+            $message = '';
+            $user = User::where('username', '=', Input::get('identifier'))->first();
+            if (!isset($user))
             {
-                if (Input::get('remember')) Auth::login($user, true);
-                else Auth::login($user, false);
+                $user = User::where('email', '=', Input::get('identifier'))
+                        ->where('user_type', '=', 'codeisfun')
+                        ->first();
             }
-        }
+            
 
-        if (Auth::check())
-        {
-            return Redirect::to(URL::previous());
-            //return View::make('public.auth.login_form')->with('success', 'Đăng nhập thành công');
-        }
+            if (isset($user))
+            {
+                if (Hash::check(Input::get('password'), $user->password))
+                {
+                    if (Input::get('remember')) Auth::login($user, true);
+                    else Auth::login($user, false);
+                    
+                }
+            }
 
-        // Nếu thất bại thì thông báo thất bại
-        else
-        {
-            return View::make('public.auth.login_form')->with('error', 'Tài khoản hoặc mật khẩu không đúng');
+            if (Auth::check())
+            {
+                $login_status = 'success';
+                $redirect_url = URL::previous();
+                //return View::make('public.auth.login_form')->with('success', 'Đăng nhập thành công');
+            }
+
+            // Nếu thất bại thì thông báo thất bại
+            else
+            {
+                $login_status = 'invalid';
+                
+            }
+            return Response::json(array(
+                'login_status' => $login_status,
+                'redirect_url' =>$redirect_url
+            ));
         }
        
     }
@@ -157,8 +210,9 @@ class AuthController extends BaseController {
 
         // get data from input
         $code = Input::get('code');
-
-
+        $previous_url = Input::get('previous_url');
+        if($previous_url) Session::put('return.url',$previous_url);
+       
         // get fb service
         $fb = OAuth::consumer('Facebook');
 
@@ -211,14 +265,15 @@ class AuthController extends BaseController {
             }
             //đăng nhập vào tài khoản
             Auth::login($user);
-            return Redirect::route('home');
+            
+            return Redirect::to(Session::pull('return.url', '/'));
         }
         // if not ask for permission first
         else
         {
             // get fb authorization
             $url = $fb->getAuthorizationUri();
-
+            
 
             // return to facebook login url      
             return Redirect::to((string)$url);
@@ -235,7 +290,8 @@ class AuthController extends BaseController {
     {
         // get data from input
         $code = Input::get('code');
-
+        $previous_url = Input::get('previous_url');
+        if($previous_url) Session::put('return.url', $previous_url);
         // get google service
         $googleService = OAuth::consumer("Google");
 
@@ -287,7 +343,7 @@ class AuthController extends BaseController {
             }
             //đăng nhập vào tài khoản
             Auth::login($user);
-            return Redirect::route('home');
+            return Redirect::to(Session::pull('return.url', '/'));
         }
         // if not ask for permission first
         else
@@ -306,14 +362,22 @@ class AuthController extends BaseController {
      */
     public function remindPassword()
     {
-        return View::make('public.auth.remind_password');
+        return View::make('public.auth.forgot-password');
     }
 
+    
     public function requestPassword()
     {
         $credentials = array('email' => Input::get('email'));
 
-        return Password::remind($credentials);
+        
+        return Response::json(array(
+            'submitted_data' => array(
+                'email' => Input::get('email'),
+            ),
+            'message' => Password::remind($credentials)
+        ));
+        \Illuminate\Auth\Reminders\PasswordBroker::remind($credentials);
     }
 
     public function resetPassword($token)
@@ -321,6 +385,7 @@ class AuthController extends BaseController {
         return View::make('public.auth.reset_password')->with('token', $token);
     }
 
+    
     public function updatePassword()
     {
         $credentials = array(

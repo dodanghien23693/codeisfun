@@ -11,7 +11,7 @@ class PasswordBroker {
 	 *
 	 * @var int
 	 */
-	const REMINDER_SENT = 'Một email kèm theo liên kết reset pass được gửi tới địa chỉ email của bạn! Hãy kiểm tra male và làm theo hướng dẫn! Sau 10 phút thì việc reset password lần này sẽ hết hiệu lực';
+	const REMINDER_SENT = 'ok';
 
 	/**
 	 * Constant representing a successfully reset password.
@@ -25,7 +25,8 @@ class PasswordBroker {
 	 *
 	 * @var int
 	 */
-	const INVALID_USER = 'Tên đăng nhập không hợp lệ';
+        
+	const INVALID_USER = 'invalid';
 
 	/**
 	 * Constant representing an invalid password.

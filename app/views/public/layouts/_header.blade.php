@@ -156,10 +156,7 @@
           
            
             {{ Form::submit('Register',array('class'=>'form-control')); }}
-          
-        
-            
-            
+              
             
         {{ Form::close(); }}
 

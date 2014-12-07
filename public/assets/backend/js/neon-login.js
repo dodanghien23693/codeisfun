@@ -18,7 +18,7 @@ var neonLogin = neonLogin || {};
 		// Login Form & Validation
 		neonLogin.$container.validate({
 			rules: {
-				username: {
+				identifier: {
 					required: true	
 				},
 				
@@ -61,11 +61,11 @@ var neonLogin = neonLogin || {};
 											
 					// Send data to the server
 					$.ajax({
-						url: baseurl + 'data/sample-login-form.php',
+						url: url,
 						method: 'POST',
 						dataType: 'json',
 						data: {
-							username: $("input#username").val(),
+							identifier: $("input#identifier").val(),
 							password: $("input#password").val(),
 						},
 						error: function()
@@ -96,7 +96,7 @@ var neonLogin = neonLogin || {};
 									// Redirect to login page
 									setTimeout(function()
 									{
-										var redirect_url = baseurl;
+										var redirect_url = url;
 										
 										if(response.redirect_url && response.redirect_url.length)
 										{

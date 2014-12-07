@@ -25,6 +25,7 @@ var editor_config = {
     external_filemanager_path:"/filemanager/",
     filemanager_title:"Filemanager" ,
     external_plugins: { "filemanager" : "/filemanager/plugin.min.js"},
+    filemanager_access_key:"dodanghien" ,
     /*
     file_browser_callback : function(field_name, url, type, win) { 
                 // from http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript

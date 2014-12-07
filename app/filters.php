@@ -45,6 +45,7 @@ Route::filter('auth', function()
 		{
 			return Redirect::guest('login-required');
 		}
+                
 	}
 });
 

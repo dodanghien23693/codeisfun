@@ -56,7 +56,7 @@ var neonForgotPassword = neonForgotPassword || {};
 					{
 						// Send data to the server
 						$.ajax({
-							url: baseurl + 'data/sample-forgotpassword-form.php',
+							url:  url,
 							method: 'POST',
 							dataType: 'json',
 							data: {
@@ -70,8 +70,18 @@ var neonForgotPassword = neonForgotPassword || {};
 							{
 								// From response you can fetch the data object retured
 								var email = response.submitted_data.email;
-								
-								
+                                                                
+                                                                if(response.message=='ok'){
+                                                                    $(".form-forgotpassword-success span").html(email);
+                                                                    $(".form-forgotpassword-success").css('background','#00a651');
+                                                                }
+                                                                if(response.message=='invalid'){
+                                                                    $(".form-forgotpassword-success").html('<i class="entypo-cancel"></i><h3>Not found </h3><span></span> in system<p>Please enter right email you used to register!</p>');
+                                                                    $(".form-forgotpassword-success span").html(email);
+                                                                    $(".form-forgotpassword-success").css('background','red');
+                                                                }
+                                                               
+                                                            
 								// Form is fully completed, we update the percentage
 								neonForgotPassword.setPercentage(100);
 								

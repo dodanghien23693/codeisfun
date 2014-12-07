@@ -8,8 +8,9 @@
 	<script src="<?php echo asset('assets/backend/js/resizeable.js'); ?>"></script>
 	<script src="<?php echo asset('assets/backend/js/neon-api.js'); ?>"></script>
         
-    
-       
+        
+        <script src="<?php echo asset('assets/backend/js/jquery.validate.min.js'); ?>"></script>
+        <script src="<?php echo asset('assets/backend/js/jquery.inputmask.bundle.min.js'); ?>"></script>
         <script src="<?php echo asset('assets/backend/js/jquery.dataTables.min.js'); ?>"></script>
         
         <script src="<?php echo asset('assets/backend/js/jquery.nestable.js'); ?>"></script>

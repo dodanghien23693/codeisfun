@@ -1,8 +1,4 @@
-/**
- *	Neon Register Script
- *
- *	Developed by Arlind Nushi - www.laborator.co
- */
+
 
 var neonRegister = neonRegister || {};
 
@@ -17,12 +13,15 @@ var neonRegister = neonRegister || {};
 		neonRegister.$steps_list = neonRegister.$steps.find(".step");
 		neonRegister.step = 'step-1'; // current step
 		
-		
 		neonRegister.$container.validate({
 			rules: {
-				name: {
+                                first_name: {
 					required: true
 				},
+                                last_name: {
+					required: true
+				},
+                                
 				
 				email: {
 					required: true,
@@ -30,11 +29,17 @@ var neonRegister = neonRegister || {};
 				},
 				
 				username: {
-					required: true	
+					required: true,
+                                        minlength:8
 				},
 				
 				password: {
-					required: true
+					required: true,
+                                        minlength:6
+				},
+                                
+                                password_confirmation: {
+					equalTo: "#password"
 				},
 				
 			},
@@ -67,17 +72,26 @@ var neonRegister = neonRegister || {};
 					neonRegister.setPercentage(98, function()
 					{
 						// Send data to the server
+                                                
+                                                var first_name =        $("input#first_name").val(),
+                                                last_name =             $("input#last_name").val(),
+                                                username =		$("input#username").val(),
+                                                email  =                $("input#email").val(),
+                                                password =              $("input#password").val(),
+                                                password_confirmation = $("input#password_confirmation").val() ;
 						$.ajax({
-							url: baseurl + 'data/sample-register-form.php',
+							url: url,
 							method: 'POST',
 							dataType: 'json',
+                                                        
+                                                                                                                
 							data: {
-								name: 		$("input#name").val(),
-								phone: 		$("input#phone").val(),
-								birthdate: 	$("input#birthdate").val(),
-								username: 	$("input#username").val(),
-								email: 		$("input#email").val(),
-								password:	$("input#password").val()
+								first_name: 		first_name,
+                                                                last_name: 		last_name,
+								username: 		username,
+								email:                  email,
+								password:               password,
+                                                                password_confirmation:  password_confirmation
 							},
 							error: function()
 							{
@@ -86,15 +100,9 @@ var neonRegister = neonRegister || {};
 							success: function(response)
 							{
 								// From response you can fetch the data object retured
-								var name = response.submitted_data.name,
-									phone = response.submitted_data.phone,
-									birthdate = response.submitted_data.birthdate,
-									username = response.submitted_data.username,
-									email = response.submitted_data.email,
-									password = response.submitted_data.password;
-								
 								
 								// Form is fully completed, we update the percentage
+                                                                
 								neonRegister.setPercentage(100);
 								
 								
@@ -111,7 +119,14 @@ var neonRegister = neonRegister || {};
 										$(".login-page").removeClass('logging-in');
 										
 										// Now we show the success message
-										$(".form-register-success").slideDown('normal');
+                                                                                if(response.result=='success'){
+                                                                                    $(".form-register-success").slideDown('normal');
+                                                                                }
+										
+                                                                                if(response.result=='error'){
+                                                                                    $(".error-bar").slideDown('normal');
+                                                                                    $(".error-bar h3").html(response.message);
+                                                                                }
 										
 										// You can use the data returned from response variable
 									});
