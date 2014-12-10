@@ -30,17 +30,17 @@ var neonRegister = neonRegister || {};
 				
 				username: {
 					required: true,
-                                        minlength:8
+                                        minlength:4
 				},
 				
 				password: {
 					required: true,
-                                        minlength:6
+                                        minlength:4
 				},
                                 
                                 password_confirmation: {
 					equalTo: "#password"
-				},
+				}
 				
 			},
 			
@@ -128,12 +128,11 @@ var neonRegister = neonRegister || {};
 										$(".login-page").removeClass('logging-in');
 										
 										// Now we show the success message
-      
-                                                                                $(".success-bar").slideDown('normal');
- 
-										
+      									
 										// You can use the data returned from response variable
 									});
+                                                                        $(".success-bar").slideDown('normal');
+                                                                        
                                                                     }
 									
 								}, 1000);

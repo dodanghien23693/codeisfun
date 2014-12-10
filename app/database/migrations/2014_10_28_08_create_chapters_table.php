@@ -17,11 +17,14 @@ class CreateChaptersTable extends Migration {
 			$table->increments('id');
 			$table->string('name', 300);
 			$table->integer('course_id')->unsigned()->index();
+                        $table->integer('user_id')->unsigned()->index();
+                        $table->integer('user_id')->unsigned();   
 			$table->integer('order_of_chapter')->default(0);
 			$table->text('description');
 			$table->timestamps();
                         
                         $table->foreign('course_id')->references('id')->on('courses');
+                        $table->foreign('user_id')->references('id')->on('users');
 		});
 	}
 

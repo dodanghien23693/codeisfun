@@ -31,8 +31,11 @@
                     
                     <div class="dd-content">
                         <div class="row">
-                        <div class="col-sm-10 quiz-name">
+                        <div class="col-sm-5 quiz-name">
                             {{$quiz->name}}
+                        </div>
+                        <div class="col-sm-5 quiz-name">
+                            created by: {{User::find($quiz->user_id)->username}}
                         </div>
                         <div class=" btn btn-info edit-quiz-btn" >Edit</div>
                         <div class=" btn btn-danger delete-quiz-btn" >Delete</div>
@@ -64,39 +67,44 @@
 
      function registerEventQuiz(){
         $(".delete-quiz-btn").click(function(){
-        if(window.confirm("Bạn có chắc chắn muốn xóa quiz này không?")==true){
-            var quiz_id = $(this).closest('.dd-item').attr('data-id');
-            $.post('<?php echo url('admin/quiz/delete')?>',{quiz_id:quiz_id},function(response,status){
-                if(status=='success'){
-                    $('.dd-item[data-id='+quiz_id+']').remove();
-                    
-                    $('a[href="#quiz'+quiz_id+'"]').closest('li').remove();
-                   
-                }
-                if(status=='error'){
-                    alert('xoa that bai');
-                }
-            });
-        }
+            if(window.confirm("Bạn có chắc chắn muốn xóa quiz này không?")==true){
+                var quiz_id = $(this).closest('.dd-item').attr('data-id');
+                $.post('<?php echo url('admin/quiz/delete')?>',{quiz_id:quiz_id},function(response,status){
+                    if(status=='success'){
+                        if(response.status=='success'){
+                            $('.dd-item[data-id='+quiz_id+']').remove();
+                            $('a[href="#quiz'+quiz_id+'"]').closest('li').remove();
+                            toastr.success(response.message);
+                        }
+                        if(response.status=='invalid'){
+                            toastr.error(response.message);
+                        }   
+                    }
+                    if(status=='error'){
+                        alert('xoa that bai');
+                    }
+                });
+            }
         });
         
         $('.edit-quiz-btn').click(function(){
-        
             var quiz_id = $(this).closest(".dd-item").attr('data-id');
-           
-            $('#edit-quiz-modal').modal('show');
-            
-            $('#edit-quiz-modal .modal-body').html('Is loading.......');
-            $("#edit-quiz-modal .modal-footer button").addClass('update-quiz-modal-btn');
-            $("#edit-quiz-modal .modal-footer button").removeClass('create-quiz-modal-btn');
-            
-            $.get('<?php echo url('admin/quiz/get-edit-form'); ?>',{quiz_id : quiz_id},function(response,status){
+            var course_id = <?php echo $course->id ?>;
+            $.get('<?php echo url('admin/quiz/get-edit-form'); ?>',{action:"update",quiz_id : quiz_id,course_id:course_id},function(response,status){
                 if(status=='success'){
-                    $('#edit-quiz-modal .modal-body').html(response);
+                    if(response.status=='success'){
+                        $('#edit-quiz-modal .modal-body').html(response.html);
+                        $('#edit-quiz-modal').modal('show');
+                        $("#edit-quiz-modal .modal-footer button").addClass('update-quiz-modal-btn');
+                        $("#edit-quiz-modal .modal-footer button").removeClass('create-quiz-modal-btn');
+                    }
+                    if(response.status=='invalid'){
+                        toastr.error(response.message);
+                    }
+                    
                 }
             });
-  
-            
+ 
         });
      }
      
@@ -128,8 +136,11 @@
                   + '</div>' 
                    +'<div class="dd-content">'
                        + '<div class="row">'
-                        +'<div class="col-sm-10 quiz-name">'
+                        +'<div class="col-sm-5 quiz-name">'
                             + name
+                       +' </div>'
+                        +'<div class="col-sm-5 quiz-name">'
+                            + 'created by: <?php echo Auth::user()->username;?>'
                        +' </div>'
                        +'<div class="btn btn-info edit-quiz-btn" >Edit</div>'
                        +' <div class="btn btn-danger delete-quiz-btn" >Delete</div>'
@@ -139,9 +150,10 @@
       
              $(quiz_list).append(newItem);
              registerEventQuiz();
+             toastr.success(response.message);
              $("#edit-quiz-modal").modal('hide');
-            $("#question-tab-content").html(response.html);
-            
+             $("#question-tab-content").html(response.html);
+
             }    
             if(status=='error'){
                 alert('Không thành công');
@@ -166,9 +178,9 @@
             $("#list-quiz .dd-item[data-id='"+id+"'] .quiz-name").html(name);
             $(".tab-pane a[href='#quiz"+id+"']").html(name);
             registerEventQuiz();
-            
+            toastr.success(response.message);
             $("#edit-quiz-modal").modal('hide');
-
+                
             }    
             if(status=='error'){
                 alert('Không thành công');
@@ -176,22 +188,27 @@
         });
      });
      
-     
-     
+
     $(".create-quiz-btn").click(function(){
      
-       $("#edit-quiz-modal").modal('show');
-       $("#edit-quiz-modal .modal-footer button").addClass('create-quiz-modal-btn');
-       $("#edit-quiz-modal .modal-footer button").removeClass('update-quiz-modal-btn');
-       $.get('<?php echo url('admin/quiz/get-edit-form'); ?>',function(response,status){
-                if(status=='success'){
-                    $('#edit-quiz-modal .modal-body').html(response);
-                }
+       var course_id = <?php echo $course->id; ?>;
+       $.get('<?php echo url('admin/quiz/get-edit-form'); ?>',{action:"create",course_id:course_id},function(response,status){
+                   if(status=='success'){
+                       if(response.status=='success'){
+                           $('#edit-quiz-modal .modal-body').html(response.html);
+                           $("#edit-quiz-modal").modal('show');
+                            $("#edit-quiz-modal .modal-footer button").addClass('create-quiz-modal-btn');
+                            $("#edit-quiz-modal .modal-footer button").removeClass('update-quiz-modal-btn');
+                       }
+                       if(response.status=='invalid'){
+                           toastr.error(response.message);
+                       }
+                   }
        });
+       
+       
       
     });    
-    
-
     
  });
  

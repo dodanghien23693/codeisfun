@@ -27,7 +27,7 @@ var url = '<?php echo url('reset-password');?>';
 		<div class="login-content">
 			
 			<a href="index.html" class="logo">
-				<img src="assets/images/logo@2x.png" width="120" alt="">
+				<img src="{{asset('assets/backend/images/codeisfun.png')}}" width="120" alt="">
 			</a>
 			
 			<p class="description">Enter your email, and we will send the reset link.</p>
@@ -89,7 +89,7 @@ var url = '<?php echo url('reset-password');?>';
                                 $("#form_forgot_password1").on('submit',function(e){
                                     e.preventDefault();
                                     var url = $("#form_forgot_password").attr('action');
-                                    var email = var url = $("#form_forgot_password input[name='email']").val();
+                                    var email = $("#form_forgot_password input[name='email']").val();
                                     $.post('<?php echo route('password.request'); ?>',{email:email},function(response,status){
                                         
                                     });

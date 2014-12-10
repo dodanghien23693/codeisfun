@@ -56,7 +56,7 @@
 
 <!--create lecture form -->
  <div class="modal fade" id="create-lecture-modal" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+     <div class="modal-dialog" style="width: 800px">
 		<div class="modal-content">
 			
 			<div class="modal-header">
@@ -89,8 +89,8 @@
 </div>
 
 <!-- edit lecture modal -->
-<div class="modal fade modal-lg" id="edit-lecture-modal" aria-hidden="true" style="display: none;">
-	<div class="modal-dialog">
+<div class="modal fade" id="edit-lecture-modal" aria-hidden="true" style="display: none">
+	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 			
 			<div class="modal-header">
@@ -99,7 +99,17 @@
 			</div>
 			
 			<div class="modal-body">
-			  show ajax form
+                            <input name="chapter_id" type="hidden">
+                            <input name="id" type="hidden">
+                            <div class="row">
+                                <div class="col-sm-8">
+                                    <input type="text" name='name' placeholder="lecture name" class="form-control">
+                                </div>
+                                <div class="col-sm-2 btn btn-info create-lecture-with-name" id="save-lecture">Next</div>
+                            </div>
+                            <div id="iframe-lecture" style="display:none">
+                              
+                            </div>
 			</div>
 			
 			<div class="modal-footer">	
@@ -107,6 +117,80 @@
 			</div>
 		</div>
 	</div>
+    
+    <script>
+        $(document).ready(function(){
+            $("#edit-lecture-modal").delegate(".create-lecture-with-name",'click',function(){
+                var chapter_id = $("#edit-lecture-modal input[name='chapter_id']").val();
+                var name = $("#edit-lecture-modal input[name='name']").val();
+                var lecture_list = $("#chapter"+chapter_id+" .list-lecture ul");
+                $.post('<?php echo url("admin/lecture/edit"); ?>', {action: "create", chapter_id: chapter_id, name: name}, function(response, status) {
+                if (status == 'success') {
+                        if(response.status == 'success'){
+                            
+                            toastr.success(response.message);
+                            
+                            var newItem = '<li class="dd-item list-group-item" data-id="' + response.lecture_id + '" >'
+
+                                    + '<div class="dd-handle">  '
+                                    + '<span>.</span> '
+                                    + '<span>.</span> '
+                                    + '<span>.</span> '
+                                    + '</div>'
+                                    + '<div class="dd-content">'
+                                    + '<div class="col-sm-9 lecture-name">'
+                                    + name
+                                    + '</div>'
+                                    + '<div class="btn btn-info edit-lecture-btn" >Edit</div>'
+                                    + '<div class="btn btn-danger delete-lecture-btn" >Delete</div>  '
+                                    + '</div>'
+                                    + '</li>';
+
+                            $(lecture_list).append(newItem);
+                          //  registerEventLecture();
+                            //$("#edit-lecture-modal").modal('hide');
+
+                            $(".create-lecture-with-name").hide(500);
+                            $("#edit-lecture-modal #iframe-lecture").append('<iframe  src="<?php echo url('admin/lecture/get-edit-form');?>'+'?lecture_id='+response.lecture_id+'" style="width:100%; height:400px"></iframe>');
+                            $("#edit-lecture-modal #iframe-lecture").show(500);
+                        }
+                    }
+                    
+                    if(response.status == 'invalid')
+                    {
+                        toastr.error(response.message);
+                    }
+                    
+                    if (status == 'error') {
+
+                    }
+                });
+            });
+
+             $("#edit-lecture-modal").delegate(".update-lecture-with-name",'click',function(){
+                var chapter_id = $("#edit-lecture-modal input[name='chapter_id']").val();
+                var name = $("#edit-lecture-modal input[name='name']").val();
+                var id = $("#edit-lecture-modal input[name='id']").val();
+                $.post('<?php echo url("admin/lecture/edit"); ?>', {action: "update", name: name, id:id,chapter_id:chapter_id}, function(response, status) {
+                if (status == 'success') {
+                       if(response.status=='success'){
+                            $(".list-lecture .dd-item[data-id='" + id + "'] .lecture-name").html(name);
+                            $(".update-lecture-with-name").hide(500);
+                            $("#edit-lecture-modal #iframe-lecture").append('<iframe  src="<?php echo url('admin/lecture/get-edit-form');?>'+'?lecture_id='+response.lecture_id+'" style="width:100%; height:400px"></iframe>');
+                            $("#edit-lecture-modal #iframe-lecture").show(500);
+                       }
+                       if(response.status =='invalid'){
+                           toastr.error(response.message);
+                       }
+                    }
+                    if (status == 'error') {
+
+                    }
+                });
+            });
+        });
+        
+    </script>
 </div>
 
 

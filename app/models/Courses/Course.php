@@ -3,6 +3,7 @@
 use Illuminate\Database\Eloquent\SoftDeletingTrait;
 
 class Course extends Eloquent{
+    
     use SoftDeletingTrait;
     
     protected $table = "courses";
@@ -62,6 +63,24 @@ class Course extends Eloquent{
         return $this->belongsToMany('User', 'course_instructor');
     }
     
+    public function owner()
+    {
+        return $this->instructors()->wherePivot('is_owner', '=', 1)->first();
+        return null;
+    }
+    
+    public function delete()
+    {
+        $this->categories()->detach();
+        $this->instructors()->detach();
+        FileController::deleteFile($this->cover_image_url);
+        $chapters = $this->chapters();
+        foreach($chapters as $chapter){
+            $chapter->delete();
+        }
+        
+        return parent::delete();
+    }
     
 }
 

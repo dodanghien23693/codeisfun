@@ -25,7 +25,7 @@ var url = '<?php echo url('login?previous_url='.Session::pull('url.intended', '/
 		<div class="login-content">
 			
 			<a href="index.html" class="logo">
-				<img src="assets/images/logo@2x.png" width="120" alt="">
+				<img src="{{asset('assets/backend/images/codeisfun.png')}}" width="120" alt="">
 			</a>
 			
 			<p class="description">Dear user, log in to access the admin area!</p>

@@ -50,47 +50,132 @@ class QuestionController extends BaseController {
     
     public function deleteQuestion()
     {
-        $question_id = Input::get('question_id');
-        
-        if(Question::find($question_id)->delete()){
-            return "xoa thanh cong";
+        if(Request::ajax())
+        {
+            if($quiz_id = Input::get('quiz_id'))
+            {
+                if(Auth::user()->isOwnerOfQuiz($quiz_id) || Auth::user()->isOwnerOfCourse(Quiz::find($quiz_id)->course_id))
+                {
+                    if($question_id = Input::get('question_id'))
+                    {
+                        if($question = Question::find($question_id))
+                        {
+                            $question->delete();
+                            return Response::json(array(
+                                'status' => 'success',
+                                'message' => 'delete question successful'
+                            ));
+                        }
+                        else
+                        {
+                            return Response::json(array(
+                                'status' => 'invalid',
+                                'message' => 'Unable fine question'
+                            ));
+                        }
+                    }
+                }
+                else // unable delete question
+                {
+                    return Response::json(array(
+                        'status' => 'invalid',
+                        'message' => 'Yout unable delete this question'
+                    ));
+                }
+            }
+            else
+            {
+                return Response::json(array(
+                    'status' => 'invalid',
+                    'message' => 'Yout unable delete this quiz'
+                ));
+            }
         }
-        
-        return false;
+
     }
     
-  
+ 
     public function updateOrderOfQuestion()
     {
-        $quiz_id = Input::get('quiz_id');
-        
-        $order_list = Input::get('order_question');
-        $order_list = json_decode($order_list);
-        $i = 0;
- 
-        foreach($order_list as $item){
-            Question::where('id','=',$item->id)->update(array('order_of_question'=>$i));
-            $i++;
+        if(Request::ajax())
+        {
+            $quiz_id = Input::get('quiz_id');
+            if( Auth::user()->isOwnerOfQuiz($quiz_id) )
+            {
+                $order_list = Input::get('order_question');
+                $order_list = json_decode($order_list);
+                $i = 0;
+                foreach($order_list as $item){
+                    Question::where('id','=',$item->id)->update(array('order_of_question'=>$i));
+                    $i++;
+                }
+                return Response::json(array(
+                    'status' => 'success',
+                    'message' => 'Update order_of_question successful'
+                ));
+            }   
+            else
+            {
+                return Response::json(array(
+                    'status' => 'invalid',
+                    'message' => 'You unable do this action'
+                ));
+            }
         }
-        return 'Cập nhật thành công';
     }
     
     public function getEditForm()
      {   
-            $quiz_id = Input::get('quiz_id');
-            $question;
-            $action ='';
-            if(Input::get('question_id')){
-                $question = Question::find(Input::get('question_id'));
-                
+        if(Request::ajax())
+        {
+            if(Input::get('action')=='update')
+            {
+                if($quiz_id = Input::get('quiz_id'))
+                {
+                    if(Auth::user()->isOwnerOfQuiz($quiz_id))
+                    {
+                        if($question_id = Input::get('question_id')){
+                            $question = Question::find($question_id);
+                            return Response::json(array(
+                                'status' => 'success',
+                                'html'  => View::make('admin.courses._edit_question_form',array('question'=>$question))->render()
+                            ));
+                        }
+                    }
+                    else //Không phải là người tạo ra Quiz này
+                    {
+                        return Response::json(array(
+                            'status' => 'invalid',
+                            'message'  => 'You unable edit question for this Quiz!'
+                        ));
+                    }
+                } 
             }
-            
-            else{
-                $question = new Question();
-                $question->question_type_id = 1;
-                $question->quiz_id = Input::get('quiz_id');
+            if(Input::get('action')=='create')
+            {
+                 if($quiz_id = Input::get('quiz_id'))
+                 {
+                   
+                    if(Auth::user()->isOwnerOfQuiz($quiz_id))
+                    {
+                        $question = new Question();
+                        $question->question_type_id = 1;
+                        $question->quiz_id = Input::get('quiz_id');
+                        return Response::json(array(
+                            'status' => 'success',
+                            'html'  => View::make('admin.courses._edit_question_form',array('question'=>$question))->render()
+                        ));
+                    }
+                    else
+                    {
+                        return Response::json(array(
+                            'status' => 'invalid',
+                            'message'  => 'You unable create question for this Quiz!'
+                        ));
+                    }
+                 }
             }
-            return  View::make('admin.courses._edit_question_form',array('question'=>$question))->render();
+        }
      }
      
      

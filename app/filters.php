@@ -50,6 +50,104 @@ Route::filter('auth', function()
 });
 
 
+Route::filter('admin', function()
+{
+    if(!Auth::user()->isAdmin()){
+        if(Request::ajax())
+        {
+            return Response::make('Unauthorized', 401);
+        }
+        else
+        {
+            return View::make('admin.404');
+        }
+    }
+});
+
+
+Route::filter('manager', function()
+{
+    if(!Auth::user()->isManager()){
+        if(Request::ajax())
+        {
+            return Response::make('Unauthorized', 401);
+        }
+        else
+        {
+            return View::make('admin.404');
+        }
+    }
+});
+
+Route::filter('writer', function()
+{
+    if(!Auth::user()->isWriter()){
+        if(Request::ajax())
+        {
+            return Response::make('Unauthorized', 401);
+        }
+        else
+        {
+            return View::make('admin.404');
+        }
+    }
+});
+
+Route::filter('user', function()
+{
+    if(!Auth::user()->isUser()){
+        if(Request::ajax())
+        {
+            return Response::make('Unauthorized', 401);
+        }
+        else
+        {
+            return View::make('admin.404');
+        }
+    }
+});
+
+
+Route::filter('adminORmanager',function(){
+if(!(Auth::user()->isAdmin() || Auth::user()->isManager())){
+        if(Request::ajax())
+        {
+            return Response::make('Unauthorized', 401);
+        }
+        else
+        {
+            return View::make('admin.404');
+        }
+    }
+});
+
+Route::filter('managerORwriter',function(){
+if(!(Auth::user()->isManager() || Auth::user()->isWriter())){
+        if(Request::ajax())
+        {
+            return Response::make('Unauthorized', 401);
+        }
+        else
+        {
+            return View::make('admin.404');
+        }
+    }
+});
+
+Route::filter('adminORmanagerORwriter',function(){
+if(!(Auth::user()->isManager() || Auth::user()->isManager() || Auth::user()->isWriter())){
+        if(Request::ajax())
+        {
+            return Response::make('Unauthorized', 401);
+        }
+        else
+        {
+            return View::make('admin.404');
+        }
+    }
+});
+
+
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();

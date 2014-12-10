@@ -9,9 +9,9 @@
             <li class="profile-info dropdown">
                 <!-- add class "pull-right" if you want to place this from right -->
 
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                    <img src="<?php echo asset('assets/backend/images/thumb-1@2x.png" alt="" class="img-circle'); ?>" width="44">
-                    Art Ramadani
+                <a href="#" class="dropdown-toggle col-sm-12" data-toggle="dropdown">
+                    <img src="<?php echo Auth::user()->photo_url; ?>" width="44" class="img-circle">
+                    <?php echo Auth::user()->first_name.' '.Auth::user()->last_name; ?>
                 </a>
 
                 <ul class="dropdown-menu">
@@ -407,52 +407,6 @@
     <div class="col-md-6 col-sm-4 clearfix hidden-xs">
 
         <ul class="list-inline links-list pull-right">
-
-            <!-- Language Selector -->			
-            <li class="dropdown language-selector">
-
-                Language: &nbsp;
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-close-others="true">
-                    <img src="<?php echo asset('assets/backend/images/flag-uk.png'); ?>">
-                </a>
-
-                <ul class="dropdown-menu pull-right">
-                    <li>
-                        <a href="#">
-                            <img src="<?php echo asset('assets/backend/images/flag-de.png'); ?>">
-                            <span>Deutsch</span>
-                        </a>
-                    </li>
-                    <li class="active">
-                        <a href="#">
-                            <img src="<?php echo asset('assets/backend/images/flag-uk.png'); ?>">
-                            <span>English</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <img src="<?php echo asset('assets/backend/images/flag-fr.png'); ?>">
-                            <span>François</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <img src="<?php echo asset('assets/backend/images/flag-al.png'); ?>">
-                            <span>Shqip</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <img src="<?php echo asset('assets/backend/images/flag-es.png'); ?>">
-                            <span>Español</span>
-                        </a>
-                    </li>
-                </ul>
-
-            </li>
-
-            <li class="sep">
-            </li>
 
 
             <li>

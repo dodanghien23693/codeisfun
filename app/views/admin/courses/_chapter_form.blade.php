@@ -36,9 +36,12 @@
                     
                     <div class="dd-content">
                         <div class="row">
-                        <div class="col-sm-10 chapter-name">
+                        <div class="col-sm-5 chapter-name">
                             {{$chapter->name}}
                         </div>
+                        <div class="col-sm-5">
+                            created by: {{User::where('id','=',$chapter->user_id)->first()->username}}
+                        </div>    
                            
                         <div class=" btn btn-info edit-chapter-btn" >Edit</div>
                         <div class=" btn btn-danger delete-chapter-btn" >Delete</div>
@@ -92,10 +95,15 @@
             var chapter_id = $(this).closest('.dd-item').attr('data-id');
             $.post('<?php echo url('admin/chapter/delete')?>',{chapter_id:chapter_id},function(response,status){
                 if(status=='success'){
-                    $('.dd-item[data-id='+chapter_id+']').remove();
-                    
-                    $('a[href="#chapter'+chapter_id+'"]').closest('li').remove();
-                    alert('Xoa thanh cong!');
+                    if(response.status=='success'){
+                        $('.dd-item[data-id='+chapter_id+']').remove();
+                        $('a[href="#chapter'+chapter_id+'"]').closest('li').remove();
+                        toastr.success(response.message);
+                    }
+                    else if(response.status=='invalid'){
+                        toastr.error(response.message);
+                    }
+                  
                 }
                 if(status=='error'){
                     alert('xoa that bai');
@@ -113,14 +121,22 @@
      
      function showEditChapterModal(chapter_id)
     {
-            $('#edit-chapter-modal').modal('show');
-
-            $('#edit-chapter-modal .modal-body').html('Is loading.......');
             $.get('<?php echo url('admin/chapter/get-edit-chapter-form'); ?>',{chapter_id : chapter_id},function(response,status){
                 if(status=='success'){
-                    $('#edit-chapter-modal .modal-body').html(response);
+                    if(response.status=='success')
+                    {
+                        $('#edit-chapter-modal .modal-body').html(response.html);
+                        $('#edit-chapter-modal').modal('show');
+                    }
+                    else
+                    {
+                        toastr.error(response.message);
+                    }
+                    
                 }
             });
+            
+            
             
 
     }
@@ -156,33 +172,38 @@
         var name = $("#create-chapter-form-modal input[name='name']").val();
         var course_id = <?php echo $course->id; ?>;
         var chapter_list = $(".list-chapter ul");
-        alert(name+':'+course_id);
          $.post('<?php echo url('admin/chapter/new'); ?>',{name : name, course_id : course_id},function(response,status){
             if(status=='success'){       
+            if(response.status=='success')
+            {
+                toastr.success(response.message);
+                var newItem = '<li class="dd-item" data-id="'+response.chapter_id+'" >'
+                       + '<div class="dd-handle">'
+                        +    '<span>.</span>'
+                        +   ' <span>.</span>'
+                       +     '<span>.</span>'
+                      + '</div>' 
+                       +'<div class="dd-content">'
+                           + '<div class="row">'
+                            +'<div class="col-sm-5 chapter-name">'
+                                + name
+                           +' </div>'
+                          +'<div class="col-sm-5">'
+                                +'created by: <?php echo Auth::user()->username ?>'
+                           +' </div> '  
+                           +'<div class="btn btn-info edit-chapter-btn" >Edit</div>'
+                           +' <div class="btn btn-danger delete-chapter-btn" >Delete</div>'
+                            + '</div>'
+                        +'</div>'
+                  + '</li>';
 
-            var newItem = '<li class="dd-item" data-id="'+response.chapter_id+'" >'
-                   + '<div class="dd-handle">'
-                    +    '<span>.</span>'
-                    +   ' <span>.</span>'
-                   +     '<span>.</span>'
-                  + '</div>' 
-                   +'<div class="dd-content">'
-                       + '<div class="row">'
-                        +'<div class="col-sm-10 chapter-name">'
-                            + name
-                       +' </div>'
-                       +'<div class="btn btn-info edit-chapter-btn" >Edit</div>'
-                       +' <div class="btn btn-danger delete-chapter-btn" >Delete</div>'
-                        + '</div>'
-                    +'</div>'
-              + '</li>';
-              
-                $(chapter_list).append(newItem);
-                registerEventChapter();
-                $("#lecture-tab-content").html(response.html);
-                $("#create-chapter-modal").modal('hide');
+                    $(chapter_list).append(newItem);
+                    registerEventChapter();
+                    $("#lecture-tab-content").html(response.html);
+                    $("#create-chapter-modal").modal('hide');
 
-                }    
+                    }
+                }
         if(status=='error'){
             alert('Không thành công');
         }

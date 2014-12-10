@@ -7,7 +7,7 @@ use Illuminate\Auth\Reminders\RemindableTrait;
 use Illuminate\Auth\Reminders\RemindableInterface;
 
 
-class User extends Ardent implements UserInterface, RemindableInterface {
+class User extends Eloquent implements UserInterface, RemindableInterface {
 
     use UserTrait,
         RemindableTrait;
@@ -40,7 +40,7 @@ class User extends Ardent implements UserInterface, RemindableInterface {
 
 
     public static $rules = array(
-        'username'      => 'required|min:6|max:50|unique:users,username|alpha_dash',
+        'username'      => 'required|min:4|max:50|unique:users,username|alpha_dash',
         'email'         => 'required|unique:users,email',
         'password'      => 'required',
         'first_name'    => 'required|between:2,30',
@@ -77,6 +77,12 @@ class User extends Ardent implements UserInterface, RemindableInterface {
         return $this->hasMany("Activity");
     }
 
+    
+    public function chapters()
+    {
+        return $this->hasMany('Chapter', 'user_id');
+    }
+    
     /* Writer_Category
      * Một người dùng có thể được phân quyền thuộc nhiều category thông quảng bảng Writer_Category . 
      */
@@ -107,7 +113,7 @@ class User extends Ardent implements UserInterface, RemindableInterface {
      */
     public function role()
     {
-        return $this->belongsTo("Role");
+        return $this->belongsTo("Role",'role_id');
     }
 
     /* Notifications
@@ -131,12 +137,97 @@ class User extends Ardent implements UserInterface, RemindableInterface {
      *  thông qua bảng Course_Instructor
      */
 
-    public function courses()
+    public function createdCourses()
     {
         return $this->belongsToMany("Course", "course_instructor");
     }
 
+    public function joinedCourses()
+    {
+        return $this->belongsToMany('Course', 'user_course', 'user_id');
+    }
     
+    public function createdCoursesWithTrashed()
+    {
+        return $this->belongsToMany("Course", "course_instructor")->withTrashed();
+    }
+    
+    public function isOwnerOfCourse($course_id)
+    {
+        $course = $this->createdCoursesWithTrashed()->wherePivot('course_id', '=', $course_id)->wherePivot('is_owner', '=', 1)->first();      
+        //$course = Course::withTrashed()->find($course_id);
+        //$user = $course->instructors()->wherePivot('is_owner', '=', 1)->first();
+        if($course)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    
+    //Người dùng chỉ có quyền edit course khi : 
+    //- course tồn tại và không ở trong thùng rác, 
+    //- người đó là chủ hoặc người cùng tham gia tạo course
+    public function isEditableOfCourse($course_id)
+    {
+        $course = $this->createdCourses()->wherePivot('course_id', '=', $course_id)->first();      
+        //$course = Course::withTrashed()->find($course_id);
+        //$user = $course->instructors()->wherePivot('is_owner', '=', 1)->first();
+        if($course)
+        {
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
+    
+    public function isUser()
+    {
+        return ($this->role_id == 1);
+    }
+    
+    public function isWriter()
+    {
+        return ($this->role_id == 2);
+    }
+    
+    public function isManager()
+    {
+        return ($this->role_id == 3);
+    }
+    public function isAdmin()
+    {
+        return ($this->role_id == 4);
+    }
+    
+    public static function writers()
+    {
+        return User::where('role_id','=',2)->get();
+    }
+    
+    public static function managers()
+    {
+        return User::where('role_id','=',3)->get();
+    }
+    
+    public static function users()
+    {
+        return User::where('role_id','=',1)->get();
+    }
+
+
+    public function isOwnerOfChapter($chapter_id)
+    {
+        return $this->id == Chapter::find($chapter_id)->user_id;
+    }
+    
+    public function isOwnerOfQuiz($quiz_id)
+    {
+        return $this->id == Quiz::find($quiz_id)->user_id;
+    }
     
     /**
      * 

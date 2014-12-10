@@ -45,9 +45,9 @@
     </div>
 
 </form>
+ 
 <script>
     $(document).ready(function(){
-
 
             $(".add-answer-btn").click(function(){
 
@@ -119,5 +119,17 @@
 
 
 
+            //validate
+            $("#question-form-modal").validate({
+                rules:{
+                    question:{
+                        required:true,
+                        minlength:8
+                    }
+                }
+            });
+            
         });
-     </script>
+        
+        
+</script>

@@ -36,8 +36,9 @@
                     @endforeach
 
                 </ul>
+                
                 <div  class="btn btn-info update-order-question">Update order of question</div>
-
+                
             </div>
         </div>
         
@@ -59,11 +60,17 @@
             
             $(".delete-question-btn").click(function(){
             if(window.confirm("Bạn có chắc chắn muốn xóa question này không?")==true){
+                var quiz_id = $(this).closest(".tab-pane").attr('quiz-id');
                 var question_id = $(this).closest('.dd-item').attr('data-id');
-                $.post('<?php echo url('admin/question/delete')?>',{question_id:question_id},function(response,status){
+                $.post('<?php echo url('admin/question/delete')?>',{quiz_id:quiz_id,question_id:question_id},function(response,status){
                     if(status=='success'){
-                       
-                        $('.dd-item[data-id='+question_id+']').remove();
+                       if(response.status=='success'){
+                           $('.dd-item[data-id='+question_id+']').remove();
+                           toastr.success(response.message);
+                       }
+                       if(response.status=='invalid'){
+                           toastr.error(response.message);
+                       }
                     }
                     if(status=='error'){
                         
@@ -74,21 +81,24 @@
            
            $(".edit-question-btn").click(function(){
             
-                $("#question-modal").modal('show');
-                $('#edit-question-modal .modal-body').html('Loading...');
                 var quiz_id = $(this).closest(".tab-pane").attr('quiz-id');
                 var question_id = $(this).closest('.dd-item').attr('data-id');
-                $("#question-form-modal input[name='question_id']").val(question_id);
-                $("#question-form-modal input[name='quiz_id']").val(quiz_id);
-                $("#question-modal .modal-footer button").addClass('update-question-modal-btn');
-                $("#question-modal .modal-footer button").removeClass('create-question-modal-btn');
-                $.get('<?php echo url('admin/question/get-edit-form') ?>',{question_id : question_id},function(response,status){
+                $.get('<?php echo url('admin/question/get-edit-form') ?>',{action:"update",quiz_id:quiz_id,question_id : question_id},function(response,status){
                     if(status=='success'){
-                        $("#question-modal .modal-body").html(response);
+                        if(response.status=='success'){
+                            $("#question-modal .modal-body").html(response.html);
+                            $("#question-modal").modal('show');
+                            $("#question-form-modal input[name='question_id']").val(question_id);
+                            $("#question-form-modal input[name='quiz_id']").val(quiz_id);
+                            $("#question-modal .modal-footer button").addClass('update-question-modal-btn');
+                            $("#question-modal .modal-footer button").removeClass('create-question-modal-btn');
+                        }
+                        if(response.status=='invalid'){
+                            toastr.error(response.message);
+                        }  
                     }
                 });
-
-                //$("#create-question-form-modal input[name='quiz_id']").val(quiz_id);
+                
 
              });
         }
@@ -127,10 +137,15 @@
         
         
       
+      
         
-        
+        $("#question-modal").delegate("#question-form-modal textarea",'change',function (e) {
+            $("#question-form-modal").validate().element($(e.target));
+        });
+
         $("#question-modal").delegate('.create-question-modal-btn','click',function(){
             
+           
            var quiz_id =  $("#question-form-modal input[name='quiz_id']").val();
            var question_list = $(".tab-pane[quiz-id='"+quiz_id+"'] .list-question ul");
            var question= $("#question-form-modal textarea[name='question']").val();
@@ -178,17 +193,24 @@
         
         
         $(".create-question-btn").click(function(){
-            
-           $("#question-modal").modal('show');
-           $('#edit-question-modal .modal-body').html('Loading...');
-           $("#question-modal .modal-footer button").addClass('create-question-modal-btn');
-           $("#question-modal .modal-footer button").removeClass('update-question-modal-btn');
            var quiz_id = $(this).closest(".tab-pane").attr('quiz-id'); 
-           $.get('<?php echo url('admin/question/get-edit-form') ?>',{quiz_id:quiz_id},function(response,status){
+           $.get('<?php echo url('admin/question/get-edit-form') ?>',{action:"create",quiz_id:quiz_id},function(response,status){
                if(status=='success'){
-                   $("#question-modal .modal-body").html(response);
+                   if(response.status=='success'){
+                        $("#question-modal .modal-body").html(response.html);
+                        $("#question-modal").modal('show');
+                        $("#question-modal .modal-footer button").addClass('create-question-modal-btn');
+                        $("#question-modal .modal-footer button").removeClass('update-question-modal-btn');
+                   }
+                   if(response.status=='invalid'){
+                       toastr.error(response.message);
+                   }
+                   
                }
            });
+           
+           
+           
            
            //$("#create-question-form-modal input[name='quiz_id']").val(quiz_id);
 
@@ -200,12 +222,18 @@
        $('.update-order-question').click(function(){
        
         var order = window.JSON.stringify($(this).closest('.list-question').nestable('serialize'));
-        var quiz_id = $(this).closest('#question-form').attr('quiz-id');
+        var quiz_id = $(this).closest('.tab-pane').attr('quiz-id');
         
         $.post('<?php echo url('admin/question/update-order-question') ?>',{order_question: order,quiz_id : quiz_id },function(response,status){
             if(status=='success'){
-               
-                alert(response);
+               if(response.status=='success')
+               {
+                   toastr.success(response.message);
+               }
+               if(response.status=='invalid')
+               {
+                   toastr.error(response.message);
+               }
             }
             if(status=='error'){
                 alert('cập nhật thất bại');

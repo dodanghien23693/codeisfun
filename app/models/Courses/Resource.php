@@ -32,6 +32,11 @@ class Resource extends Ardent{
     {
         return $this->belongsTo('ResourceType', 'resource_type_id');
     }
-
+    
+    public function delete()
+    {
+        FileController::deleteFile($this->path);
+        return parent::delete();
+    }
 
 }

@@ -5,6 +5,7 @@ class Role extends Ardent{
     
     protected $table = "roles";
     
+    public $timestamps = false;
     protected $fillable = array('name');
     
     /**

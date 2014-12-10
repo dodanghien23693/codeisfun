@@ -16,6 +16,7 @@ class CreateQuizzesTable extends Migration {
 		{
 			$table->increments('id');
 			$table->integer('course_id')->unsigned()->index();
+                        $table->integer('uses_id')->unsigned()->index();
 			$table->string('name', 300);
 			$table->integer('max_attempts');
 			$table->integer('duration_minus');
@@ -25,6 +26,7 @@ class CreateQuizzesTable extends Migration {
 			$table->timestamps();
                         
                         $table->foreign('course_id')->references('id')->on('courses');
+                        $table->foreign('user_id')->references('id')->on('users');
 		});
 	}
 

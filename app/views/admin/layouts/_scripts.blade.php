@@ -1,4 +1,12 @@
- <!-- GLOBAL SCRIPTS -->
+ 
+    <!-- PAGE LEVEL SCRIPTS -->
+
+    <!-- END PAGE LEVEL SCRIPTS -->
+
+
+<!-- GLOBAL SCRIPTS -->
+  <script src="<?php echo asset('assets/backend/js/jquery-1.11.0.min.js'); ?>"></script>
+ 
     <script src="<?php echo asset('assets/backend/js/gsap/main-gsap.js'); ?>"></script>
     
     
@@ -13,11 +21,18 @@
         <script src="<?php echo asset('assets/backend/js/jquery.inputmask.bundle.min.js'); ?>"></script>
         <script src="<?php echo asset('assets/backend/js/jquery.dataTables.min.js'); ?>"></script>
         
+        
+         <script src="<?php echo asset('assets/plugins/toastr/toastr.min.js'); ?>"></script>
+
+        <script src="<?php echo asset('assets/backend/js/fileinput.js'); ?>"></script>
+        <script src="<?php echo asset('assets/plugins/bootstrap-multiselect/bootstrap-multiselect.js'); ?>"></script>
+       
+        
         <script src="<?php echo asset('assets/backend/js/jquery.nestable.js'); ?>"></script>
         <script src="<?php echo asset('assets/backend/js/neon-chat.js'); ?>"></script>
 	<script src="<?php echo asset('assets/backend/js/neon-custom.js'); ?>"></script>
 	<script src="<?php echo asset('assets/backend/js/neon-demo.js'); ?>"></script>
-        
+       
         
         <script type="text/javascript" src="/tinymce/tinymce.min.js"></script>
         <script type="text/javascript" src="/tinymce/tinymce_editor.js"></script>
@@ -30,12 +45,27 @@
 <script type="text/javascript">
 editor_config.selector = "textarea";
 tinymce.init(editor_config);
+
+
+toastr.options = {
+  "closeButton": true,
+  "debug": false,
+  "progressBar": false,
+  "positionClass": "toast-top-right",
+  "onclick": null,
+  "showDuration": "300",
+  "hideDuration": "500",
+  "timeOut": "2000",
+  "extendedTimeOut": "1000",
+  "showEasing": "swing",
+  "hideEasing": "linear",
+  "showMethod": "fadeIn",
+  "hideMethod": "fadeOut"
+}
 </script>
-    <!-- PAGE LEVEL SCRIPTS -->
+
+
+
     @section('scripts')
    
     @show
-    <!-- END PAGE LEVEL SCRIPTS -->
-
-
-

@@ -11,6 +11,12 @@
 |
 */
 
+Route::get('login-as/{username}',function($username){
+    Auth::attempt(array('username'=>$username,'password'=>$username));
+    if(Auth::check()){
+        return 'Bạn đã đăng nhập bằng tài khoản:'.Auth::user()->username;
+    }
+});
 
 
 Route::get('/', array('as'=>'home','uses'=>function()
@@ -77,6 +83,7 @@ Route::get('login-required',function(){
 
 
 Route::group(array('before'=>'auth'), function(){
+    
     Route::get('admin', 'AdminController@getIndex');
     Route::get('admin/user/profile',array('as'=>'user-profile','uses' => 'AuthController@getLogin'));
     Route::get('admin/user/profile',array('as'=>'edit-profile','uses' => 'AuthController@getLogin'));
@@ -114,36 +121,22 @@ Route::group(array('before'=>'auth'), function(){
 
 
     //create new course
-    Route::get('admin/course/new','CourseController@getCourseForm');
+    Route::get('admin/course/new',array('before'=>'managerORwriter','uses'=>'CourseController@getCourseForm'));
     Route::post('admin/course/new','CourseController@createCourse');
     Route::post('admin/course/get-list-chapter','CourseController@getListChapter');
     Route::get('admin/course/get-list-chapter','CourseController@getListChapter');
 
     //edit course
-    Route::get('admin/course/edit/{id}',function($id){
-        $course = Course::find($id);
-        if($course){
-            return View::make('admin.courses.edit_course')->with(array(
-                'course'=> $course,
-                'list_category' => Category::all()
-                ));
-        }
-        else{
-         return Redirect::to('admin/course');
-        } 
-    });
-    Route::post('admin/course/edit/{id}','CourseController@updateCourse');
+    Route::get('admin/course/edit/{id}',array('before'=>'managerORwriter','uses'=>'CourseController@getEdit'));
+
+    Route::post('admin/course/edit/{id}',array('before'=>'managerORwriter','uses'=>'CourseController@updateCourse'));
 
 
     //delete course
     Route::get('admin/course/delete','CourseController@deleteCourse');
 
 
-    Route::get('admin/course/destroy/{id}',function($id){
-        $course = Course::withTrashed()->find($id);
-        $course->forceDelete();
-        return Redirect::to('admin/course');
-    });
+    Route::get('admin/course/destroy/{id}','CourseController@destroy');
 
     //restore course
     Route::get('admin/course/restore/{id}',function($id){
@@ -183,6 +176,7 @@ Route::group(array('before'=>'auth'), function(){
     //update chapter
     Route::post('admin/chapter/edit','ChapterController@updateChapter');
 
+    
     /**
      *  lecture manager
      */
@@ -196,10 +190,11 @@ Route::group(array('before'=>'auth'), function(){
     //get edit lecture form
     Route::get('admin/lecture/get-edit-form','LectureController@getEditForm');
 
-
+    
     //edit lecture
     Route::post('admin/lecture/edit','LectureController@editLecture');
 
+    Route::post('admin/lecture/add-resource','LectureController@addResource');
 
 
     /**

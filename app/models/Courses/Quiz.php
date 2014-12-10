@@ -1,12 +1,11 @@
 <?php
 
-use LaravelBook\Ardent\Ardent;
 
-class Quiz extends Ardent{
+class Quiz extends Eloquent{
     
     protected $table = "quizzes";
     
-    protected $fillable = array('name','max_attempts','due_date','hard_deadline','duration_minus');
+    protected $fillable = array('name','max_attempts','due_date','hard_deadline','duration_minus','user_id');
     
     //protected fields : id, course_id
     
@@ -45,6 +44,11 @@ class Quiz extends Ardent{
     {
         $this->questions()->delete();
         return parent::delete();
+    }
+    
+    public function user()
+    {
+        return $this->belongsTo('User', 'user_id');
     }
 }
 

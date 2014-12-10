@@ -4,34 +4,70 @@ class ChapterController extends BaseController {
  
     public function createChapter()
     {
+        if(Request::ajax())
+        {
             $course_id = Input::get('course_id');
             
             $chapter = new Chapter();
             $chapter->name = Input::get('name');
             $chapter->order_of_chapter = Chapter::where('course_id','=',$course_id)->count();
-           
+            $chapter->user_id = Auth::id();
          
             if(Course::find($course_id)->chapters()->save($chapter)){
                 $course = Course::find($course_id);
                 $chapters = $course->chapters()->orderBy('order_of_chapter')->get();
                 
                 return Response::json(array(
+                    'status' => 'success',
                     'html' =>  View::make('admin.courses._lecture_form', array('chapters'=>$chapters))->render(),
-                    'message' => 'Thêm thành công',
+                    'message' => 'Tạo chapter thành công',
                     'chapter_id' => $chapter->id,
                     ));
             };
+        }
            
     }
     
     public function deleteChapter()
     {
-        $chapter_id = Input::get('chapter_id');
+        if(Request::ajax())
+        {
+            $status = '';
+            $message = '';
+            
+            $chapter_id = (int)Input::get('chapter_id');
+            $chapter = Chapter::find($chapter_id);
+            if($chapter)
+            {
+                //Nếu là người tạo ra chapter hoặc là chủ của course
+                if(($chapter->user_id == Auth::id()) || Auth::user()->isOwnerOfCourse($chapter->course_id))
+                { 
+                    if($chapter->delete())
+                    {
+                            $status = 'success';
+                            $message = 'Xóa thành công!';
+                    }
+                    else
+                    {
+                        $status = 'success';
+                        $message = 'Xóa thất bại';
+                    }
+                    
+                }
+                else
+                {
+                    $status = 'invalid';
+                    $message = 'bạn không có quyền xóa khóa học này';
+                }
+            }
+            
+            return Response::json(array(
+                'status' => $status,
+                'message' => $message
+            ));
+        }//end ajax request
         
-        if(Chapter::find($chapter_id)->delete()){
-            return "xoa thanh cong";
-        }
-        return false;
+         return ';';
     }
     
     public function updateOrderOfLecture()
@@ -52,9 +88,25 @@ class ChapterController extends BaseController {
     public function getEditChapterForm()
     {
         if(Request::ajax()){
-            $chapter_id = Input::get('chapter_id');
+            
+            $chapter_id = (int) Input::get('chapter_id');
             $chapter = Chapter::find($chapter_id);
-            return View::make('admin.courses._edit_chapter_form',array('chapter'=>$chapter))->render();
+            if($chapter){
+                if(Auth::user()->isOwnerOfChapter($chapter_id))
+                {
+                    return Response::json(array(
+                        'status' => 'success',
+                        'html'  => View::make('admin.courses._edit_chapter_form',array('chapter'=>$chapter))->render()
+                    ));
+                }
+                else //Nếu không phải là người tạo ra chapter
+                {
+                    return Response::json(array(
+                        'status' => 'invalid',
+                        'message'  => 'Bạn không có quyền edit chapter này'
+                    ));
+                }
+            }
         }
     }
     

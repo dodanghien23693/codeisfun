@@ -1,35 +1,36 @@
 
 
-<div id="course_form" class="form-horizontal">
-    <input type="hidden" id="id" value='{{$course->id }}'>
+<form id="course_form" class="form-horizontal" action="<?php echo url('admin/course/edit/' . $course->id); ?>" role='form' method="post" accept-charset="UTF-8" enctype="multipart/form-data" novalidate="novalidate">
+    <input name="id" type="hidden" id="id" value='{{$course->id }}'>
+    <input name="cover_image_url" type="hidden" value="{{$course->cover_image_url}}">
     <div class="form-group">
         <label for="name" class="control-label col-sm-4">Name</label>
         <div class="col-sm-8">
-            <input data-validate="required" id="name" name="name" value='{{$course->name}}' class="form-control" type="text">
+            <input  id="name" name="name" value='{{$course->name}}' class="form-control" type="text">
         </div>        
     </div>
-    
+
     <div class="form-group">
         <label for="short_name" class="control-label col-sm-4">Short name</label>
         <div class="col-sm-8">
             <input id="short_name" name="short_name" value='{{$course->short_name}}' class="form-control" type="text">
         </div>        
     </div>
-    
+
     <div class="form-group">
         <label for="start_day" class="control-label col-sm-4">Start day</label>
         <div class="col-sm-8">
             <input id="start_day" type="date" name="start_day" value='{{$course->start_day}}' class="form-control" >
         </div>        
     </div>
-    
+
     <div class="form-group">
         <label for="end_day" class="control-label col-sm-4">End day</label>
         <div class="col-sm-8">
             <input  id="end_day" name="end_day" value='{{$course->end_day}}' class="form-control" type="date">
         </div>        
     </div>
-    
+
     <div class="form-group">
         <label for="about_the_course" class="control-label col-sm-4">About the course</label>
         <div class="col-sm-8">
@@ -40,64 +41,147 @@
     <div class="form-group">
         <label for="cover_image_url" class="control-label col-sm-4">Cover image</label>
         <div class="col-sm-8">
-            <input   name="cover_image_url" value='{{$course->cover_image_url}}' class="form-control" type="text">
+            <div class="fileinput fileinput-exists" data-provides="fileinput"><input type="hidden" value="" name="">
+                <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;" data-trigger="fileinput">
+                    <img src="http://placehold.it/200x150" alt="...">
+                </div>
+                <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 6px;">
+                    <img name="cover_image_url" src="{{$course->cover_image_url}}" style="max-height: 144px;"></div>
+                <div>
+                    <span class="btn btn-white btn-file">
+                        <span class="fileinput-new">Select image</span>
+                        <span class="fileinput-exists">Change</span>
+                        <input type="file" name="cover_image" accept="image/*">
+                    </span>
+
+                </div>
+            </div>
         </div>        
     </div>
-   
+
     <div class="form-group">
-        <label for="list_category" class="control-label col-sm-4">Cover image</label>
+        <label for="list_category" class="control-label col-sm-4">Category</label>
         <div class="col-sm-8">
-            <select  name="list_category" class="form-control" >
+            <select id="list_category" name="categories[]" class="form-control" multiple="multiple">
                 @foreach($list_category as $category)
                 <option value="{{$category->id}}">{{$category->name}}</option>
                 @endforeach
             </select>
         </div>        
     </div>
+
+    <div class="form-group">
+        <label for="list_writer" class="control-label col-sm-4">Invite Writer</label>
+        <div class="col-sm-8">
+            <select  id="list_writer" name="writers[]" class="form-control" multiple="multiple">
+                @if($list_writer)
+                    @foreach($list_writer as $writer)
+                    <option value="{{$writer->id}}">{{$writer->username}}</option>
+                    @endforeach
+                @endif
+            </select>
+        </div>        
+    </div>
     
-    <div  id='update-course'  class="btn btn-info col-sm-offset-4">Update</div>
+    <input type="submit"  id='update-course'  class="btn btn-info col-sm-offset-4" value="Update">
     <div  id='delete-course'  class="btn btn-info ">Delete</div>
-   
-</div>
 
-
+</form>
 <script>
-    $("#course_form #delete-course").click(function(){
-        if(confirm("Bạn có chắc chắn muốn xóa không?")==true){
-            var course_id = $("#course_form #id").val();
-            $.get('<?php echo url('admin/course/delete') ?>',{'id' : course_id},function(response,status){
-                if(status=='success'){
-                    window.location.replace('<?php echo url('admin/course'); ?>')
-                }
-                if(status=='error'){
-                    alert('That bai');
-                }
-            });
+    function string_to_slug(str) {
+        str = str.replace(/^\s+|\s+$/g, ''); // trim
+        str = str.toLowerCase();
+
+        // remove accents, swap ñ for n, etc
+        var from = "àáäâèéëêìíïîòóöôùúüûñç·/_,:;";
+        var to = "aaaaeeeeiiiioooouuuunc------";
+        for (var i = 0, l = from.length; i < l; i++) {
+            str = str.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
         }
+
+        str = str.replace(/[^a-z0-9 -]/g, '') // remove invalid chars
+                .replace(/\s+/g, '-') // collapse whitespace and replace by -
+                .replace(/-+/g, '-'); // collapse dashes
+
+        return str;
+    }
+
+    function update_course() {
+        alert('chuan bi submit');
+        form.preventDefault();
+        var id = $('#course_form #id').val(),
+                name = $('#course_form #name').val(),
+                short_name = $('#course_form #short_name').val(),
+                start_day = $('#course_form #start_day').val(),
+                end_day = $('#course_form #end_day').val(),
+                about_the_course = $('#course_form #about_the_course').val(),
+                cover_image_url = $('img[name="cover_image_url"]').attr('src');
+
+
+        $.post('<?php echo url('admin/course/edit/' . $course->id); ?>', {
+            id: id,
+            name: name,
+            short_name: short_name,
+            start_day: start_day,
+            end_day: end_day,
+            about_the_course: about_the_course,
+            cover_image_url: cover_image_url,
+        },
+                function(response, status) {
+                    if (status == 'success') {
+                        alert('thanh cong');
+                    }
+                    if (status == 'error') {
+                        alert('Không thành công');
+                    }
+                });
+    }
+
+    var update_course_url = '<?php echo url('admin/course/edit'); ?>';
+    $(document).ready(function() {
+        <?php $categories_selected = $course->categories()->get(array('categories.id'))->lists('id');  ?>
+        var categories_selected = $.parseJSON('<?php echo json_encode($categories_selected);?>');
+        //alert(categories_selected);
+        $("select#list_category").val(categories_selected);
         
+        $("select#list_category").multiselect();
+        
+        
+        <?php $writer_selected = $course->instructors()->get(array('users.id'))->lists('id');  ?>
+        var writer_selected = $.parseJSON('<?php echo json_encode($writer_selected);?>');
+        //alert(categories_selected);
+        $("select#list_writer").val(writer_selected);
+        $("select#list_writer").multiselect({
+            enableFiltering: true
+        });
+
+        $("input[name='cover_image']").on('change',function(){
+            var file = this.files[0];
+            var file_name = file.name;
+           $("input[name='cover_image_url']").val(file_name); 
+        });
+        
+        $("input#name").on('change', function() {
+            var name = $(this).val();
+            var slug = string_to_slug(name);
+            $("input#short_name").val(slug);
+        });
+
+
+        $("#course_form #delete-course").click(function() {
+            if (confirm("Bạn có chắc chắn muốn xóa không?") == true) {
+                var course_id = $("#course_form #id").val();
+                $.get('<?php echo url('admin/course/delete') ?>', {'id': course_id}, function(response, status) {
+                    if (status == 'success') {
+                        window.location.replace('<?php echo url('admin/course'); ?>')
+                    }
+                    if (status == 'error') {
+                        alert('That bai');
+                    }
+                });
+            }
+
+        });
     });
-    
-    $('#course_form #update-course').click(function(){
-      
-       var id = $('#course_form #id').val();
-       var name = $('#course_form #name').val();
-       var short_name = $('#course_form #short_name').val();
-       var start_day = $('#course_form #start_day').val();
-       var end_day = $('#course_form #end_day').val();
-       
-       $.post('<?php echo url('admin/course/edit/'.$course->id); ?>',{
-        'course-id':id,
-       'course-name' : name, 
-       'course-short_name' : short_name,
-        'course-start_day' : start_day,
-        'course-end_day' : end_day },
-        function(response,status){
-           if(status=='success'){
-              alert('thanh cong');
-           }
-           if(status=='error'){
-               alert('Không thành công');
-           }
-       });
-    });
+
 </script>

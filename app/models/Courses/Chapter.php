@@ -1,21 +1,17 @@
 <?php
-use LaravelBook\Ardent\Ardent;
 
-class Chapter extends Ardent{
+class Chapter extends Eloquent{
     
     protected $table = "chapters";
     
-    protected $fillable = array('name','order_of_chapter','description');
+    protected $fillable = array('name','order_of_chapter','description','user_id');
     
     //protected fields : id, course_id
     
     /**
     * Ardent validation rules
     */
-    public static $rules = array(
-      
-    );
-    
+
     /**
      * each chapter belong to one course
      */
@@ -39,9 +35,17 @@ class Chapter extends Ardent{
         return $chapters;
     }
     
+    public function user()
+    {
+        return $this->belongsTo('User', 'user_id');
+    }
+    
     public function delete()
     {
         $this->lectures()->delete();
+        
         return parent::delete();
     }
+    
+    
 }

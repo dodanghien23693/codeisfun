@@ -30,7 +30,7 @@ var url = '<?php echo url('register'); ?>';
 	<div class="login-form">
 		
 		<div class="login-content">		
-			<form method="post" role="form" id="form_register" novalidate="novalidate">
+			<form method="post" role="form" id="form_register" >
 				
 				<div class="form-register-success success-bar">
 					<i class="entypo-check"></i>
@@ -48,12 +48,14 @@ var url = '<?php echo url('register'); ?>';
 					<div class="step current" id="step-1">
 					
 						<div class="form-group">
+                                                    <div class="input-group">
+                                                       
                                                         <div class=" input-group col-sm-6">
                                                                 <input type="text" class="form-control " name="first_name" id="first_name" placeholder="First Name" autocomplete="on">
-								
 							</div>
-                                                    <div class="input-group col-sm-6">
-                                                    <input type="text" class="form-control " name="last_name" id="last_name" placeholder="Last Name" autocomplete="off">
+                                                        <div class="input-group col-sm-6">
+                                                        <input type="text" class="form-control " name="last_name" id="last_name" placeholder="Last Name" autocomplete="off">
+                                                     </div>
                                                     </div>
                                                  </div>
 
@@ -63,7 +65,7 @@ var url = '<?php echo url('register'); ?>';
 									<i class="entypo-user-add"></i>
 								</div>
 								
-								<input type="text" class="form-control" name="username" id="username" placeholder="Username" data-mask="[a-zA-Z0-1\.]+" data-is-regex="true" autocomplete="off">
+								<input type="text" class="form-control" name="username" id="username" placeholder="Username" >
 							</div>
 						</div>
 					
@@ -133,6 +135,7 @@ var url = '<?php echo url('register'); ?>';
 
 
 	@include('admin.layouts._scripts')
+
         <script src="<?php echo asset('assets/backend/js/neon-register.js');?>"></script>
 
 </body></html>

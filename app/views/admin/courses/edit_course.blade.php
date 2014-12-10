@@ -2,8 +2,8 @@
 @section('content')
 
 <?php 
-   
     $chapters = $course->chapters()->orderBy('order_of_chapter')->get();
+    $chapters = Chapter::with('user')->where('course_id','=',$course->id)->get();
     $quizzes = Quiz::where('course_id','=',$course->id)->get();
 ?>
 
@@ -43,5 +43,59 @@
 @stop
 
 @section('scripts')
+
+
+<!-- _course_form edit scripts validattion-->
+<script>
+ 
+jQuery.validator.addMethod("greaterThan", function(value, element, params) {
+    if ($(params[0]).val() != '') {    
+        if (!/Invalid|NaN/.test(new Date(value))) {
+            return new Date(value) > new Date($(params[0]).val());
+        }    
+        return isNaN(value) && isNaN($(params[0]).val()) || (Number(value) > Number($(params[0]).val()));
+    };
+    return true; 
+},'Must be greater than {1}.');
+
+   $(document).ready(function(){
+    
+
+    $("#course_form").validate({
+        rules : {
+            name : {
+                required : true,
+                minlength:5
+            },
+            short_name : {
+                required : true,
+            },
+            start_day:{
+                required:true,
+                date:true,
+            },
+            end_day:{
+                required:true,
+                date:true,
+                greaterThan: ["#start_day","Start Day"]
+            },
+            categories:{
+                required:true
+            }
+        },
+        
+       submitHandler: function(form) {
+           
+           form.submit();
+        }
+    });
+    
+});
+
+</script>
+<!-- end _course_form edit scripts -->
+
+
+
     @include('admin.courses._modal_form')
 @stop

@@ -39,7 +39,7 @@
        @include("admin.menu.menu")
        
        <div class="main-content"  >
-          <?php // @include("admin.layouts._notification") ?>
+          @include("admin.layouts._notification")
            
            <div id="main-content-ajax">
              <!-- main content -->

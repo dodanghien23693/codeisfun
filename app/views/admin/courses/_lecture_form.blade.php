@@ -54,42 +54,45 @@
         });
 
 
-        function registerEventLecture() {
 
-            $(".delete-lecture-btn").click(function() {
-                if (window.confirm("Bạn có chắc chắn muốn xóa lecture này không?") == true) {
-                    var lecture_id = $(this).closest('.dd-item').attr('data-id');
-                    $.post('<?php echo url('admin/lecture/delete') ?>', {lecture_id: lecture_id}, function(response, status) {
-                        if (status == 'success') {
-
-                            $('.dd-item[data-id=' + lecture_id + ']').remove();
-                        }
-                        if (status == 'error') {
-                            alert('xoa that bai');
-                        }
-                    });
-                }
-            });
-
-            $('.edit-lecture-btn').click(function(event) {   
-                event.preventDefault();
-                var lecture_id = $(this).closest(".dd-item").attr('data-id');
-                $('#edit-lecture-modal').modal('show');
-                $("#edit-lecture-modal .modal-footer button").addClass('update-lecture-modal-btn');
-                $("#edit-lecture-modal .modal-footer button").removeClass('create-lecture-modal-btn');
-                $('#edit-lecture-modal .modal-body').html('Is loading.......');
-                $.get('<?php echo url('admin/lecture/get-edit-form'); ?>', {lecture_id: lecture_id}, function(response, status) {
+        $(".list-lecture").delegate(".delete-lecture-btn",'click',function() {
+            if (window.confirm("Bạn có chắc chắn muốn xóa lecture này không?") == true) {
+                var chapter_id = $(this).closest('.tab-pane').attr('chapter-id');
+                var lecture_id = $(this).closest('.dd-item').attr('data-id');
+                $.post('<?php echo url('admin/lecture/delete') ?>', {chapter_id:chapter_id,lecture_id: lecture_id}, function(response, status) {
                     if (status == 'success') {
-                        $('#edit-lecture-modal .modal-body').html(response);
+                        if(response.status=='success'){
+                            $('.dd-item[data-id=' + lecture_id + ']').remove();
+                            toastr.success(response.message);
+                        }
+                        if(response.status=='invalid'){
+                            toastr.error(response.message);
+                        }
+                        
+                    }
+                    if (status == 'error') {
+                        alert('xoa that bai');
                     }
                 });
-            });
+            }
+        });
 
-        }
+        $(".list-lecture").delegate('.edit-lecture-btn','click',function(event) {   
+            event.preventDefault();
+            var lecture_id = $(this).closest(".dd-item").attr('data-id');
+            var name = $(this).closest(".dd-item").find('.lecture-name').text();
+            var chapter_id = $(this).closest('.tab-pane').attr('chapter-id');
+            $("#edit-lecture-modal input[name='chapter_id']").val(chapter_id);
+            $("#edit-lecture-modal input[name='id']").val(lecture_id);
+            $("#edit-lecture-modal input[name='name']").val(name.trim());
+            $("#edit-lecture-modal #save-lecture").show(500);
+            $("#edit-lecture-modal #iframe-lecture").html('');
+            $("#edit-lecture-modal #save-lecture").addClass('update-lecture-with-name');
+            $("#edit-lecture-modal #save-lecture").removeClass('create-lecture-with-name');
+            $('#edit-lecture-modal').modal('show');  
+        });
 
 
-
-        registerEventLecture();
 
          function getListResource(){
            var list_resource = {};
@@ -100,17 +103,25 @@
         }
         
         $(".create-lecture-btn").click(function() {
-
+            
             $("#edit-lecture-modal").modal('show');
-            $("#edit-lecture-modal .modal-footer button").addClass('create-lecture-modal-btn');
-            $("#edit-lecture-modal .modal-footer button").removeClass('update-lecture-modal-btn');
+            $("#edit-lecture-modal #save-lecture").show(500);
+            $("#edit-lecture-modal #iframe-lecture").hide(100);
+            $("#edit-lecture-modal  #save-lecture").addClass('create-lecture-with-name');
+            $("#edit-lecture-modal  #save-lecture").removeClass('update-lecture-with-name');
+            
             var chapter_id = $(this).closest('.tab-pane').attr('chapter-id');
+            $("#edit-lecture-modal input[name='chapter_id']").val(chapter_id);
+            /*
             $('#edit-lecture-modal .modal-body').html('Is loading.......');
+            
             $.get('<?php echo url('admin/lecture/get-edit-form'); ?>',{chapter_id : chapter_id},function(response, status){
                 if (status == 'success') {
                     $('#edit-lecture-modal .modal-body').html(response);
                 }
             });
+            */
+            
         });
 
 
@@ -118,7 +129,7 @@
         $("#edit-lecture-modal").delegate(".create-lecture-modal-btn",'click',function(e) {
             e.preventDefault();
             var chapter_id = $("#lecture-form-modal input[name='chapter_id']").val();
-            var name = $("#lecture-form-modal input[name='name']").val();
+            var name = $("#lecture-form-modal input[name='name']").val(); 
             var list_resource = getListResource();
             var lecture_list = $("#chapter"+chapter_id+" .list-lecture ul");
            
@@ -142,8 +153,9 @@
                             + '</li>';
 
                     $(lecture_list).append(newItem);
-                    registerEventLecture();
+                   // registerEventLecture();
                     $("#edit-lecture-modal").modal('hide');
+                    
                 }
                 if (status == 'error') {
 
@@ -166,7 +178,7 @@
                     $("#edit-lecture-modal").modal('hide');
                 }
                 if (status == 'error') {
-                    alert('that bai');
+                    toastr.error('that bai!');
                 }
             });
         });
@@ -179,10 +191,10 @@
             $.post('<?php echo url('admin/chapter/update-order-lecture') ?>', {order_lecture: order, chapter_id: chapter_id}, function(response, status) {
                 if (status == 'success') {
 
-                    alert(response);
+                    toastr.success(response);
                 }
                 if (status == 'error') {
-                    alert('cập nhật thất bại');
+                    toastr.error('cập nhật thất bại');
                 }
 
             });

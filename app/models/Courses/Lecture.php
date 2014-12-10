@@ -45,8 +45,15 @@ class Lecture extends Ardent{
         return $this->belongsTo('Chapter', 'chapter_id');
     }
     
+
     public function delete()
     {
+        
+        $resources = $this->resources;
+        foreach($resources as $resource){
+          FileController::deleteFile($resource['path']);
+        }
+
         $this->resources()->delete();
         return parent::delete();
     }

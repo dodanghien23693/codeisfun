@@ -21,6 +21,7 @@ class CreateCoursesTable extends Migration {
 			$table->date('end_day');
 			$table->text('about_the_course');
 			$table->float('cost', 6,2)->default(0.0);
+                        $table->enum('status',array('public','pedding','invalid'));
                         $table->softDeletes();
 			$table->timestamps();
 		});
