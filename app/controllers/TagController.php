@@ -3,7 +3,21 @@
 
 
 class TagController extends BaseController{
-    
+     public function __construct()
+    {
+       if(Auth::user())
+       {
+        if(Auth::user()->role->name=="Manager" || Auth::user()->role->name=="Admin")
+        {
+
+        }
+        else
+        {
+            echo "Wrong Site";
+         die();
+        }
+       }
+    }//
 
 
     /**

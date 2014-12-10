@@ -4,32 +4,32 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/codeisfun/laravel/app/controllers/QuizController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/QuestionController.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/LectureController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/404.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Courses/Chapter.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/new_course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/edit_course.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_quiz_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Courses/Course.php</file>
-            <file>file:/C:/codeisfun/laravel/app/filters.php</file>
             <file>file:/C:/codeisfun/laravel/app/routes.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_chapter_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/CourseController.php</file>
-            <file>file:/C:/codeisfun/laravel/app/models/Courses/Lecture.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/view_all_course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_styles.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/manager/view_all_course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_modal_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Courses/ResourceType.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/AuthController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_lecture_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/view-course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/User.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/public/auth/register.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/controllers/FileController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Courses/Quiz.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/ChapterController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_question_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_course_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_scripts.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Courses/Resource.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_edit_question_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_edit_lecture_form.blade.php</file>
-            <file>file:/C:/codeisfun/laravel/public/assets/backend/js/neon-register.js</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Posts/Post.php</file>
         </group>
     </open-files>
 </project-private>

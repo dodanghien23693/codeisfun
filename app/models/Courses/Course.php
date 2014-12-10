@@ -69,7 +69,7 @@ class Course extends Eloquent{
         return null;
     }
     
-    public function delete()
+    public function forceDeletedelete()
     {
         $this->categories()->detach();
         $this->instructors()->detach();

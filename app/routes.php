@@ -14,7 +14,27 @@
 Route::get('login-as/{username}',function($username){
     Auth::attempt(array('username'=>$username,'password'=>$username));
     if(Auth::check()){
-        return 'Bạn đã đăng nhập bằng tài khoản:'.Auth::user()->username;
+        $message = '';
+        if(Auth::user()->isManager()){
+            $list = '';
+            foreach(Auth::user()->categories as $category)
+            {
+                $list .= $category->name.', ';
+            }
+            $message = 'có quyền quản lý đối với các danh mục: '.$list;         
+        }
+        if(Auth::user()->isWriter()){
+            $list = '';
+            foreach(Auth::user()->categories as $category)
+            {
+                $list .= $category->name .', ';
+            }
+            $message = 'có quyền viết bài đối với các danh mục: '.$list;         
+        }
+
+        return '<p>Bạn đã đăng nhập bằng tài khoản:'.Auth::user()->username.'</p>'.
+                $message;
+               
     }
 });
 

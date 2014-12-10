@@ -4,7 +4,7 @@
 
 <div class="row">
     <div class="col-md-10 col-md-offset-2">
-        <h1>Edit Post</h1>
+        <h1>View Post</h1>
 
         @if ($errors->any())
         <div class="alert alert-danger">
@@ -20,69 +20,58 @@
 <div class="form-group">
     {{ Form::label('user_id', 'User_name:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        <input type="text" name="username" value="<?php echo $post->user->username ?>" class = "form-control" disabled = "disable" />
-        <input type="hidden" name="user_id" value="<?php echo $post->user_id ?>" class = "form-control" disabled = "disable" />
+       {{$post->user->username}}
     </div>
 </div>
 
 <div class="form-group">
     {{ Form::label('slug', 'Slug:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        {{ Form::text('slug', Input::old('slug'), array('class'=>'form-control', 'placeholder'=>'Slug')) }}
+        {{ $post->slug}}
     </div>
 </div>
 
 <div class="form-group">
     {{ Form::label('title', 'Title:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        {{ Form::text('title', Input::old('title'), array('class'=>'form-control', 'placeholder'=>'Title')) }}
+        {{ $post->title}}
     </div>
 </div>
 
 <div class="form-group">
     {{ Form::label('cover_image_file', 'Cover_image:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        {{ Form::file('cover_image_file',array('class'=>'form-control')) }}
+     <img src = "<?php echo $post->cover_image_url ?>" /> 
     </div>
 </div>
 
 <div class="form-group">
     {{ Form::label('description', 'Description:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        {{ Form::text('description', Input::old('description'), array('class'=>'form-control', 'placeholder'=>'Description')) }}
+        {{ $post->description }}
     </div>
 </div>
 
 <div class="form-group">
     {{ Form::label('content', 'Content:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        {{ Form::textarea('content', Input::old('content'), array('class'=>'ckeditor')) }}
+        {{  $post->content }}
     </div>
 </div>
 
 <div class="form-group">
-            {{ Form::label('status_id', 'Status:', array('class'=>'col-md-2 control-label')) }}
-            <div class="col-sm-10">
-                <?php 
-                $role = Auth::user()->role->name;
-if($role=="Manager"){
-                $avail_statuses = PostStatus::lists('name','id');
-            }
-            if($role=="Writer")
-            {
-                 $avail_statuses = PostStatus::where('name','Hide')->lists('name','id');
-            }
-                 ?>
-              {{ Form::select('post_status_id',$avail_statuses ,null,array('class'=>'form-control') ) }}
-            </div>
-        </div>
+    {{ Form::label('Post_status_id', 'Status: ', array('class'=>'col-md-2 control-label')) }}
+    <div class="col-sm-10">
+        {{ Form::select('post_status_id', PostStatus::lists('name','id'),null,array('class'=>'form-control') ) }}
+    </div>
+</div>
 
 
 
 <div class="form-group">
     {{ Form::label('public_time', 'Public_time:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        <input type="date" class="form-control" placeholder="Public_time" disabled="disabled" name="public_time" id="public_time" value={{$post->public_time}}>
+        <input type="date" class="form-control" placeholder="Public_time" name="public_time" id="public_time" value="{{$post->public_time}}">
     </div>
 </div>
 
@@ -96,14 +85,14 @@ if($role=="Manager"){
 <div class="form-group">
     {{ Form::label('view_count', 'View_count:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        {{ Form::text('view_count', Input::old('view_count'), array('class'=>'form-control','disabled'=>'disabled', 'placeholder'=>'View_count')) }}
+        {{ $post->view_count }}
     </div>
 </div>
 
 <div class="form-group">
     {{ Form::label('comment_count', 'Comment_count:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        {{ Form::text('comment_count', Input::old('comment_count'), array('class'=>'form-control','disabled'=>'disabled', 'placeholder'=>'Comment_count')) }}
+        {{ $post->comment_count }}
     </div>
 </div>
 
@@ -117,14 +106,25 @@ if($role=="Manager"){
 <div class="form-group">
             {{ Form::label('post_category[]', 'Category:', array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-
-              {{Form::select('post_category[]', Category::lists('name','id'),Post::find($post->id)->categories->lists('id') , array('multiple','class'=>'form-control'));}}
+                <?php 
+                $post_cats = $post->categories->lists('name');
+                if($post_cats)
+                {
+                    echo implode(', ',$post_cats);
+                }
+                ?>
             </div>
         </div>
     <div class="form-group">
         {{ Form::label('post_tag[]', 'Tag:', array('class'=>'col-md-2 control-label')) }}
         <div class="col-sm-10">
-              {{Form::select('post_tag[]', Tag::lists('name','id'),Post::find($post->id)->tags->lists('id') , array('multiple','class'=>'form-control'));}}
+             <?php 
+                $post_tags = $post->tags->lists('name');
+                if($post_tags)
+                {
+                    echo implode(', ',$post_tags);
+                }
+                ?>
         </div>
     </div>
 
@@ -132,12 +132,16 @@ if($role=="Manager"){
 <div class="form-group">
     <label class="col-sm-2 control-label">&nbsp;</label>
     <div class="col-sm-10">
-        {{ Form::submit('Update', array('class' => 'btn btn-lg btn-primary')) }}
-        {{ link_to_route('admin.post.show', 'Cancel', $post->id, array('class' => 'btn btn-lg btn-default')) }}
+        {{ Form::submit('Update', array('class' => 'btn btn-lg btn-primary')) }}&nbsp;&nbsp;
+        {{ link_to_route('admin.post.show', 'Cancel', $post->id, array('class' => 'btn btn-lg btn-default')) }}&nbsp;&nbsp;
+        {{ Form::close() }}
+        {{ Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('admin.post.destroy', $post->id))) }}
+                            {{ Form::submit('Delete', array('class' => 'btn btn-danger btn-lg', 'id' => 'delete')) }}
+                        {{ Form::close() }}
     </div>
 </div>
 <script type="text/javascript" src="{{asset('')}}/ckeditor/sample.js"></script>
 <script type="text/javascript" src="{{asset('')}}/ckeditor/ckeditor.js"></script>
-{{ Form::close() }}
+
 
 @stop

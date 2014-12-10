@@ -8,25 +8,26 @@ class CourseController extends BaseController {
         if(Auth::user()->isAdmin()){
             $courses = Course::with('instructors')->get();
         }
-       /*
+       
         if(Auth::user()->isManager()){
-           
-           $user_category = Auth::user()->categories()->get(array('categories.id'))->lists('id');
-
+            $user_category = Auth::user()->categories()->get(array('categories.id'))->lists('id');
             $courses = Course::whereHas('categories', function($query){
                 $user_category = Auth::user()->categories()->get(array('categories.id'))->lists('id');
                 $query->whereIn('categories.id',$user_category);
-            })->get()->toArray();
-           
-            
+            })->get();
         }
-        * 
-        */
 
-        return View::make('admin.courses.admin.view_all_course')->with(array(
-            'courses'=> Course::with('instructors')->get(),
+        if(Auth::user()->isWriter()){
+            $courses = Course::whereHas('instructors', function($q){
+                $q->where('user_id','=',Auth::id());
+            })->get();
+        }
+        
+        
+        return View::make('admin.courses.view_all_course')->with(array(
+            'courses'=> $courses,
             'courses_trashed' => Course::onlyTrashed()->get()
-            ));
+        ));
         
     }
     
@@ -89,7 +90,8 @@ class CourseController extends BaseController {
 
                 //return var_dump($invited_writers);
                 $instructors = $course->instructors()->wherePivot('is_owner', '=', 0)->get(array('users.id'))->lists('id');
-                $course->instructors()->detach($instructors);
+                if(count($instructors)) $course->instructors()->detach($instructors);
+                
                 if($invited_writers){  
                     $course->instructors()->attach($invited_writers);
                 }
@@ -158,15 +160,29 @@ class CourseController extends BaseController {
     
     public function deleteCourse()
     {
-        $id = Input::get('id');
-       
-        if(Course::find($id)->delete()){
+        
+        $course_id = Input::get('id');
+        
+        if(Auth::user()->isDeleteAbleOfCourse($course_id))
+        {
+            if(Course::find($course_id)->delete()){
             
-            return 'xóa thành công';
+                return Response::json(array(
+                 'status' => 'success',
+                 'message' => 'Delete course successful'
+                ));
+                
+            }
+            
         }
-        else{
-            return 'Thất bại';
+        else
+        {
+            return Response::json(array(
+                'status' => 'invalid',
+                'message' => 'You unable delete this course'
+            ));
         }
+        
     }
     
     public function updateOrderOfChapter()
@@ -209,9 +225,9 @@ class CourseController extends BaseController {
                 {
                     $list_witer = User::where('role_id','=',2)->where('id','!=',  $course->owner()->id)->get();
                     return View::make('admin.courses.edit_course')->with(array(
-                    'course'=> $course,
-                    'list_category' => Auth::user()->categories,
-                    'list_writer' => $list_witer
+                        'course'=> $course,
+                        'list_category' => Auth::user()->categories,
+                        'list_writer' => $list_witer
                     ));
                 }
                 else

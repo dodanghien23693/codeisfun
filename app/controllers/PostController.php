@@ -10,9 +10,34 @@ class PostController extends BaseController {
      * 
      * @return View
      */
+    public function __construct()
+    {
+       if(Auth::user())
+       {
+        if(Auth::user()->role->id==3 || Auth::user()->role->id==4||Auth::user()->role->id==2)
+        {
+
+        }
+        else
+        {
+            echo "Wrong Site";
+         die();
+        }
+       }
+    }//
+    
     public function index() {
 
+
         $posts = Post::all();
+        if(Auth::check())
+        {
+            if(Auth::user()->role->id==4){};
+            if(Auth::user()->role->id==3){};
+            if(Auth::user()->role->id==2){
+                $posts=Auth::user()->posts()->paginate(10);
+            }
+        }
         //$posts=Post::where('id','>','0')->get();
         return View::make('admin.posts.index', compact("posts"));
     }
@@ -39,7 +64,18 @@ class PostController extends BaseController {
      * @retrun View
      */
     public function create() {
-        return View::make('admin.posts.create');
+       if(Auth::user())
+       {
+        if(Auth::user()->role->id==3 || Auth::user()->role->id==4||Auth::user()->role->id==2)
+        {
+                return View::make('admin.posts.create');    
+        }
+        else
+        {
+            echo "Wrong Site";
+         die();
+        }
+       }
     }
 
     /**
@@ -80,13 +116,28 @@ $post->save();
      */
     public function edit($id) {
 
-        //  return View::make('admin.posts.edit');
+      if(Auth::user())
+       {
+        if(Auth::user()->role->id==3 ||Auth::user()->role->id==2)
+        {
+
+        }
+        else
+        {
+            echo "Wrong Site";
+         die();
+        }
+       }
 
         $post = Post::find($id);
         if ($post) {
+            if(Auth::user()->role->id==2)
+            {
+                if($post->user->id!==Auth::user()->id){die("Wrong Site");}
+            }
             return View::make('admin.posts.edit', compact('post'));
         } else {
-            App:abort(404);
+           dd($post);
         }
     }
 
@@ -146,7 +197,47 @@ $post->save();
 
         if ($post) {
             $post->delete();
+            
             return Redirect::route('admin.post.index')->with('message', "Bài viết: '$post->title' đã được xóa");
+        }
+    }
+    public function getPending()
+    {
+        if(Auth::user())
+       {
+        if(Auth::user()->role->id==3)
+        {
+
+        }
+        else
+        {
+            echo "Wrong Site";
+         die();
+        }
+       }
+         $posts = Post::where('post_status_id',2)->paginate(10);
+        
+        return View::make('admin.posts.pending', compact("posts"));
+    }
+   
+   public function getPendingPost($id) {
+    if(Auth::user())
+       {
+        if(Auth::user()->role->id==3)
+        {
+
+        }
+        else
+        {
+            echo "Wrong Site";
+         die();
+        }
+       }
+        $post = Post::find($id);
+        if ($post) {
+            return View::make('admin.posts.show_admin')->with('post', $post);
+        } else {
+            App::abort(404);
         }
     }
 

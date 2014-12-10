@@ -21,7 +21,8 @@
         <div class="form-group">
             {{ Form::label('user_id', 'User_name:', array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-			  {{ Form::select('user_id', User::lists('username','id'),null,array('class'=>'form-control') ) }}
+			 <input type="text" name="username" value="<?php echo Auth::user()->username ?>" class = "form-control" disabled = "disabled" />
+             <input type="hidden" name="user_id" value="<?php echo Auth::user()->id ?>" class = "form-control"  />
             </div>
         </div>
 
@@ -61,9 +62,19 @@
         </div>
 
         <div class="form-group">
-            {{ Form::label('status_id', 'Status_id:', array('class'=>'col-md-2 control-label')) }}
+            {{ Form::label('status_id', 'Status:', array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-              {{ Form::select('post_status_id', PostStatus::lists('name','id'),null,array('class'=>'form-control') ) }}
+                <?php 
+                $role = Auth::user()->role->name;
+if($role=="Admin" || $role == "Manager"){
+                $avail_statuses = PostStatus::lists('name','id');
+            }
+            if($role=="Writer")
+            {
+                 $avail_statuses = PostStatus::where('name','Hide')->lists('name','id');
+            }
+                 ?>
+              {{ Form::select('post_status_id',$avail_statuses ,null,array('class'=>'form-control') ) }}
             </div>
         </div>
 

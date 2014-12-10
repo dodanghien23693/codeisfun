@@ -173,9 +173,17 @@
                 var course_id = $("#course_form #id").val();
                 $.get('<?php echo url('admin/course/delete') ?>', {'id': course_id}, function(response, status) {
                     if (status == 'success') {
-                        window.location.replace('<?php echo url('admin/course'); ?>')
+                        if(response.status=='success'){
+                            window.location.replace('<?php echo url('admin/course'); ?>')
+                        }
+                        if(response.status=='invalid')
+                        {
+                            toastr.error(response.message);
+                        }
+ 
                     }
                     if (status == 'error') {
+                        
                         alert('That bai');
                     }
                 });

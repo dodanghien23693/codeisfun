@@ -7,16 +7,40 @@ class UserController extends BaseController {
 	 *
 	 * @return Response
 	 */
-public function search()
-{
-    $name = Input::get('character');
-    $searchResult = User::where('email', 'like', "%".$name."%")->paginate(10);
-    return View::make('admin.users.index')
-            ->with('email', $name)
-            ->with('users', $searchResult);
-}
+
+	 public function __construct()
+    {
+
+       if(Auth::user())
+       {
+        if( Auth::user()->role->name=="Admin")
+        {
+
+        }
+        else
+        {
+			echo "Wrong site";
+			die();
+        }	
+       }
+       else
+       {
+       	echo "Wrong site";
+			die();
+       }
+    }//
+	public function search()
+	{
+
+	    $name = Input::get('character');
+	    $searchResult = User::where('username', 'like', "%".$name."%")->paginate(10);
+	    return View::make('admin.users.index')
+	            ->with('email', $name)
+	            ->with('users', $searchResult);
+	}
 	public function index()
 	{
+
 		$users = User::all();
 
 		return View::make('admin.users.index', compact('users'));
@@ -40,13 +64,14 @@ public function search()
 	public function store()
 	{
 		$input = Input::all();
+		$input['password'] = Hash::make($input['password']);
 		User::$rules = array();
 		$validation = Validator::make($input, User::$rules);
 
 		if ($validation->passes())
 		{
 			try{
-			User::create(Input::all());
+			User::create($input);
 			//$b=User::save();
 			
 			}
@@ -86,14 +111,18 @@ public function search()
 	 */
 	public function edit($id)
 	{
-		$user = User::find($id);
 
-		if (is_null($user))
-		{
-			return Redirect::route('admin.user.index');
-		}
+		$user_login = Auth::user();
+		
+			$user = User::find($id);
 
-		return View::make('admin.users.edit', compact('user'));
+			if (is_null($user))
+			{
+				return Redirect::route('admin.user.index');
+			}
+
+			return View::make('admin.users.edit', compact('user'));
+	
 	}
 
 	/**
@@ -139,5 +168,35 @@ public function search()
 
 		return Redirect::route('admin.user.index');
 	}
+	public function getSetCategory(){
+		return View::make('admin.users.set_category');
+	}
+	public function getUserCategories()
+	{
+	$user=User::find(Input::get('user_id'));
+	if($user)
+	{
+		return $user->categories->lists('id');
+
+	}
+	
+	}
+public function postSetCategory()
+{
+	
+	$user=User::find(Input::get('user_id'));
+
+	if($user)
+	{
+		$cats=Input::get('post_category');
+		
+		$user->categories()->sync((array)$cats);
+		
+		$user->save();
+		
+
+	}
+	return Redirect::route('admin.user.index');
+}
 
 }

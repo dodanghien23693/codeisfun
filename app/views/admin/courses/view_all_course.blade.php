@@ -7,10 +7,10 @@
         <tr>
             <th>id</th>
             <th>name</th>
-            <th>short name</th>
             <th>start day</th>
             <th>end day</th>
             <th>Instructor</th>
+            <th>Categories</th>
             <th>action</th>
         </tr>
     </thead>
@@ -19,12 +19,16 @@
         <tr>
             <td>{{$course->id}}</td>
             <td>{{$course->name}}</td>
-            <td>{{$course->short_name}}</td>
             <td>{{$course->start_day}}</td>
             <td>{{$course->end_day}}</td>
             <td>
                 @foreach($course->instructors as $instructor)
                 <div>{{$instructor['username']}}</div>
+                @endforeach
+            </td>
+            <td>
+                @foreach($course->categories as $category)
+                <div>{{$category->name}}</div>
                 @endforeach
             </td>
             <td>

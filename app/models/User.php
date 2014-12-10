@@ -139,7 +139,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
 
     public function createdCourses()
     {
-        return $this->belongsToMany("Course", "course_instructor");
+        return $this->belongsToMany("Course", "course_instructor",'user_id');
     }
 
     public function joinedCourses()
@@ -175,7 +175,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         $course = $this->createdCourses()->wherePivot('course_id', '=', $course_id)->first();      
         //$course = Course::withTrashed()->find($course_id);
         //$user = $course->instructors()->wherePivot('is_owner', '=', 1)->first();
-        if($course)
+        if(count($course))
         {
             return true;
         }
@@ -229,6 +229,25 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->id == Quiz::find($quiz_id)->user_id;
     }
     
+    public function isDeleteAbleOfCourse($course_id)
+    {
+        $course = Course::find($course_id);
+        
+            $courses = $course::whereHas('categories', function($query){
+                $user_category = $this->categories()->get(array('categories.id'))->lists('id');
+                $query->whereIn('categories.id',$user_category);
+            })->get();
+            
+        $isManagerOfCourse = false;
+        
+        if(count($courses) && $this->isManager())
+        {
+            $isManagerOfCourse = true;
+        }
+
+        if ($this->isOwnerOfCourse($course_id) || $this->isAdmin() || $isManagerOfCourse) return true;
+        else return false;
+    }
     /**
      * 
      */
