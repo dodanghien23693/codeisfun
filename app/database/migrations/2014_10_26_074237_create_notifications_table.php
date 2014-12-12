@@ -15,13 +15,13 @@ class CreateNotificationsTable extends Migration {
 		Schema::create('notifications', function(Blueprint $table)
 		{
 			$table->increments('id');
-			$table->integer('user_id')->unsigned()->index();
 			$table->string('description', 300);
-			$table->boolean('is_read');
+                        $table->string('link',300);
 			$table->integer('type_notification_id')->unsigned()->index();
+                        $table->integer('model_type');
+                        $table->integer('model_id');
 			$table->timestamps();
                         
-                        $table->foreign('user_id')->references('id')->on('users');
                         $table->foreign('type_notification_id')->references('id')->on('notifications');
 		});
 	}

@@ -1,19 +1,19 @@
 <?php
-use LaravelBook\Ardent\Ardent;
 
-class Role extends Ardent{
+class Role extends Eloquent{
+    
+    
+    PUBLIC STATIC $ROLE_USER = 1;
+    PUBLIC STATIC $ROLE_WRITER = 2;
+    PUBLIC STATIC $ROLE_MANAGER = 3;
+    PUBLIC STATIC $ROLE_ADMIN = 4;
     
     protected $table = "roles";
     
     public $timestamps = false;
     protected $fillable = array('name');
     
-    /**
-    * Ardent validation rules
-    */
-    public static $rules = array(
-      
-    );
+
     
     /* user
      * 

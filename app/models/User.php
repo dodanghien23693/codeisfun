@@ -55,6 +55,14 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         
     );
 
+    /**
+     * 
+     */
+    public function notifications()
+    {
+        return $this->belongsToMany('Notification', 'user_notification', 'user_id','notification_id');
+    }
+    
     
     /**
      * 
@@ -116,13 +124,6 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
         return $this->belongsTo("Role",'role_id');
     }
 
-    /* Notifications
-     * 
-     */
-    public function notifications()
-    {
-        return $this->hasMany("Notification");
-    }
 
     /** Subscriptions
      * 

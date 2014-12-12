@@ -144,6 +144,7 @@ $("input#name").change(function(){
         var today = now.getFullYear() + '-' + month + '-' + day;
         return today;
     }
+    
     function getStartDay(){
         alert($("#start_day").val());
         return $("#start_day").val();

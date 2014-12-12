@@ -1524,8 +1524,8 @@ function fit_main_content_height()
 			sm_height -= hm_height;
 		}
 		
-		//public_vars.$mainContent.css('min-height', doc_height);
-		//public_vars.$sidebarMenu.css('min-height', doc_height);
+		public_vars.$mainContent.css('min-height', '600px');
+		public_vars.$sidebarMenu.css('min-height', 450);
 		//public_vars.$chat.css('min-height', doc_height);
 		
 		if(typeof fit_mail_container_height != 'undefined')

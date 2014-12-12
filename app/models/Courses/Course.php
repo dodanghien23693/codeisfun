@@ -82,5 +82,49 @@ class Course extends Eloquent{
         return parent::delete();
     }
     
+    
+    public function getLink()
+    {
+        return action('CourseController@index');
+    }
+    
+    
+    public function createNotificationUpdate()
+    {
+        $notification = array(
+            'description' => Auth::user()->username.' had updated course '.$this->name, 
+            'type_notification_id' => TypeNotification::$TYPE_NOTIFICATION_UPDATE,
+            'link'  => '',
+            'model_type' => Notification::$MODEL_TYPE_COURSE,
+            'model_id' => $this->id
+        );
+        
+        //Notification::addOrUpdate($user, $notification);
+        
+        /*
+        $noti = Notification::createNew(
+                Auth::user()->username.' had updated course '.$this->name, 
+                TypeNotification::$TYPE_NOTIFICATION_UPDATE,
+                '',
+                Notification::$MODEL_TYPE_COURSE, 
+                $this->id
+                );
+        */
+        
+        $instructors = $this->instructors()->wherePivot('user_id', '!=', Auth::id())->get(array('users.id'))->lists('id');
+        if(count($instructors))
+        {
+            foreach($instructors as $intr)
+            {
+                Notification::addOrUpdate(User::find($intr), $notification);
+            }
+            
+            //$noti->user()->attach($instructors);
+        }
+
+    }
+    
+   
+
 }
 

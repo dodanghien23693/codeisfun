@@ -11,36 +11,35 @@ class PasswordBroker {
 	 *
 	 * @var int
 	 */
-	const REMINDER_SENT = 'ok';
+	const REMINDER_SENT = 'reminders.sent';
 
 	/**
 	 * Constant representing a successfully reset password.
 	 *
 	 * @var int
 	 */
-	const PASSWORD_RESET = 'Mật khẩu của bạn đã được thay đổi thành công!';
+	const PASSWORD_RESET = 'reminders.reset';
 
 	/**
 	 * Constant representing the user not found response.
 	 *
 	 * @var int
 	 */
-        
-	const INVALID_USER = 'invalid';
+	const INVALID_USER = 'reminders.user';
 
 	/**
 	 * Constant representing an invalid password.
 	 *
 	 * @var int
 	 */
-	const INVALID_PASSWORD = 'Mật khẩu không hợp lệ';
+	const INVALID_PASSWORD = 'reminders.password';
 
 	/**
 	 * Constant representing an invalid token.
 	 *
 	 * @var int
 	 */
-	const INVALID_TOKEN = 'invalid token';
+	const INVALID_TOKEN = 'reminders.token';
 
 	/**
 	 * The password reminder repository.

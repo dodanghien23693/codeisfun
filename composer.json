@@ -20,7 +20,9 @@
         "way/generators": "~2.0",
         "phpunit/phpunit": "4.3.*",
         "league/factory-muffin": "~2.0",
-        "mockery/mockery": "dev-master"
+        "mockery/mockery": "dev-master",
+        "behat/behat": "~3.0",
+        "phpspec/phpspec": "~2.0"
         
         },
 	"autoload": {
@@ -32,7 +34,10 @@
 			"app/database/seeds",
 			"app/tests/TestCase.php",
                         "app/lib"
-		]
+		],
+                "psr-4": {
+                    "": "src/"
+                }
 	},
 	"scripts": {
 		"post-install-cmd": [

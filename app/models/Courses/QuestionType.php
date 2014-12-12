@@ -1,8 +1,10 @@
 <?php
 
-use LaravelBook\Ardent\Ardent;
 
-class QuestionType extends Ardent{
+class QuestionType extends Eloquent{
+    
+    PUBLIC STATIC $QUESTION_TYPE_CHOICE_ONE = 1;
+    PUBLIC STATIC $QUESTION_TYPE_MULTI_CHOICE = 2;
     
     protected $table = "question_type";
     

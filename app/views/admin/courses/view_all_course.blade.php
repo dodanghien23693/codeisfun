@@ -42,6 +42,7 @@
 </table>
 
 
+@if(count($courses_trashed))
 <table id='course-trashed-table' class="table datatable">
     <thead>
         <tr>
@@ -76,7 +77,7 @@
         @endforeach
     </tbody>
 </table>
-
+@endif
 @stop
 
 

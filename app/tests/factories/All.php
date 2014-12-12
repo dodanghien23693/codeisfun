@@ -26,8 +26,6 @@ Muffin::define('Post' , array(
 ));
 
 
-
-
 Muffin::define('Role' , array(
     'name' => $faker->name
 ));

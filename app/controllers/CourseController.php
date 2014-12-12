@@ -86,31 +86,36 @@ class CourseController extends BaseController {
                 }
 
 
-                $invited_writers = Input::get('writers');
+                $invited_writers = Input::get('writers'); //Danh sách người cùng tham gia khóa học
 
-                //return var_dump($invited_writers);
+                // lấy danh sách id những người cùng tham khóa khóa học nhưng không phải là chủ khóa học
                 $instructors = $course->instructors()->wherePivot('is_owner', '=', 0)->get(array('users.id'))->lists('id');
                 if(count($instructors)) $course->instructors()->detach($instructors);
                 
-                if($invited_writers){  
+                if($invited_writers)
+                {  
                     $course->instructors()->attach($invited_writers);
                 }
 
-
+                //Lưu danh mục
                 $categories = Input::get('categories');
                 $course->categories()->detach();
                 if($categories){
                     $course->categories()->attach($categories);
                 }
-
+                
+                
                 if($course->save()){
+                    
+                    $course->createNotificationUpdate();
+                   
                     return Redirect::to(URL::current());
                         return Response::json(array(
                             'message'=>'Cập nhật thành công',
                         ));
                 }
             }
-            else 
+            else //Không phải là chủ nhân của course
             {
                 return View::make('admin.message')->with('message', 'Bạn không có quyền cập nhật thông tin khóa học này!');
             }
@@ -189,19 +194,23 @@ class CourseController extends BaseController {
     {
         $course_id = Input::get('course_id');
         
-        $order_list = Input::get('order_chapter');
-        $order_list = json_decode($order_list);
-        $i = 0;
- 
-        foreach($order_list as $item){
-            Chapter::where('id','=',$item->id)->update(array('order_of_chapter'=>$i));
-            $i++;
+        if(Auth::user()->isOwnerOfCourse($course_id))
+        {
+            $order_list = Input::get('order_chapter');
+            $order_list = json_decode($order_list);
+            $i = 0;
+
+            foreach($order_list as $item){
+                Chapter::where('id','=',$item->id)->update(array('order_of_chapter'=>$i));
+                $i++;
+            }
+            $chapters = Course::find($course_id)->chapters()->orderBy('order_of_chapter')->get();
+            return Response::json(array(
+                'html' =>  View::make('admin.courses._lecture_form', array('chapters'=>$chapters))->render(),
+                'message' => 'cap nhat thanh cong'
+            ));
         }
-        $chapters = Course::find($course_id)->chapters()->orderBy('order_of_chapter')->get();
-        return Response::json(array(
-            'html' =>  View::make('admin.courses._lecture_form', array('chapters'=>$chapters))->render(),
-            'message' => 'cap nhat thanh cong'
-        ));
+        
     }
     
     
