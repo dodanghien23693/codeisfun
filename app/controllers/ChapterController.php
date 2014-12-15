@@ -20,7 +20,7 @@ class ChapterController extends BaseController {
                 return Response::json(array(
                     'status' => 'success',
                     'html' =>  View::make('admin.courses._lecture_form', array('chapters'=>$chapters))->render(),
-                    'message' => 'Tạo chapter thành công',
+                    'message' => 'Create new chapter successful',
                     'chapter_id' => $chapter->id,
                     ));
             };
@@ -45,19 +45,19 @@ class ChapterController extends BaseController {
                     if($chapter->delete())
                     {
                             $status = 'success';
-                            $message = 'Xóa thành công!';
+                            $message = 'Delete successful!';
                     }
                     else
                     {
                         $status = 'success';
-                        $message = 'Xóa thất bại';
+                        $message = 'Delete failed';
                     }
                     
                 }
                 else
                 {
                     $status = 'invalid';
-                    $message = 'bạn không có quyền xóa khóa học này';
+                    $message = 'You unable delete this chapter';
                 }
             }
             
@@ -103,7 +103,7 @@ class ChapterController extends BaseController {
                 {
                     return Response::json(array(
                         'status' => 'invalid',
-                        'message'  => 'Bạn không có quyền edit chapter này'
+                        'message'  => 'You unable edit this Chapter'
                     ));
                 }
             }

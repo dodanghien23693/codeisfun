@@ -2,6 +2,26 @@
 
 class CourseController extends BaseController {
  
+    public function index($id)
+    {
+        return 'welcome course '.Course::find($id)->name;
+    }
+
+    public function getAcceptBecomeCreator($course_id)
+    {
+        
+            $course = Auth::user()->createdCourses()->wherePivot('course_id', '=', $course_id)->wherePivot('is_active', '=', 0)->first();
+            
+       if(count($course))return View::make('admin/courses/_accept_invitation')->with('course', $course);
+        
+        else return Redirect::to('admin/course');
+        
+        
+        //return var_dump($course->pivot->user_id);
+        
+    
+    }
+
     public function viewAllCourse()
     {
         $courses = null;
@@ -87,16 +107,33 @@ class CourseController extends BaseController {
 
 
                 $invited_writers = Input::get('writers'); //Danh sách người cùng tham gia khóa học
-
+                if(!$invited_writers) $invited_writers = array();
+                
                 // lấy danh sách id những người cùng tham khóa khóa học nhưng không phải là chủ khóa học
                 $instructors = $course->instructors()->wherePivot('is_owner', '=', 0)->get(array('users.id'))->lists('id');
-                if(count($instructors)) $course->instructors()->detach($instructors);
+                if(!$instructors) $instructors = array();
                 
-                if($invited_writers)
-                {  
-                    $course->instructors()->attach($invited_writers);
+                $no_change = array_intersect($invited_writers, $instructors);
+                
+                $merge_invited = array_merge($instructors,$invited_writers);
+                
+                foreach ($merge_invited as $invi)
+                {
+                    if(in_array($invi, $invited_writers) && !in_array($invi, $no_change))  //Nếu là người mới được thêm vào thì gửi lời mời
+                    {
+                        $course->notificationInviteWriter($invi);
+                        $course->instructors()->attach($invi,array('is_active'=>0));
+                    }
+                    
+                    
+                    if(in_array($invi, $instructors) && !in_array($invi, $no_change))
+                    {
+                        $course->notificationRemoveWriter($invi);
+                        $course->instructors()->detach($invi);
+                    }
                 }
-
+                
+                
                 //Lưu danh mục
                 $categories = Input::get('categories');
                 $course->categories()->detach();
@@ -107,7 +144,7 @@ class CourseController extends BaseController {
                 
                 if($course->save()){
                     
-                    $course->createNotificationUpdate();
+                    $course->notificationUpdate();
                    
                     return Redirect::to(URL::current());
                         return Response::json(array(
@@ -143,11 +180,12 @@ class CourseController extends BaseController {
 
             if($course->save()){
                 $user_id = Input::get('user_id');
-                $course->instructors()->attach($user_id,array('is_owner'=>1));
+                $course->instructors()->attach($user_id,array('is_owner'=>1,'is_active'=>1));
                 
                 $invited_writers = Input::get('writers');
-                if($invited_writers){  
-                    $course->instructors()->attach($invited_writers);
+                if($invited_writers){
+                    //$course->notificationInviter($invited_writers);
+                    $course->instructors()->attach($invited_writers,array('is_active'=>0));
                 }
 
                 $categories = Input::get('categories');
@@ -161,6 +199,27 @@ class CourseController extends BaseController {
                 return Redirect::to('admin/course/edit/'.$course->id);
                 
             }    
+    }
+    
+    public function acceptInvitation($course_id)
+    {
+        if($course_id){
+           if(Request::ajax())
+            {
+                Auth::user()->createdCourses()->wherePivot('course_id','=',$course_id)->updateExistingPivot($course_id, array('is_active'=>1));
+                return Response::json(array(
+                    'status' => 'success',
+                    'message' => 'you had became instructor of course :'.$course_id
+                ));
+            } 
+        }
+
+    }
+    
+
+    public function rejectInvitation($course_id)
+    {
+        Auth::user()->createdCourses()->detach($course_id);
     }
     
     public function deleteCourse()

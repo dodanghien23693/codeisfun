@@ -85,12 +85,41 @@ class Course extends Eloquent{
     
     public function getLink()
     {
-        return action('CourseController@index');
+        return action('CourseController@index',array('course_id'=>$this->id));  
     }
     
     
-    public function createNotificationUpdate()
+    public function notificationUpdate()
     {
+        $noti = Notification::findNotification(Notification::$MODEL_TYPE_COURSE, $this->id);
+        if($noti)
+        {
+            $noti->touch();
+        }
+        else
+        {
+            $noti = Notification::createNew(
+                Auth::user()->username.' had updated course '.$this->name, 
+                TypeNotification::$TYPE_NOTIFICATION_UPDATE,
+                '',
+                Notification::$MODEL_TYPE_COURSE, 
+                $this->id
+                );
+            
+            $instructors = $this->instructors()->wherePivot('user_id', '!=', Auth::id())->get(array('users.id'))->lists('id');
+            if(count($instructors))
+            {
+                $hasNew = false;
+                $user = User::find($intr);
+                foreach($instructors as $intr)
+                {
+                    if(Notification::attachOrTouchIfUnread($user, $noti)) $hasNew = true;
+                }
+                if(!$hasNew) $noti->delete ();
+
+                //$noti->user()->attach($instructors);
+            }
+        }
         $notification = array(
             'description' => Auth::user()->username.' had updated course '.$this->name, 
             'type_notification_id' => TypeNotification::$TYPE_NOTIFICATION_UPDATE,
@@ -99,32 +128,29 @@ class Course extends Eloquent{
             'model_id' => $this->id
         );
         
-        //Notification::addOrUpdate($user, $notification);
-        
-        /*
-        $noti = Notification::createNew(
-                Auth::user()->username.' had updated course '.$this->name, 
-                TypeNotification::$TYPE_NOTIFICATION_UPDATE,
-                '',
-                Notification::$MODEL_TYPE_COURSE, 
-                $this->id
-                );
-        */
-        
-        $instructors = $this->instructors()->wherePivot('user_id', '!=', Auth::id())->get(array('users.id'))->lists('id');
-        if(count($instructors))
-        {
-            foreach($instructors as $intr)
-            {
-                Notification::addOrUpdate(User::find($intr), $notification);
-            }
-            
-            //$noti->user()->attach($instructors);
-        }
-
     }
     
-   
+    
+    
+    public function notificationInviteWriter($user_id)
+    {
+        $noti = Notification::createNew(Auth::user()->username.' send you request to become creator of course:'. $this->name, 
+                TypeNotification::$TYPE_NOTIFICATION_PEDDING,
+                action('CourseController@getAcceptBecomeCreator', array('course_id'=>$this->id)),
+                Notification::$MODEL_TYPE_COURSE, 
+                $this->id);
+        $noti->user()->attach($user_id);  
+    }
+    
+    public function notificationRemoveWriter($user_id)
+    {
+        $noti = Notification::createNew(Auth::user()->username.' remove you out of creator of course:'. $this->name, 
+                TypeNotification::$TYPE_NOTIFICATION_DELETE,
+                $this->getLink(),
+                Notification::$MODEL_TYPE_COURSE, 
+                $this->id);
+        $noti->user()->attach($user_id);  
+    }
 
 }
 

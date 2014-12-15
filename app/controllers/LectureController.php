@@ -61,7 +61,7 @@ class LectureController extends BaseController {
                     {
                         return Response::json(array(
                             'status' => 'invalid',
-                            'message'  => 'Bạn không có quyền tạo lecture thuộc chapter này!'
+                            'message'  => 'You unable delete lecture of this chapter!'
                         ));
                     }
                 }
@@ -77,7 +77,7 @@ class LectureController extends BaseController {
                 if($lecture->save()){
                      return Response::json(array(
                             'status' => 'success',
-                            'message' => 'Tạo thành công! Bạn hãy thêm tài nguyên cho lecture!',
+                            'message' => 'Create successful! Add resources for this lecture',
                             'lecture_id' => $lecture->id
                      ));  
                 }
@@ -87,13 +87,13 @@ class LectureController extends BaseController {
                 if(Input::get('action')=='create'){
                     return Response::json(array(
                         'status' => 'invalid',
-                        'message'  => 'Bạn không có quyền tạo lecture thuộc chapter này!'
+                        'message'  => 'You unable create lecture of this chapter'
                     ));
                 }
                 else if(Input::get('action')=='update'){
                     return Response::json(array(
                         'status' => 'invalid',
-                        'message'  => 'Bạn không có quyền edit lecture thuộc chapter này!'
+                        'message'  => 'You unable edit lecture of this chapter'
                     ));
                 }
             } 
@@ -166,7 +166,7 @@ class LectureController extends BaseController {
                 {
                     return Response::json(array(
                         'status' => 'invalid',
-                        'message'  => 'Bạn không có quyền tạo lecture thuộc chapter này!'
+                        'message'  => 'You unable create lecuture of this chaoter'
                     ));   
                 }
             }

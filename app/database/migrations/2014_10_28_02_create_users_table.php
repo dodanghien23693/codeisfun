@@ -23,7 +23,7 @@ class CreateUsersTable extends Migration {
 			$table->integer('role_id')->unsigned()->index();
 			$table->enum('gender',array('male','female'))->nullable();
                         $table->enum('user_type',array('codeisfun','facebook','google'))->default('codeisfun');
-                        
+                        $table->string('remember_token',64);
 			$table->date('birthday')->nullable();
 			$table->string('facebook_link', 300)->nullable();
 			$table->string('googleplus_link', 300)->nullable();

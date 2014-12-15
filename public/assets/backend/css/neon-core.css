@@ -4051,6 +4051,9 @@ input[type="button"].btn-block {
   background-color: #303641;
   color: #ffffff;
 }
+
+
+
 .page-container.horizontal-menu header.navbar ul.nav > li.dropdown .dropdown-menu > li > ul > li.notification-secondary > i,
 .page-container.horizontal-menu header.navbar ul.nav > li.dropdown .dropdown-menu > li > ul > li.notification-secondary > a > i {
   background-color: #ee4749;
@@ -4808,7 +4811,7 @@ input[type="button"].btn-block {
 .notifications.dropdown .dropdown-menu > li > ul > li {
   font-size: 12px;
   border-bottom: 1px solid #ededed;
-  background: #f5f5f6;
+  background: #ffffff;
 }
 .notifications.dropdown .dropdown-menu > li > ul > li > a,
 .notifications.dropdown .dropdown-menu > li > ul > li > p {
@@ -4856,6 +4859,15 @@ input[type="button"].btn-block {
 .notifications.dropdown .dropdown-menu > li > ul > li > p:hover {
   background-color: #f5f5f6 !important;
 }
+
+.notifications.dropdown .dropdown-menu > li > ul > li.unread{
+    background-color: #E5E5E5;
+}
+
+.notifications.dropdown .dropdown-menu > li > ul > li.unread:hover{
+    background-color: #E5E5E5 !important;
+}
+
 .notifications.dropdown .dropdown-menu > li > ul > li.notification-primary > i,
 .notifications.dropdown .dropdown-menu > li > ul > li.notification-primary > a > i {
   background-color: #303641;

@@ -11,6 +11,104 @@
 |
 */
 
+/**
+ *  get notification
+ */
+
+
+Route::get('admin/notification',function(){
+    
+    $notifications = Auth::user()->notifications()->orderBy('notifications.updated_at')->limit(10)->get(array('description','link','user_notification.is_read','user_notification.is_old','notifications.updated_at','model_type','model_id','type_notification_id'));
+    
+    
+    if(count($notifications))
+    {
+        if(Request::ajax()){
+            return Response::json(array(
+                'last_update' => $notifications[count($notifications)-1]->updated_at,
+                'number_new_notis' => Auth::user()->notifications()->wherePivot('is_old', '=', 0)->get()->count(),
+                'notifications' => Notification::convertNotifications($notifications)
+            ));
+        }
+        
+    }
+    else
+    {
+        return Response::json(array(
+                'last_update' => DateTime::getTimestamp(),
+                'number_new_notis' => 0,
+                'notifications' => array()
+        ));
+    }
+    
+    
+
+});
+
+Route::get('admin/notification/get-new',function(){
+    
+    $last_update = Input::get('last_update');
+    $notifications = Auth::user()->notifications()->where('notifications.updated_at','>',$last_update)->orderBy('notifications.updated_at')->get(array('description','link','user_notification.is_read','user_notification.is_old','notifications.updated_at','model_type','model_id','type_notification_id'));
+    if(count($notifications))
+    {
+        if(Request::ajax()){
+            return Response::json(array(
+                'last_update' => $notifications[count($notifications)-1]->updated_at,
+                'new_notifications' => Notification::convertNotifications($notifications)
+            ));
+        }
+        else  return json_encode($notifications[count($notifications)-1]->updated_at);
+    }
+
+    });
+    
+Route::post('admin/notification/set-old',function(){
+    
+    $last_update = Input::get('last_update');
+    if($last_update)
+    {
+        $notis = Auth::user()->notifications()->where('notifications.updated_at','<=',$last_update)->wherePivot('is_old','=',0)->get(array('notifications.id'));
+        
+        
+        $user = Auth::user();
+        foreach ($notis as $noti)
+        {
+            $user->notifications()->updateExistingPivot($noti->id, array('is_old'=>1));
+        }
+
+        
+        return 'updated successfull';
+        
+        return json_encode($notis);
+    }
+});
+
+
+Route::post('admin/notification/mark-all-read',function(){
+    $last_update = Input::get('last_update');
+    if($last_update)
+    {
+        $notis = Auth::user()->notifications()->where('notifications.updated_at','<=',$last_update)->wherePivot('is_read','=',0)->get(array('notifications.id'));
+        
+        $user = Auth::user();
+        foreach ($notis as $noti)
+        {
+            $user->notifications()->updateExistingPivot($noti->id, array('is_read'=>1));
+        }
+
+        return 'updated successfull';
+        
+        //return json_encode($notis);
+    }
+        
+});
+
+Route::post('admin/course/{id}/accept-invite', 'CourseController@acceptInvitation');
+Route::post('admin/course/{id}/reject-invite', 'CourseController@rejectInvitation');
+Route::get('admin/course/{id}/accept', 'CourseController@acceptInvitation');
+
+
+
 Route::get('login-as/{username}',function($username){
     Auth::attempt(array('username'=>$username,'password'=>$username));
     if(Auth::check()){
@@ -132,6 +230,13 @@ Route::group(array('before'=>'auth'), function(){
     Route::post('admin/category/edit/','CategoryController@updateCategory');
 
 
+    
+    /**
+     * course public 
+     */
+    Route::get('course/{id}','CourseController@index');
+    Route::get('admin/course/{id}/accept-invitation','CourseController@getAcceptBecomeCreator');
+    
     /***
      *  course manager
      */

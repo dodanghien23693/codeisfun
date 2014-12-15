@@ -118,7 +118,7 @@ class QuizController extends BaseController {
                 {
                     return Response::json(array(
                         'status' => 'invalid',
-                        'message' => 'Bạn không có edit Quiz này!'
+                        'message' => 'You unable edit this Quiz!'
                     ));
                 }
             }

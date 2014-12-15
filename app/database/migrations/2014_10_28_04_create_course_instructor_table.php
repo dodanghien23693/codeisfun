@@ -18,6 +18,7 @@ class CreateCourseInstructorTable extends Migration {
 			$table->integer('course_id')->unsigned()->index();			
 			$table->integer('user_id')->unsigned()->index();	
                         $table->boolean('is_owner');
+                        $table->boolean('is_active');
 			$table->timestamps();
                         
                         $table->foreign('course_id')->references('id')->on('courses');

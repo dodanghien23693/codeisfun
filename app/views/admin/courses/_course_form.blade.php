@@ -87,6 +87,8 @@
     <div  id='delete-course'  class="btn btn-info ">Delete</div>
 
 </form>
+<script src="<?php echo asset('assets/backend/js/bootstrap-tagsinput.min.js');?>"></script>
+
 <script>
     function string_to_slug(str) {
         str = str.replace(/^\s+|\s+$/g, ''); // trim

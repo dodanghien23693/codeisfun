@@ -184,7 +184,7 @@ class AuthController extends BaseController {
         if (Auth::check())
         {
             Auth::logout();
-            return Redirect::to(URL::previous());
+            return Redirect::to('/');
         }
         else{
             return Redirect::to('/');

@@ -63,14 +63,14 @@ class QuestionController extends BaseController {
                             $question->delete();
                             return Response::json(array(
                                 'status' => 'success',
-                                'message' => 'delete question successful'
+                                'message' => 'Delete question successful'
                             ));
                         }
                         else
                         {
                             return Response::json(array(
                                 'status' => 'invalid',
-                                'message' => 'Unable fine question'
+                                'message' => 'Unable find question'
                             ));
                         }
                     }
