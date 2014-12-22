@@ -17,16 +17,11 @@ use PhpSpec\Formatter\Presenter\PresenterInterface;
 use PhpSpec\Wrapper\Unwrapper;
 use PhpSpec\Wrapper\DelayedCall;
 use PhpSpec\Factory\ReflectionFactory;
-
 use PhpSpec\Exception\Example\MatcherException;
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\Exception\Example\NotEqualException;
 use PhpSpec\Exception\Fracture\MethodNotFoundException;
 
-/**
- * Class ThrowMatcher
- * @package PhpSpec\Matcher
- */
 class ThrowMatcher implements MatcherInterface
 {
     /**
@@ -43,6 +38,11 @@ class ThrowMatcher implements MatcherInterface
     private $presenter;
 
     /**
+     * @var ReflectionFactory
+     */
+    private $factory;
+
+    /**
      * @param Unwrapper          $unwrapper
      * @param PresenterInterface $presenter
      * @param ReflectionFactory  $factory
@@ -51,7 +51,7 @@ class ThrowMatcher implements MatcherInterface
     {
         $this->unwrapper = $unwrapper;
         $this->presenter = $presenter;
-        $this->factory   = $factory ?: new ReflectionFactory;
+        $this->factory   = $factory ?: new ReflectionFactory();
     }
 
     /**

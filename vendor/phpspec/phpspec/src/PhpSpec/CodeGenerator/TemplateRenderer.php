@@ -27,11 +27,16 @@ class TemplateRenderer
     private $locations = array();
 
     /**
+     * @var \PhpSpec\Util\Filesystem
+     */
+    private $filesystem;
+
+    /**
      * @param Filesystem $filesystem
      */
     public function __construct(Filesystem $filesystem = null)
     {
-        $this->filesystem = $filesystem ?: new Filesystem;
+        $this->filesystem = $filesystem ?: new Filesystem();
     }
 
     /**

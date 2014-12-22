@@ -14,14 +14,9 @@
 namespace PhpSpec\Matcher;
 
 use PhpSpec\Formatter\Presenter\PresenterInterface;
-
 use PhpSpec\Exception\Example\FailureException;
 use PhpSpec\Exception\Fracture\MethodNotFoundException;
 
-/**
- * Class ObjectStateMatcher
- * @package PhpSpec\Matcher
- */
 class ObjectStateMatcher implements MatcherInterface
 {
     /**

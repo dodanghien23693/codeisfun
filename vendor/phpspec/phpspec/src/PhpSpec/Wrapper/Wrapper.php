@@ -18,16 +18,11 @@ use PhpSpec\Runner\MatcherManager;
 use PhpSpec\Formatter\Presenter\PresenterInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use PhpSpec\Loader\Node\ExampleNode;
-
 use PhpSpec\Wrapper\Subject\WrappedObject;
 use PhpSpec\Wrapper\Subject\Caller;
 use PhpSpec\Wrapper\Subject\SubjectWithArrayAccess;
 use PhpSpec\Wrapper\Subject\ExpectationFactory;
 
-/**
- * Class Wrapper
- * @package PhpSpec\Wrapper
- */
 class Wrapper
 {
     /**

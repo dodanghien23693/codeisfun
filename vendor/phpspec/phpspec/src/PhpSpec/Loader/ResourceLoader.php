@@ -13,28 +13,29 @@
 
 namespace PhpSpec\Loader;
 
-use PhpSpec\Locator\ResourceManager;
-
+use PhpSpec\Util\MethodAnalyser;
+use PhpSpec\Locator\ResourceManagerInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
-/**
- * Class ResourceLoader
- * @package PhpSpec\Loader
- */
 class ResourceLoader
 {
     /**
-     * @var \PhpSpec\Locator\ResourceManager
+     * @var \PhpSpec\Locator\ResourceManagerInterface
      */
     private $manager;
+    /**
+     * @var \PhpSpec\Util\MethodAnalyser
+     */
+    private $methodAnalyser;
 
     /**
-     * @param ResourceManager $manager
+     * @param ResourceManagerInterface $manager
      */
-    public function __construct(ResourceManager $manager)
+    public function __construct(ResourceManagerInterface $manager, MethodAnalyser $methodAnalyser = null)
     {
         $this->manager = $manager;
+        $this->methodAnalyser = $methodAnalyser ?: new MethodAnalyser();
     }
 
     /**
@@ -45,7 +46,7 @@ class ResourceLoader
      */
     public function load($locator, $line = null)
     {
-        $suite = new Suite;
+        $suite = new Suite();
         foreach ($this->manager->locateResources($locator) as $resource) {
             if (!class_exists($resource->getSpecClassname()) && is_file($resource->getSpecFilename())) {
                 require_once $resource->getSpecFilename();
@@ -74,7 +75,7 @@ class ResourceLoader
 
                 $example = new Node\ExampleNode(str_replace('_', ' ', $method->getName()), $method);
 
-                if ($this->methodIsEmpty($method)) {
+                if ($this->methodAnalyser->reflectionMethodIsEmpty($method)) {
                     $example->markAsPending();
                 }
 
@@ -88,8 +89,9 @@ class ResourceLoader
     }
 
     /**
-     * @param $line
-     * @param  ReflectionMethod $method
+     * @param int              $line
+     * @param ReflectionMethod $method
+     *
      * @return bool
      */
     private function lineIsInsideMethod($line, ReflectionMethod $method)
@@ -97,27 +99,5 @@ class ResourceLoader
         $line = intval($line);
 
         return $line >= $method->getStartLine() && $line <= $method->getEndLine();
-    }
-
-    /**
-     * @param  ReflectionMethod $method
-     * @return bool
-     */
-    private function methodIsEmpty(ReflectionMethod $method)
-    {
-        $filename = $method->getFileName();
-        $lines    = explode("\n", file_get_contents($filename));
-        $function = trim(implode("\n",
-            array_slice($lines,
-                $method->getStartLine() - 1,
-                $method->getEndLine() - $method->getStartLine()
-            )
-        ));
-
-        $function = trim(preg_replace(
-            array('|^[^}]*{|', '|}$|', '|//[^\n]*|s', '|/\*.*\*/|s'), '', $function
-        ));
-
-        return '' === $function;
     }
 }

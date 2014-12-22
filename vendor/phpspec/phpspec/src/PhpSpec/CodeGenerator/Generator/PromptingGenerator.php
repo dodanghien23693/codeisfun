@@ -1,9 +1,14 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: mduarte
- * Date: 25/12/2013
- * Time: 20:12
+
+/*
+ * This file is part of PhpSpec, A php toolset to drive emergent
+ * design by specification.
+ *
+ * (c) Marcello Duarte <marcello.duarte@gmail.com>
+ * (c) Konstantin Kudryashov <ever.zet@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace PhpSpec\CodeGenerator\Generator;
@@ -16,7 +21,7 @@ use PhpSpec\Locator\ResourceInterface;
 /**
  * Base class with common behaviour for generating class and spec class
  */
-abstract class PromptingGenerator
+abstract class PromptingGenerator implements GeneratorInterface
 {
     /**
      * @var \PhpSpec\Console\IO
@@ -42,7 +47,7 @@ abstract class PromptingGenerator
     {
         $this->io         = $io;
         $this->templates  = $templates;
-        $this->filesystem = $filesystem ?: new Filesystem;
+        $this->filesystem = $filesystem ?: new Filesystem();
     }
 
     /**

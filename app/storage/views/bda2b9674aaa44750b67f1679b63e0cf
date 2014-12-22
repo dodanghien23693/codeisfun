@@ -1,0 +1,57 @@
+<?php $__env->startSection('content'); ?>
+
+<h1>All Posts</h1>
+<?php $role = Auth::user()->role->name;
+if($role=="Writer"){
+?>
+<p><?php echo link_to_route('admin.post.create', 'Add New Post', null, array('class' => 'btn btn-lg btn-success')); ?></p>
+<?php } ?>
+
+
+
+<?php if($posts->count()): ?>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+			<th>ID</th>
+				
+				<th>Title</th>
+				<th>Cover Image</th>
+				<th>Status</th>
+		</tr>
+		</thead>
+
+		<tbody>
+			<?php foreach($posts as $post): ?>
+				<tr>
+				<td><?php echo e($post->id); ?></td> 
+					<td><?php echo link_to_route('admin.post.show', $post->title, array($post->id), array('class' => '')); ?></td>
+					<td><img src="<?php echo asset($post->cover_image_url); ?>" style="max-width:200px;max-height:200px;"></td>
+					<td><?php echo $post->status->name; ?></td>
+                    <td>
+                        <?php echo Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('admin.post.destroy', $post->id))); ?>
+
+                            <?php echo Form::submit('Delete', array('class' => 'btn btn-danger', 'id' => 'delete')); ?>
+
+                        <?php echo Form::close(); ?>
+
+                		<?php $role = Auth::user()->role->name;
+if($role=="Writer" || $role =="Manager"){
+?>
+                        <?php echo link_to_route('admin.post.edit', 'Edit', array($post->id), array('class' => 'btn btn-info')); ?>
+
+                        <?php } ?>
+                    </td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+   <script type="text/javascript" src="<?php echo asset(''); ?>/jquery-1.11.1.min.js">
+</script>
+<?php else: ?>
+	There are no posts
+<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layouts.default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

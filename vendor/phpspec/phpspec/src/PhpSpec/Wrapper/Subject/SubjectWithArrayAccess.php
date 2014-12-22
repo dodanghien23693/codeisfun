@@ -16,16 +16,10 @@ namespace PhpSpec\Wrapper\Subject;
 use PhpSpec\Wrapper\Unwrapper;
 use PhpSpec\Formatter\Presenter\PresenterInterface;
 use PhpSpec\Wrapper\Subject;
-
 use PhpSpec\Exception\Wrapper\SubjectException;
-
 use PhpSpec\Exception\Fracture\InterfaceNotImplementedException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class SubjectWithArrayAccess
- * @package PhpSpec\Wrapper\Subject
- */
 class SubjectWithArrayAccess
 {
     /**
@@ -61,7 +55,7 @@ class SubjectWithArrayAccess
      */
     public function offsetExists($key)
     {
-        $unwrapper = new Unwrapper;
+        $unwrapper = new Unwrapper();
         $subject = $this->caller->getWrappedObject();
         $key     = $unwrapper->unwrapOne($key);
 
@@ -77,7 +71,7 @@ class SubjectWithArrayAccess
      */
     public function offsetGet($key)
     {
-        $unwrapper = new Unwrapper;
+        $unwrapper = new Unwrapper();
         $subject = $this->caller->getWrappedObject();
         $key     = $unwrapper->unwrapOne($key);
 
@@ -92,7 +86,7 @@ class SubjectWithArrayAccess
      */
     public function offsetSet($key, $value)
     {
-        $unwrapper = new Unwrapper;
+        $unwrapper = new Unwrapper();
         $subject = $this->caller->getWrappedObject();
         $key     = $unwrapper->unwrapOne($key);
         $value   = $unwrapper->unwrapOne($value);
@@ -107,7 +101,7 @@ class SubjectWithArrayAccess
      */
     public function offsetUnset($key)
     {
-        $unwrapper = new Unwrapper;
+        $unwrapper = new Unwrapper();
         $subject = $this->caller->getWrappedObject();
         $key     = $unwrapper->unwrapOne($key);
 

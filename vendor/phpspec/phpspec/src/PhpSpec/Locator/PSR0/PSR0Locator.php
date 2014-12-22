@@ -16,13 +16,8 @@ namespace PhpSpec\Locator\PSR0;
 use PhpSpec\Locator\ResourceInterface;
 use PhpSpec\Locator\ResourceLocatorInterface;
 use PhpSpec\Util\Filesystem;
-
 use InvalidArgumentException;
 
-/**
- * Class PSR0Locator
- * @package PhpSpec\Locator\PSR0
- */
 class PSR0Locator implements ResourceLocatorInterface
 {
     /**
@@ -55,6 +50,11 @@ class PSR0Locator implements ResourceLocatorInterface
     private $filesystem;
 
     /**
+     * @var string
+     */
+    private $psr4Prefix;
+
+    /**
      * @param string     $srcNamespace
      * @param string     $specNamespacePrefix
      * @param string     $srcPath
@@ -62,17 +62,24 @@ class PSR0Locator implements ResourceLocatorInterface
      * @param Filesystem $filesystem
      */
     public function __construct($srcNamespace = '', $specNamespacePrefix = 'spec',
-                                $srcPath = 'src', $specPath = '.', Filesystem $filesystem = null)
+                                $srcPath = 'src', $specPath = '.', Filesystem $filesystem = null, $psr4Prefix = null)
     {
-        $this->filesystem = $filesystem ?: new Filesystem;
+        $this->filesystem = $filesystem ?: new Filesystem();
         $sepr = DIRECTORY_SEPARATOR;
 
         $this->srcPath       = rtrim(realpath($srcPath), '/\\').$sepr;
         $this->specPath      = rtrim(realpath($specPath), '/\\').$sepr;
         $this->srcNamespace  = ltrim(trim($srcNamespace, ' \\').'\\', '\\');
+        $this->psr4Prefix    = (null === $psr4Prefix) ? null : ltrim(trim($psr4Prefix, ' \\').'\\', '\\');
+        if (null !== $this->psr4Prefix  && substr($this->srcNamespace, 0, strlen($psr4Prefix)) !== $psr4Prefix) {
+            throw new InvalidArgumentException('PSR4 prefix doesn\'t match given class namespace.'.PHP_EOL);
+        }
+        $srcNamespacePath = null === $this->psr4Prefix ? $this->srcNamespace : substr($this->srcNamespace, strlen($this->psr4Prefix));
         $this->specNamespace = trim($specNamespacePrefix, ' \\').'\\'.$this->srcNamespace;
-        $this->fullSrcPath   = $this->srcPath.str_replace('\\', $sepr, $this->srcNamespace);
-        $this->fullSpecPath  = $this->specPath.str_replace('\\', $sepr, $this->specNamespace);
+        $specNamespacePath = trim($specNamespacePrefix, ' \\').'\\'.$srcNamespacePath;
+
+        $this->fullSrcPath   = $this->srcPath.str_replace('\\', $sepr, $srcNamespacePath);
+        $this->fullSpecPath  = $this->specPath.str_replace('\\', $sepr, $specNamespacePath);
 
         if ($sepr === $this->srcPath) {
             throw new InvalidArgumentException(sprintf(
@@ -248,11 +255,43 @@ class PSR0Locator implements ResourceLocatorInterface
         }
 
         $resources = array();
-        foreach ($this->filesystem->findPhpFilesIn($path) as $file) {
+        foreach ($this->filesystem->findSpecFilesIn($path) as $file) {
             $resources[] = $this->createResourceFromSpecFile($file->getRealPath());
         }
 
         return $resources;
+    }
+
+    private function findSpecClassname($path)
+    {
+        // Find namespace and class name
+        $namespace = '';
+        $content   = $this->filesystem->getFileContents($path);
+        $tokens    = token_get_all($content);
+        $count     = count($tokens);
+
+        for ($i = 0; $i < $count; $i++) {
+            if ($tokens[$i][0] === T_NAMESPACE) {
+                for ($j = $i + 1; $j < $count; $j++) {
+                    if ($tokens[$j][0] === T_STRING) {
+                        $namespace .= $tokens[$j][1].'\\';
+                    } elseif ($tokens[$j] === '{' || $tokens[$j] === ';') {
+                        break;
+                    }
+                }
+            }
+
+            if ($tokens[$i][0] === T_CLASS) {
+                for ($j = $i+1; $j < $count; $j++) {
+                    if ($tokens[$j] === '{') {
+                        return $namespace.$tokens[$i+2][1];
+                    }
+                }
+            }
+        }
+
+        // No class found
+        return null;
     }
 
     /**
@@ -262,11 +301,29 @@ class PSR0Locator implements ResourceLocatorInterface
      */
     private function createResourceFromSpecFile($path)
     {
-        // cut "Spec.php" from the end
-        $relative = substr($path, strlen($this->fullSpecPath), -4);
-        $relative = preg_replace('/Spec$/', '', $relative);
+        $classname = $this->findSpecClassname($path);
 
-        return new PSR0Resource(explode(DIRECTORY_SEPARATOR, $relative), $this);
+        if (null === $classname) {
+            throw new \RuntimeException('Spec file does not contains any class definition.');
+        }
+
+        // Remove spec namespace from the begining of the classname.
+        $specNamespace = trim($this->getSpecNamespace(), '\\').'\\';
+
+        if (0 !== strpos($classname, $specNamespace)) {
+            throw new \RuntimeException(sprintf(
+                'Spec class must be in the base spec namespace `%s`.',
+                $this->getSpecNamespace()
+            ));
+        }
+
+        $classname = substr($classname, strlen($specNamespace));
+
+        // cut "Spec" from the end
+        $classname = preg_replace('/Spec$/', '', $classname);
+
+        // Create the resource
+        return new PSR0Resource(explode('\\', $classname), $this);
     }
 
     private function validatePsr0Classname($classname)
@@ -275,8 +332,8 @@ class PSR0Locator implements ResourceLocatorInterface
 
         if (!preg_match($classnamePattern, $classname)) {
             throw new InvalidArgumentException(
-                sprintf('String "%s" is not a valid class name.', $classname) . PHP_EOL .
-                'Please see reference document: ' .
+                sprintf('String "%s" is not a valid class name.', $classname).PHP_EOL.
+                'Please see reference document: '.
                 'https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-0.md'
             );
         }

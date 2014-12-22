@@ -14,10 +14,10 @@
 namespace PhpSpec\Console;
 
 use PhpSpec\IO\IOInterface;
-
+use Symfony\Component\Console\Helper\DialogHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\HelperSet;
+use PhpSpec\Config\OptionsConfig;
 
 /**
  * Class IO deals with input and output from command line interaction
@@ -35,9 +35,9 @@ class IO implements IOInterface
     private $output;
 
     /**
-     * @var \Symfony\Component\Console\Helper\HelperSet
+     * @var \Symfony\Component\Console\Helper\DialogHelper
      */
-    private $helpers;
+    private $dialogHelper;
 
     /**
      * @var string
@@ -50,15 +50,22 @@ class IO implements IOInterface
     private $hasTempString = false;
 
     /**
+      * @var OptionsConfig
+      */
+    private $config;
+
+    /**
      * @param InputInterface  $input
      * @param OutputInterface $output
-     * @param HelperSet       $helpers
+     * @param DialogHelper    $dialogHelper
+     * @param OptionsConfig   $config
      */
-    public function __construct(InputInterface $input, OutputInterface $output, HelperSet $helpers)
+    public function __construct(InputInterface $input, OutputInterface $output, DialogHelper $dialogHelper, OptionsConfig $config)
     {
         $this->input   = $input;
         $this->output  = $output;
-        $this->helpers = $helpers;
+        $this->dialogHelper = $dialogHelper;
+        $this->config  = $config;
     }
 
     /**
@@ -82,8 +89,21 @@ class IO implements IOInterface
      */
     public function isCodeGenerationEnabled()
     {
-        return $this->input->isInteractive()
+        if (!$this->isInteractive()) {
+            return false;
+        }
+
+        return $this->config->isCodeGenerationEnabled()
             && !$this->input->getOption('no-code-generation');
+    }
+
+    /**
+     * @return bool
+     */
+    public function isStopOnFailureEnabled()
+    {
+        return $this->config->isStopOnFailureEnabled()
+            || $this->input->getOption('stop-on-failure');
     }
 
     /**
@@ -91,11 +111,11 @@ class IO implements IOInterface
      */
     public function isVerbose()
     {
-        return OutputInterface::VERBOSITY_VERBOSE === $this->output->getVerbosity();
+        return OutputInterface::VERBOSITY_VERBOSE <= $this->output->getVerbosity();
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLastWrittenMessage()
     {
@@ -122,7 +142,7 @@ class IO implements IOInterface
     }
 
     /**
-     * @return void|string
+     * @return null|string
      */
     public function cutTemp()
     {
@@ -186,12 +206,16 @@ class IO implements IOInterface
             $message = $this->indentText($message, $indent);
         }
 
-        $size = strlen(strip_tags($this->lastMessage));
+        $commonPrefix = $this->getCommonPrefix($message, $this->lastMessage);
+        $newSuffix = substr($message, strlen($commonPrefix));
+        $oldSuffix = substr($this->lastMessage, strlen($commonPrefix));
 
-        $this->write(str_repeat("\x08", $size));
-        $this->write($message);
+        $overwriteLength = strlen(strip_tags($oldSuffix));
 
-        $fill = $size - strlen(strip_tags($message));
+        $this->write(str_repeat("\x08", $overwriteLength));
+        $this->write($newSuffix);
+
+        $fill = $overwriteLength - strlen(strip_tags($newSuffix));
         if ($fill > 0) {
             $this->write(str_repeat(' ', $fill));
             $this->write(str_repeat("\x08", $fill));
@@ -204,6 +228,23 @@ class IO implements IOInterface
         $this->lastMessage = $message.($newline ? "\n" : '');
     }
 
+    private function getCommonPrefix($stringA, $stringB)
+    {
+        for ($i = 0; $i<min(strlen($stringA), strlen($stringB)); $i++) {
+            if ($stringA[$i] != $stringB[$i]) {
+                break;
+            }
+        }
+
+        $common = substr($stringA, 0, $i);
+
+        if (preg_match('/(^.*)<[a-z-]*>?[^<]*$/', $common, $matches)) {
+            $common = $matches[1];
+        }
+
+        return $common;
+    }
+
     /**
      * @param string      $question
      * @param string|null $default
@@ -212,7 +253,7 @@ class IO implements IOInterface
      */
     public function ask($question, $default = null)
     {
-        return $this->helpers->get('dialog')->ask($this->output, $question, $default);
+        return $this->dialogHelper->ask($this->output, $question, $default);
     }
 
     /**
@@ -231,22 +272,22 @@ class IO implements IOInterface
         $lines[] = '<question>'.str_repeat(' ', 62).'</question> <value>'.
             ($default ? '[Y/n]' : '[y/N]').'</value> ';
 
-        return $this->helpers->get('dialog')->askConfirmation(
+        return $this->dialogHelper->askConfirmation(
             $this->output, implode("\n", $lines), $default
         );
     }
 
     /**
-     * @param string       $question
-     * @param callable     $validator
-     * @param bool         $attempts
-     * @param Boolean|null $default
+     * @param string      $question
+     * @param callable    $validator
+     * @param int|false   $attempts
+     * @param string|null $default
      *
-     * @return Boolean
+     * @return string
      */
     public function askAndValidate($question, $validator, $attempts = false, $default = null)
     {
-        return $this->helpers->get('dialog')->askAndValidate($this->output, $question, $validator, $attempts, $default);
+        return $this->dialogHelper->askAndValidate($this->output, $question, $validator, $attempts, $default);
     }
 
     /**
@@ -263,5 +304,27 @@ class IO implements IOInterface
             },
             explode("\n", $text)
         ));
+    }
+
+    public function isRerunEnabled()
+    {
+        return !$this->input->getOption('no-rerun') && $this->config->isReRunEnabled();
+    }
+
+    public function isFakingEnabled()
+    {
+        return $this->input->getOption('fake') || $this->config->isFakingEnabled();
+    }
+
+    public function getBootstrapPath()
+    {
+        if ($path = $this->input->getOption('bootstrap')) {
+            return $path;
+        }
+
+        if ($path = $this->config->getBootstrapPath()) {
+            return $path;
+        }
+        return false;
     }
 }

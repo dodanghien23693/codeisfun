@@ -18,10 +18,6 @@ use PhpSpec\Matcher\MatcherInterface;
 use PhpSpec\Util\Instantiator;
 use PhpSpec\Wrapper\Subject\WrappedObject;
 
-/**
- * Class DuringCall
- * @package PhpSpec\Wrapper\Subject\Expectation
- */
 abstract class DuringCall
 {
     /**
@@ -77,7 +73,7 @@ abstract class DuringCall
     {
         if ($method === '__construct') {
             $this->subject->beAnInstanceOf($this->wrappedObject->getClassname(), $arguments);
-            $instantiator = new Instantiator;
+            $instantiator = new Instantiator();
             $object = $instantiator->instantiate($this->wrappedObject->getClassname());
         } else {
             $object = $this->wrappedObject->instantiate();
@@ -100,12 +96,12 @@ abstract class DuringCall
             return $this->during(lcfirst($matches[1]), $arguments);
         }
 
-        throw new MatcherException('Incorrect usage of matcher Throw, ' .
-            'either prefix the method with "during" and capitalize the ' .
+        throw new MatcherException('Incorrect usage of matcher Throw, '.
+            'either prefix the method with "during" and capitalize the '.
             'first character of the method or use ->during(\'callable\', '.
-            'array(arguments)).' . PHP_EOL . 'E.g.' . PHP_EOL . '->during' .
-            ucfirst($method) . '(arguments)' . PHP_EOL . 'or' . PHP_EOL .
-            '->during(\'' . $method . '\', array(arguments))');
+            'array(arguments)).'.PHP_EOL.'E.g.'.PHP_EOL.'->during'.
+            ucfirst($method).'(arguments)'.PHP_EOL.'or'.PHP_EOL.
+            '->during(\''.$method.'\', array(arguments))');
     }
 
     /**

@@ -1,11 +1,14 @@
 <?php
 
-use Behat\Behat\Context\BehatContext;
+use Behat\Behat\Tester\Exception\PendingException;
+use Behat\Behat\Context\Context;
+use Behat\Behat\Context\SnippetAcceptingContext;
 use Behat\Gherkin\Node\PyStringNode;
+use Console\ApplicationTester;
 use PhpSpec\Console\Application;
 use Symfony\Component\Filesystem\Filesystem;
 
-class PhpSpecContext extends BehatContext
+class PhpSpecContext implements Context
 {
     /**
      * @var string|null
@@ -43,12 +46,39 @@ class PhpSpecContext extends BehatContext
     }
 
     /**
-     * @When /^(?:|I )run phpspec$/
+     * @When I run phpspec (non interactively)
      */
     public function iRunPhpspec()
     {
         $this->applicationTester = $this->createApplicationTester();
         $this->applicationTester->run('run --no-interaction', array('decorated' => false));
+    }
+
+    /**
+     * @When /^(?:|I )run phpspec interactively$/
+     */
+    public function iRunPhpspecInteractively()
+    {
+        $this->applicationTester = $this->createApplicationTester();
+        $this->applicationTester->run('run', array('interactive' => true, 'decorated' => false));
+    }
+
+    /**
+     * @When /^(?:|I )run phpspec interactively with the "([^"]*)" option$/
+     */
+    public function iRunPhpspecInteractivelyWithTheOption($option)
+    {
+        $this->applicationTester = $this->createApplicationTester();
+        $this->applicationTester->run('run --' . $option, array('interactive' => true, 'decorated' => false));
+    }
+
+    /**
+     * @When /^(?:|I )run phpspec with the "([^"]*)" option$/
+     */
+    public function iRunPhpspecWithTheOption($option)
+    {
+        $this->applicationTester = $this->createApplicationTester();
+        $this->applicationTester->run('run --no-interaction --' . $option);
     }
 
     /**
@@ -61,13 +91,29 @@ class PhpSpecContext extends BehatContext
     }
 
     /**
-     * @When /^(?:|I )run phpspec and answer "(?P<answer>[^"]*)" when asked if I want to generate the code$/
+     * @When I run phpspec and answer :answer when asked if I want to generate the code
+     * @When I run phpspec with the option :option and (I) answer :answer when asked if I want to generate the code
      */
-    public function iRunPhpspecAndAnswer($answer)
+    public function iRunPhpspecAndAnswer($answer, $option="")
     {
         $this->applicationTester = $this->createApplicationTester();
         $this->applicationTester->putToInputStream(sprintf("%s\n", $answer));
-        $this->applicationTester->run('run', array('interactive' => true, 'decorated' => false));
+        $this->applicationTester->run($option?'run --'.$option:'run', array('interactive' => true, 'decorated' => false));
+    }
+
+    /**
+     * @When /^(?:|I )run phpspec with option (?P<key>--[a-z]+)=(?P<value>.+)$/
+     */
+    public function iRunPhpspecWithOption($key, $value)
+    {
+        $options = array(
+            "--no-interaction",
+            sprintf("%s=%s", $key, $value)
+        );
+
+        $command = sprintf("run %s", join(" ", $options));
+        $this->applicationTester = $this->createApplicationTester();
+        $this->applicationTester->run($command, array('decorated' => false));
     }
 
     /**
@@ -85,14 +131,34 @@ class PhpSpecContext extends BehatContext
      */
     public function theFileContains($file, PyStringNode $string)
     {
-        $dirname = dirname($file);
-        if (!file_exists($dirname)) {
-            mkdir($dirname, 0777, true);
-        }
-
-        file_put_contents($file, $string->getRaw());
-
+        $this->saveFile($file, $string);
         require_once($file);
+    }
+
+    /**
+     * @Given /^the config file contains:$/
+     */
+    public function theConfigFileContains(PyStringNode $string)
+    {
+        file_put_contents('phpspec.yml', $string->getRaw());
+    }
+
+    /**
+     * @Given /^(?:|the )(?:bootstrap )file "(?P<file>[^"]+)" contains:$/
+     */
+    public function theBootstrapContains($file, PyStringNode $string)
+    {
+        $this->saveFile($file, $string);
+    }
+
+    /**
+     * @Given /^there is no file (?P<file>missing.php)$/
+     */
+    public function thereIsNoFile($file)
+    {
+        if (file_exists($file)) {
+            throw new \LogicException(sprintf('"%s" file already exists', $file));
+        }
     }
 
     /**
@@ -118,6 +184,24 @@ class PhpSpecContext extends BehatContext
     }
 
     /**
+     * @Then I should see:
+     *
+     * @param PyStringNode $message
+     */
+    public function iShouldSeeBlock(PyStringNode $message)
+    {
+        $this->iShouldSee((string)$message);
+    }
+
+    /**
+     * @Then /^(?:|I )should not see "(?P<message>[^"]*)"$/
+     */
+    public function iShouldNotSee($message)
+    {
+        expect($this->applicationTester->getDisplay())->notToMatch('/'.preg_quote($message, '/').'/sm');
+    }
+
+    /**
      * @Then /^I should see valid junit output$/
      */
     public function iShouldSeeValidJunitOutput()
@@ -135,7 +219,44 @@ class PhpSpecContext extends BehatContext
         $stats = $this->getRunStats();
 
         expect($stats['examples'] > 0)->toBe(true);
-        expect($stats['examples'])->toBe($stats['passed']);
+        expect($stats['examples'])->toBe($stats['passed'] + $stats['skipped']);
+        expect($this->applicationTester->getStatusCode())->toBe(0);
+    }
+
+    /**
+     * @Then /^(\d+) examples? should have been skipped$/
+     */
+    public function exampleShouldHaveBeenSkipped($count)
+    {
+        $stats = $this->getRunStats();
+
+        expect($stats['skipped'])->toBe(intval($count));
+    }
+
+    /**
+     * @Then /^(\d+) examples? should have been run$/
+     */
+    public function exampleShouldHaveBeenRun($count)
+    {
+        $stats = $this->getRunStats();
+
+        expect($stats['examples'])->toBe(intval($count));
+    }
+
+    /**
+     * @Then the tests should be rerun
+     */
+    public function theTestsShouldBeRerun()
+    {
+        expect($this->applicationTester)->toHaveBeenRerun();
+    }
+
+    /**
+     * @Then the tests should not be rerun
+     */
+    public function theTestsShouldNotBeRerun()
+    {
+        expect($this->applicationTester)->toNotHaveBeenRerun();
     }
 
     /**
@@ -153,6 +274,7 @@ class PhpSpecContext extends BehatContext
             '(?P<examples>\d+) examples?.*'.
             '\('.
             '(?:(?P<passed>\d+) passed)?.*?'.
+            '(?:(?P<skipped>\d+) skipped)?.*?'.
             '(?:(?P<broken>\d+) broken)?.*?'.
             '(?:(?P<failed>\d+) failed)?'.
             '\)'.
@@ -165,6 +287,7 @@ class PhpSpecContext extends BehatContext
         return array(
             'examples' => (int) $matches['examples'],
             'passed' => isset($matches['passed']) ? (int) $matches['passed'] : 0,
+            'skipped' => isset($matches['skipped']) ? (int) $matches['skipped'] : 0,
             'broken' => isset($matches['broken']) ? (int) $matches['broken'] : 0,
             'failed' => isset($matches['failed']) ? (int) $matches['failed'] : 0,
         );
@@ -175,9 +298,48 @@ class PhpSpecContext extends BehatContext
      */
     private function createApplicationTester()
     {
-        $application = new Application('2.0-dev');
+        $application = new Application('2.1-dev');
         $application->setAutoExit(false);
 
         return new ApplicationTester($application);
+    }
+
+    /**
+     * @Then I should not be prompted for code generation
+     */
+    public function iShouldNotBePromptedForCodeGeneration()
+    {
+        $this->iShouldNotSee('Do you want me to');
+    }
+
+    /**
+     * @Then I should be prompted for code generation
+     */
+    public function iShouldBePromptedForCodeGeneration()
+    {
+        $this->iShouldSee('Do you want me to');
+    }
+
+    /**
+     * @param $file
+     * @param PyStringNode $string
+     * @return void
+     */
+    private function saveFile($file, PyStringNode $string)
+    {
+        $dirname = dirname($file);
+        if (!file_exists($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+
+        file_put_contents($file, $string->getRaw());
+    }
+
+    /**
+     * @Then the exit code should be :code
+     */
+    public function theExitCodeShouldBe($code)
+    {
+        expect($this->applicationTester->getStatusCode())->toBe((int)$code);
     }
 }

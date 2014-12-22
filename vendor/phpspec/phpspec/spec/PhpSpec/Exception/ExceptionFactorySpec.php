@@ -15,12 +15,27 @@ class ExceptionFactorySpec extends ObjectBehavior
     function let(PresenterInterface $presenter)
     {
         $this->beConstructedWith($presenter);
-        $this->fixture = new \stdClass;
-        $this->fixture->subject   = new \ArrayObject;
+        $this->fixture = new \stdClass();
+        $this->fixture->subject   = new \stdClass();
         $this->fixture->method    = 'foo';
         $this->fixture->arguments = array('bar');
-        $this->fixture->classname = '\ArrayObject';
+        $this->fixture->classname = '\stdClass';
         $this->fixture->property = 'zoo';
+    }
+
+    function it_creates_a_named_constructor_not_found_exception(PresenterInterface $presenter)
+    {
+        $presenter->presentString("{$this->fixture->classname}::{$this->fixture->method}")
+            ->shouldBeCalled()
+            ->willReturn("\"{$this->fixture->classname}::{$this->fixture->method}\"");
+        $this->fixture->message = 'Named constructor "\stdClass::foo" not found.';
+        $this->createdException = $this->namedConstructorNotFound(
+            $this->fixture->classname,
+            $this->fixture->method,
+            $this->fixture->arguments
+        );
+
+        $this->shouldCreateNamedConstructorNotFoundException();
     }
 
     function it_creates_a_method_not_found_exception(PresenterInterface $presenter)
@@ -28,7 +43,7 @@ class ExceptionFactorySpec extends ObjectBehavior
         $presenter->presentString("{$this->fixture->classname}::{$this->fixture->method}")
             ->shouldBeCalled()
             ->willReturn("\"{$this->fixture->classname}::{$this->fixture->method}\"");
-        $this->fixture->message = 'Method "\ArrayObject::foo" not found.';
+        $this->fixture->message = 'Method "\stdClass::foo" not found.';
         $this->createdException = $this->methodNotFound(
             $this->fixture->classname,
             $this->fixture->method,
@@ -43,7 +58,7 @@ class ExceptionFactorySpec extends ObjectBehavior
         $presenter->presentString("{$this->fixture->classname}::{$this->fixture->method}")
             ->shouldBeCalled()
             ->willReturn("\"{$this->fixture->classname}::{$this->fixture->method}\"");
-        $this->fixture->message = 'Method "\ArrayObject::foo" not visible.';
+        $this->fixture->message = 'Method "\stdClass::foo" not visible.';
 
         $this->createdException = $this->methodNotVisible(
             $this->fixture->classname,
@@ -59,7 +74,7 @@ class ExceptionFactorySpec extends ObjectBehavior
         $presenter->presentString("{$this->fixture->classname}")
             ->shouldBeCalled()
             ->willReturn("\"{$this->fixture->classname}\"");
-        $this->fixture->message = 'Class "\ArrayObject" does not exist.';
+        $this->fixture->message = 'Class "\stdClass" does not exist.';
         $this->createdException = $this->classNotFound(
             $this->fixture->classname
         );
@@ -112,6 +127,15 @@ class ExceptionFactorySpec extends ObjectBehavior
         $exception = $this->gettingPropertyOnNonObject($this->fixture->property);
         $exception->shouldHaveType('PhpSpec\Exception\Wrapper\SubjectException');
         $exception->getMessage()->shouldBe($fixtureMessage);
+    }
+
+    function shouldCreateNamedConstructorNotFoundException()
+    {
+        $this->createdException->shouldHaveType('PhpSpec\Exception\Fracture\NamedConstructorNotFoundException');
+        $this->createdException->getMessage()->shouldReturn($this->fixture->message);
+        $this->createdException->getSubject()->shouldBeLike($this->fixture->subject);
+        $this->createdException->getMethodName()->shouldReturn($this->fixture->method);
+        $this->createdException->getArguments()->shouldReturn($this->fixture->arguments);
     }
 
     function shouldCreateMethodNotFoundException()

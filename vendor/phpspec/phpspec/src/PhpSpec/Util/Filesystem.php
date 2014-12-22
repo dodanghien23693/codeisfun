@@ -15,14 +15,11 @@ namespace PhpSpec\Util;
 
 use Symfony\Component\Finder\Finder;
 
-/**
- * Class Filesystem
- * @package PhpSpec\Util
- */
 class Filesystem
 {
     /**
-     * @param $path
+     * @param string $path
+     *
      * @return bool
      */
     public function pathExists($path)
@@ -31,7 +28,8 @@ class Filesystem
     }
 
     /**
-     * @param $path
+     * @param string $path
+     *
      * @return string
      */
     public function getFileContents($path)
@@ -40,8 +38,8 @@ class Filesystem
     }
 
     /**
-     * @param $path
-     * @param $content
+     * @param string $path
+     * @param string $content
      */
     public function putFileContents($path, $content)
     {
@@ -49,7 +47,8 @@ class Filesystem
     }
 
     /**
-     * @param $path
+     * @param string $path
+     *
      * @return bool
      */
     public function isDirectory($path)
@@ -58,7 +57,7 @@ class Filesystem
     }
 
     /**
-     * @param $path
+     * @param string $path
      */
     public function makeDirectory($path)
     {
@@ -66,7 +65,27 @@ class Filesystem
     }
 
     /**
+     * @param string $path
+     *
+     * @return \SplFileInfo[]
+     */
+    public function findSpecFilesIn($path)
+    {
+        $finder = Finder::create()
+            ->files()
+            ->name('*Spec.php')
+            ->followLinks()
+            ->sortByName()
+            ->in($path)
+        ;
+
+        return iterator_to_array($finder);
+    }
+
+    /**
      * @param $path
+     *
+     * @deprecated deprecated since 2.1
      * @return array
      */
     public function findPhpFilesIn($path)

@@ -14,19 +14,16 @@
 namespace PhpSpec\Formatter\Html;
 
 use PhpSpec\Formatter\Template as TemplateInterface;
-
 use PhpSpec\IO\IOInterface;
 
-/**
- * Class Template
- * @package PhpSpec\Formatter\Html
- */
 class Template implements TemplateInterface
 {
-    /**
-     *
-     */
     const DIR = __DIR__;
+
+    /**
+     * @var IOInterface
+     */
+    private $io;
 
     /**
      * @param IOInterface $io
@@ -37,8 +34,8 @@ class Template implements TemplateInterface
     }
 
     /**
-     * @param $text
-     * @param array $templateVars
+     * @param string $text
+     * @param array  $templateVars
      */
     public function render($text, array $templateVars = array())
     {
@@ -51,13 +48,14 @@ class Template implements TemplateInterface
     }
 
     /**
-     * @param $templateVars
+     * @param array $templateVars
+     *
      * @return array
      */
-    private function extractKeys($templateVars)
+    private function extractKeys(array $templateVars)
     {
         return array_map(function ($e) {
-            return '{' . $e . '}';
+            return '{'.$e.'}';
         }, array_keys($templateVars));
     }
 }

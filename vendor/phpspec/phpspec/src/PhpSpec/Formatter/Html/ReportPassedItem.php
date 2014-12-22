@@ -16,10 +16,6 @@ namespace PhpSpec\Formatter\Html;
 use PhpSpec\Event\ExampleEvent;
 use PhpSpec\Formatter\Template as TemplateInterface;
 
-/**
- * Class ReportPassedItem
- * @package PhpSpec\Formatter\Html
- */
 class ReportPassedItem
 {
     /**
@@ -46,7 +42,7 @@ class ReportPassedItem
      */
     public function write()
     {
-        $this->template->render(Template::DIR . '/Template/ReportPass.html', array(
+        $this->template->render(Template::DIR.'/Template/ReportPass.html', array(
             'title' => $this->event->getTitle()
         ));
     }

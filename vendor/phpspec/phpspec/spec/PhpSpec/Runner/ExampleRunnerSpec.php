@@ -33,8 +33,7 @@ class ExampleRunnerSpec extends ObjectBehavior
 
     function it_executes_example_in_newly_created_context(
         ExampleNode $example, ReflectionMethod $exampReflection, SpecificationInterface $context
-    )
-    {
+    ) {
         $example->isPending()->willReturn(false);
 
         $exampReflection->getParameters()->willReturn(array());
@@ -45,8 +44,7 @@ class ExampleRunnerSpec extends ObjectBehavior
 
     function it_dispatches_ExampleEvent_with_pending_status_if_example_is_pending(
         EventDispatcherInterface $dispatcher, ExampleNode $example
-    )
-    {
+    ) {
         $example->isPending()->willReturn(true);
 
         $dispatcher->dispatch('beforeExample', Argument::any())->shouldBeCalled();
@@ -60,8 +58,7 @@ class ExampleRunnerSpec extends ObjectBehavior
     function it_dispatches_ExampleEvent_with_failed_status_if_matcher_throws_exception(
         EventDispatcherInterface $dispatcher,
         ExampleNode $example, ReflectionMethod $exampReflection, SpecificationInterface $context
-    )
-    {
+    ) {
         $example->isPending()->willReturn(false);
 
         $exampReflection->getParameters()->willReturn(array());
@@ -79,8 +76,7 @@ class ExampleRunnerSpec extends ObjectBehavior
     function it_dispatches_ExampleEvent_with_failed_status_if_example_throws_exception(
         EventDispatcherInterface $dispatcher,
         ExampleNode $example, ReflectionMethod $exampReflection, SpecificationInterface $context
-    )
-    {
+    ) {
         $example->isPending()->willReturn(false);
 
         $exampReflection->getParameters()->willReturn(array());
@@ -96,8 +92,7 @@ class ExampleRunnerSpec extends ObjectBehavior
 
     function it_runs_all_supported_maintainers_before_and_after_each_example(
         ExampleNode $example, ReflectionMethod $exampReflection, MaintainerInterface $maintainer
-    )
-    {
+    ) {
         $example->isPending()->willReturn(false);
 
         $exampReflection->getParameters()->willReturn(array());
@@ -115,10 +110,9 @@ class ExampleRunnerSpec extends ObjectBehavior
 
     function it_runs_let_and_letgo_maintainer_before_and_after_each_example_if_the_example_throws_an_exception(
         ExampleNode $example, SpecificationNode $specification, ReflectionClass $specReflection,
-        $context, ReflectionMethod $exampReflection, LetAndLetgoMaintainer $maintainer,
+        ReflectionMethod $exampReflection, LetAndLetgoMaintainer $maintainer,
         SpecificationInterface $context
-    )
-    {
+    ) {
         $example->isPending()->willReturn(false);
         $example->getFunctionReflection()->willReturn($exampReflection);
         $example->getSpecification()->willReturn($specification);

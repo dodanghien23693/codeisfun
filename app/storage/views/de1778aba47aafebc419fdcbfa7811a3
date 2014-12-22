@@ -1,0 +1,112 @@
+
+
+
+
+<?php $__env->startSection('content'); ?>
+
+
+<div id="successMessage"> </div>
+ 
+ 
+ <?php if(isset($errorMessage)): ?> 
+ <?php echo $errorMessage; ?>   
+ <?php endif; ?>
+
+ <div class="register">
+  <?php if(isset($user)): ?>   
+     <?php echo Form::model($user,array('id'=>'register_form','action'=>'AuthController@register'));; ?>
+
+     <?php else: ?>
+     <?php echo Form::open(array('id'=>'register_form','action'=>'AuthController@register'));; ?>
+
+  <?php endif; ?>
+            
+
+            <?php echo Form::label('first_name','First name',array('class'=>'control-label'));; ?>
+
+            <?php echo Form::text('first_name');; ?>
+
+             <div id ="first_name_error"></div>
+           
+             <?php echo Form::label('last_name','Last name',array('class'=>'control-label'));; ?>
+
+            <?php echo Form::text('last_name');; ?>
+
+             <div id ="last_name_error"></div>
+            <hr>
+           
+            <?php echo Form::label('username','User Name',array('class'=>'control-label'));; ?>
+
+            <?php echo Form::text('username');; ?>
+
+             <div id ="username_error"></div>
+            <hr>
+          
+            <?php echo Form::label('email','Your Email',array('class'=>'control-label'));; ?> 
+            <?php echo Form::email('email');; ?>
+
+             <div id ="email_error"></div>
+            <hr>
+            
+            <?php echo Form::label('password','Password',array('class'=>'control-label'));; ?> 
+            <?php echo Form::password('password');; ?>
+
+             <div id ="password_error"></div>
+            <hr>
+            <?php echo Form::label('password_confirmation','Password confirm',array('class'=>'control-label'));; ?> 
+            <?php echo Form::password('password_confirmation');; ?>
+
+            <hr>
+            <?php echo Form::submit('Register');; ?>
+
+            
+            <hr>
+            
+            
+            
+        <?php echo Form::close();; ?>
+
+
+        Already have an account? <?php echo link_to_route('login','Login'); ?>
+
+ </div>
+ 
+<?php $__env->stopSection(); ?>
+
+<?php $__env->startSection('scripts'); ?>
+<script type="text/javascript">
+    $.noConflict();
+    jQuery( document ).ready(function($){
+        $( "#register_form" ).submit(function( event ) {    
+  event.preventDefault();
+$('div[id $= "_error"]').each(function(){
+    $(this).html('');
+});
+  var $form = $( this ),
+    data = $form.serialize(),
+    url = $form.attr( "action" );
+
+var posting = $.post( url, { formData: data } );
+
+  posting.done(function( data ) {
+    if(data.fail) {
+      $.each(data.errors, function( index, value ) {
+        var errorDiv = '#'+index+'_error';
+        $(errorDiv).addClass('required');
+        $(errorDiv).empty().append(value);
+      });
+      $('#successMessage').empty();     
+    } 
+    if(data.success) {
+        $('.register').fadeOut(); //hiding Reg form
+        
+       $('#successMessage').html(data.message);
+    } //success
+  }); //done
+});
+        
+    });
+    
+</script>
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('public.layouts.default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

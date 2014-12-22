@@ -1,0 +1,87 @@
+
+
+<?php $__env->startSection('content'); ?>
+
+<table id='course-table' class="table datatable">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>start day</th>
+            <th>end day</th>
+            <th>Instructor</th>
+            <th>Categories</th>
+            <th>action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($courses as $course): ?>
+        <tr>
+            <td><?php echo $course->id; ?></td>
+            <td><?php echo $course->name; ?></td>
+            <td><?php echo $course->start_day; ?></td>
+            <td><?php echo $course->end_day; ?></td>
+            <td>
+                <?php foreach($course->instructors as $instructor): ?>
+                <div><?php echo $instructor['username']; ?></div>
+                <?php endforeach; ?>
+            </td>
+            <td>
+                <?php foreach($course->categories as $category): ?>
+                <div><?php echo $category->name; ?></div>
+                <?php endforeach; ?>
+            </td>
+            <td>
+                <a href="<?php echo url('admin/course/edit/'.$course->id) ?>" class="btn-link">
+                    edit
+                </a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+
+<?php if(count($courses_trashed)): ?>
+<table id='course-trashed-table' class="table datatable">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>short name</th>
+            <th>start day</th>
+            <th>end day</th>
+            <th>cost</th>
+            <th>action</th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach($courses_trashed as $course_trash): ?>
+        <tr>
+            <td><?php echo $course_trash->id; ?></td>
+            <td><?php echo $course_trash->name; ?></td>
+            <td><?php echo $course_trash->short_name; ?></td>
+            <td><?php echo $course_trash->start_day; ?></td>
+            <td><?php echo $course_trash->end_day; ?></td>
+            <td><?php echo $course_trash->cost; ?></td>
+            <td>
+                <a href="<?php echo url('admin/course/restore/'.$course_trash->id) ?>" class="btn-link">
+                    Restore
+                </a>
+                |
+                <a href="<?php echo url('admin/course/destroy/'.$course_trash->id) ?>"  class="btn-link">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+<?php endif; ?>
+<?php $__env->stopSection(); ?>
+
+
+<?php $__env->startSection('scripts'); ?>
+
+<?php $__env->stopSection(); ?>
+<?php echo $__env->make('admin.layouts.default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

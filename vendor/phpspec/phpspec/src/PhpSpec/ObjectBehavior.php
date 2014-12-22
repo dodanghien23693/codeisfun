@@ -17,7 +17,6 @@ use PhpSpec\Matcher\MatchersProviderInterface;
 use PhpSpec\Wrapper\WrapperInterface;
 use PhpSpec\Wrapper\SubjectContainerInterface;
 use PhpSpec\Wrapper\Subject;
-
 use ArrayAccess;
 
 /**
@@ -29,7 +28,8 @@ use ArrayAccess;
  * wrap the results into PhpSpec subjects. This results will then be able to
  * be matched against expectations.
  *
- * @method void beConstructedWith($constructorArguments,...)
+ * @method void beConstructedWith()
+ * @method void beConstructedThrough($factoryMethod, array $constructorArguments)
  * @method void beAnInstanceOf($class)
  * @method void shouldHaveType($type)
  * @method \PhpSpec\Wrapper\Subject\Expectation\DuringCall shouldThrow($exception = null)
@@ -83,7 +83,7 @@ class ObjectBehavior implements ArrayAccess,
      *
      * @param string|integer $key
      *
-     * @return bool
+     * @return Subject
      */
     public function offsetExists($key)
     {
@@ -95,7 +95,7 @@ class ObjectBehavior implements ArrayAccess,
      *
      * @param string|integer $key
      *
-     * @return mixed
+     * @return Subject
      */
     public function offsetGet($key)
     {
@@ -124,7 +124,7 @@ class ObjectBehavior implements ArrayAccess,
     }
 
     /**
-     * Proxies all call to the PhpSpec subject
+     * Proxies all calls to the PhpSpec subject
      *
      * @param string $method
      * @param array  $arguments

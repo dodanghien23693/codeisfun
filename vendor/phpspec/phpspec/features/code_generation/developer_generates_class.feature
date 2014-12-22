@@ -18,7 +18,61 @@ Feature: Developer generates a class
 
       """
 
-    @issue269
+  @issue269
+  Scenario: Generating a class with psr4 prefix
+    Given the config file contains:
+    """
+    suites:
+      behat_suite:
+        namespace: Behat\Tests\MyNamespace
+        psr4_prefix: Behat\Tests
+    """
+    And I have started describing the "Behat/Tests/MyNamespace/Markdown" class
+    When I run phpspec and answer "y" when asked if I want to generate the code
+    Then a new class should be generated in the "src/MyNamespace/Markdown.php":
+    """
+    <?php
+
+    namespace Behat\Tests\MyNamespace;
+
+    class Markdown
+    {
+    }
+
+    """
+
+  @issue127
+  Scenario: Generating a class with PSR0 must convert classname underscores to directory separator
+    Given I have started describing the "CodeGeneration/ClassExample1/Text_Markdown" class
+    When I run phpspec and answer "y" when asked if I want to generate the code
+    Then a new class should be generated in the "src/CodeGeneration/ClassExample1/Text/Markdown.php":
+      """
+      <?php
+
+      namespace CodeGeneration\ClassExample1;
+
+      class Text_Markdown
+      {
+      }
+
+      """
+
+  @issue127
+  Scenario: Generating a class with PSR0 must not convert namespace underscores to directory separator
+    Given I have started describing the "CodeGeneration/Class_Example2/Text_Markdown" class
+    When I run phpspec and answer "y" when asked if I want to generate the code
+    Then a new class should be generated in the "src/CodeGeneration/Class_Example2/Text/Markdown.php":
+      """
+      <?php
+
+      namespace CodeGeneration\Class_Example2;
+
+      class Text_Markdown
+      {
+      }
+
+      """
+
   Scenario: Generating a class when expectations on collaborator are defined
     Given the spec file "spec/CodeGeneration/MethodExample2/ForgotPasswordSpec.php" contains:
     """

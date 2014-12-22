@@ -13,14 +13,10 @@
 
 namespace PhpSpec\Wrapper;
 
-/**
- * Interface WrapperInterface
- * @package PhpSpec\Wrapper
- */
 interface WrapperInterface
 {
     /**
-     * @return object
+     * @return mixed
      */
     public function getWrappedObject();
 }

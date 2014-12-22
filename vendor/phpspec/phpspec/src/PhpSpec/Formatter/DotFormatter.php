@@ -16,11 +16,7 @@ namespace PhpSpec\Formatter;
 use PhpSpec\Event\SuiteEvent;
 use PhpSpec\Event\ExampleEvent;
 
-/**
- * Class DotFormatter
- * @package PhpSpec\Formatter
- */
-class DotFormatter extends BasicFormatter
+class DotFormatter extends ConsoleFormatter
 {
     /**
      * @var int
@@ -54,6 +50,9 @@ class DotFormatter extends BasicFormatter
             case ExampleEvent::PENDING:
                 $io->write('<pending>P</pending>');
                 break;
+            case ExampleEvent::SKIPPED:
+                $io->write('<skipped>S</skipped>');
+                break;
             case ExampleEvent::FAILED:
                 $io->write('<failed>F</failed>');
                 break;
@@ -86,7 +85,8 @@ class DotFormatter extends BasicFormatter
         foreach (array(
             'failed' => $stats->getFailedEvents(),
             'broken' => $stats->getBrokenEvents(),
-            'pending' => $stats->getPendingEvents()
+            'pending' => $stats->getPendingEvents(),
+            'skipped' => $stats->getSkippedEvents(),
         ) as $status => $events) {
             if (!count($events)) {
                 continue;

@@ -15,13 +15,6 @@ namespace PhpSpec\Util;
 
 use PhpSpec\Exception\Fracture\ClassNotFoundException;
 
-use ReflectionClass;
-use ReflectionProperty;
-
-/**
- * Class Instantiator
- * @package PhpSpec\Util
- */
 class Instantiator
 {
     /**
@@ -31,80 +24,12 @@ class Instantiator
      */
     public function instantiate($className)
     {
-        return unserialize($this->createSerializedObject($className));
-    }
-
-    /**
-     * @param string $className
-     *
-     * @return string
-     *
-     * @throws \PhpSpec\Exception\Fracture\ClassNotFoundException
-     */
-    private function createSerializedObject($className)
-    {
         if (!class_exists($className)) {
             throw new ClassNotFoundException("Class $className does not exist.", $className);
         }
 
-        $reflection = new ReflectionClass($className);
-        $properties = $reflection->getProperties();
+        $instantiator = new \Doctrine\Instantiator\Instantiator();
 
-        return "O:" . strlen($className) . ":\"$className\":" . count($properties) .
-            ':{' . $this->serializeProperties($reflection, $properties) ."}";
-    }
-
-    /**
-     * @param ReflectionClass      $reflection
-     * @param ReflectionProperty[] $properties
-     *
-     * @return string
-     */
-    private function serializeProperties(ReflectionClass $reflection, array $properties)
-    {
-        $serializedProperties = '';
-
-        foreach ($properties as $property) {
-            $serializedProperties .= $this->serializePropertyName($reflection, $property);
-            $serializedProperties .= $this->serializePropertyValue($reflection, $property);
-        }
-
-        return $serializedProperties;
-    }
-
-    /**
-     * @param ReflectionClass    $class
-     * @param ReflectionProperty $property
-     *
-     * @return string
-     */
-    private function serializePropertyName(ReflectionClass $class, ReflectionProperty $property)
-    {
-        $propertyName = $property->getName();
-
-        if ($property->isProtected()) {
-            $propertyName = chr(0) . '*' . chr(0) . $propertyName;
-        } elseif ($property->isPrivate()) {
-            $propertyName = chr(0) . $class->getName() . chr(0) . $propertyName;
-        }
-
-        return serialize($propertyName);
-    }
-
-    /**
-     * @param ReflectionClass    $class
-     * @param ReflectionProperty $property
-     *
-     * @return string
-     */
-    private function serializePropertyValue(ReflectionClass $class, ReflectionProperty $property)
-    {
-        $defaults = $class->getDefaultProperties();
-
-        if (array_key_exists($property->getName(), $defaults)) {
-            return serialize($defaults[$property->getName()]);
-        }
-
-        return serialize(null);
+        return $instantiator->instantiate($className);
     }
 }

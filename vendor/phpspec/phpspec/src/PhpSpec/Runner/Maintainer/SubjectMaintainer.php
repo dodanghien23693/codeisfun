@@ -17,16 +17,11 @@ use PhpSpec\Loader\Node\ExampleNode;
 use PhpSpec\SpecificationInterface;
 use PhpSpec\Runner\MatcherManager;
 use PhpSpec\Runner\CollaboratorManager;
-
 use PhpSpec\Formatter\Presenter\PresenterInterface;
 use PhpSpec\Wrapper\Unwrapper;
 use PhpSpec\Wrapper\Wrapper;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-/**
- * Class SubjectMaintainer
- * @package PhpSpec\Runner\Maintainer
- */
 class SubjectMaintainer implements MaintainerInterface
 {
     /**

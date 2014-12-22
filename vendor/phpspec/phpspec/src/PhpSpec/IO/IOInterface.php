@@ -13,20 +13,15 @@
 
 namespace PhpSpec\IO;
 
-/**
- * Interface IOInterface
- * @package PhpSpec\IO
- */
 interface IOInterface
 {
     /**
-     * @param $message
-     * @return mixed
+     * @param string $message
      */
     public function write($message);
 
     /**
-     * @return mixed
+     * @return bool
      */
     public function isVerbose();
 }

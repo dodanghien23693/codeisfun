@@ -11,6 +11,7 @@ use PhpSpec\Event\SpecificationEvent;
 use PhpSpec\Event\ExampleEvent;
 use PhpSpec\Loader\Node\SpecificationNode;
 use PhpSpec\Event\SuiteEvent;
+use PhpSpec\Exception\Example\SkippingException;
 
 class JUnitFormatterSpec extends ObjectBehavior
 {
@@ -20,6 +21,11 @@ class JUnitFormatterSpec extends ObjectBehavior
         StatisticsCollector $stats
     ) {
         $this->beConstructedWith($presenter, $io, $stats);
+    }
+
+    function it_is_an_event_subscriber()
+    {
+        $this->shouldHaveType('Symfony\Component\EventDispatcher\EventSubscriberInterface');
     }
 
     function it_stores_a_testcase_node_after_passed_example_run(
@@ -59,13 +65,13 @@ class JUnitFormatterSpec extends ObjectBehavior
         $this->afterExample($event);
 
         $this->getTestCaseNodes()->shouldReturn(array(
-            '<testcase name="example title" time="1337" classname="Acme\Foo\Bar" status="broken">' . "\n" .
-                '<error type="spec\PhpSpec\Formatter\ExceptionStub" message="Something went wrong" />' . "\n" .
-                '<system-err>' . "\n" .
-                    '<![CDATA[' . "\n" .
-                        'Exception trace' . "\n" .
-                    ']]>' . "\n" .
-                '</system-err>' . "\n" .
+            '<testcase name="example title" time="1337" classname="Acme\Foo\Bar" status="broken">'."\n".
+                '<error type="spec\PhpSpec\Formatter\ExceptionStub" message="Something went wrong" />'."\n".
+                '<system-err>'."\n".
+                    '<![CDATA['."\n".
+                        'Exception trace'."\n".
+                    ']]>'."\n".
+                '</system-err>'."\n".
             '</testcase>'
         ));
     }
@@ -88,13 +94,38 @@ class JUnitFormatterSpec extends ObjectBehavior
         $this->afterExample($event);
 
         $this->getTestCaseNodes()->shouldReturn(array(
-            '<testcase name="example title" time="1337" classname="Acme\Foo\Bar" status="failed">' . "\n" .
-                '<failure type="spec\PhpSpec\Formatter\ExceptionStub" message="Something went wrong" />' . "\n" .
-                '<system-err>' . "\n" .
-                    '<![CDATA[' . "\n" .
-                        'Exception trace' . "\n" .
-                    ']]>' . "\n" .
-                '</system-err>' . "\n" .
+            '<testcase name="example title" time="1337" classname="Acme\Foo\Bar" status="failed">'."\n".
+                '<failure type="spec\PhpSpec\Formatter\ExceptionStub" message="Something went wrong" />'."\n".
+                '<system-err>'."\n".
+                    '<![CDATA['."\n".
+                        'Exception trace'."\n".
+                    ']]>'."\n".
+                '</system-err>'."\n".
+            '</testcase>'
+        ));
+    }
+
+    function it_stores_a_testcase_node_after_skipped_example_run(
+        ExampleEvent $event,
+        SpecificationNode $specification,
+        \ReflectionClass $refClass
+    ) {
+        $event->getResult()->willReturn(ExampleEvent::SKIPPED);
+        $event->getTitle()->willReturn('example title');
+        $event->getTime()->willReturn(1337);
+
+        $event->getException()->willReturn(new SkippingException('zog zog'));
+
+        $event->getSpecification()->willReturn($specification);
+        $specification->getClassReflection()->willReturn($refClass);
+        $refClass->getName()->willReturn('Acme\Foo\Bar');
+
+        $this->afterExample($event);
+
+        // skipped tag is escaped because a skipped tag is also registered in the console formatter
+        $this->getTestCaseNodes()->shouldReturn(array(
+            '<testcase name="example title" time="1337" classname="Acme\Foo\Bar" status="skipped">'."\n".
+                '\<skipped><![CDATA[ skipped: zog zog ]]>\</skipped>'."\n".
             '</testcase>'
         ));
     }
@@ -114,20 +145,22 @@ class JUnitFormatterSpec extends ObjectBehavior
             ExampleEvent::FAILED  => 1,
             ExampleEvent::BROKEN  => 2,
             ExampleEvent::PENDING => 5,
+            ExampleEvent::SKIPPED => 3,
         ));
         $this->afterSpecification($event);
 
         $this->getTestSuiteNodes()->shouldReturn(array(
-            '<testsuite name="specification title" time="42" tests="3" failures="1" errors="2" skipped="5">' . "\n" .
-                '<testcase name="example1" />' . "\n" .
-                '<testcase name="example2" />' . "\n" .
-                '<testcase name="example3" />' . "\n" .
+            '<testsuite name="specification title" time="42" tests="3" failures="1" errors="2" skipped="8">'."\n".
+                '<testcase name="example1" />'."\n".
+                '<testcase name="example2" />'."\n".
+                '<testcase name="example3" />'."\n".
             '</testsuite>'
         ));
         $this->getTestCaseNodes()->shouldHaveCount(0);
         $this->getExampleStatusCounts()->shouldReturn(array(
             ExampleEvent::PASSED  => 0,
             ExampleEvent::PENDING => 0,
+            ExampleEvent::SKIPPED => 0,
             ExampleEvent::FAILED  => 0,
             ExampleEvent::BROKEN  => 0,
         ));
@@ -141,30 +174,30 @@ class JUnitFormatterSpec extends ObjectBehavior
         $stats->getEventsCount()->willReturn(100);
 
         $this->setTestSuiteNodes(array(
-            '<testsuite name="specification1" tests="3">' . "\n" .
-                '<testcase name="example1" />' . "\n" .
-                '<testcase name="example2" />' . "\n" .
-                '<testcase name="example3" />' . "\n" .
+            '<testsuite name="specification1" tests="3">'."\n".
+                '<testcase name="example1" />'."\n".
+                '<testcase name="example2" />'."\n".
+                '<testcase name="example3" />'."\n".
             '</testsuite>',
-            '<testsuite name="specification2" tests="2">' . "\n" .
-                '<testcase name="example1" />' . "\n" .
-                '<testcase name="example2" />' . "\n" .
+            '<testsuite name="specification2" tests="2">'."\n".
+                '<testcase name="example1" />'."\n".
+                '<testcase name="example2" />'."\n".
             '</testsuite>'
         ));
         $this->afterSuite($event);
 
         $io->write(
-            '<?xml version="1.0" encoding="UTF-8" ?>' . "\n" .
-            '<testsuites time="48151.62342" tests="100" failures="12" errors="3">' . "\n" .
-                '<testsuite name="specification1" tests="3">' . "\n" .
-                    '<testcase name="example1" />' . "\n" .
-                    '<testcase name="example2" />' . "\n" .
-                    '<testcase name="example3" />' . "\n" .
-                '</testsuite>' . "\n" .
-                '<testsuite name="specification2" tests="2">' . "\n" .
-                    '<testcase name="example1" />' . "\n" .
-                    '<testcase name="example2" />' . "\n" .
-                '</testsuite>' . "\n" .
+            '<?xml version="1.0" encoding="UTF-8" ?>'."\n".
+            '<testsuites time="48151.62342" tests="100" failures="12" errors="3">'."\n".
+                '<testsuite name="specification1" tests="3">'."\n".
+                    '<testcase name="example1" />'."\n".
+                    '<testcase name="example2" />'."\n".
+                    '<testcase name="example3" />'."\n".
+                '</testsuite>'."\n".
+                '<testsuite name="specification2" tests="2">'."\n".
+                    '<testcase name="example1" />'."\n".
+                    '<testcase name="example2" />'."\n".
+                '</testsuite>'."\n".
             '</testsuites>'
         )->shouldBeCalled();
     }

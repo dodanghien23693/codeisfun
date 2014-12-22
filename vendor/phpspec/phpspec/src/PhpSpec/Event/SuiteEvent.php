@@ -22,9 +22,24 @@ use Symfony\Component\EventDispatcher\Event;
 class SuiteEvent extends Event implements EventInterface
 {
     /**
+     * @var Suite
+     */
+    private $suite;
+
+    /**
      * @var float
      */
     private $time;
+
+    /**
+     * @var integer
+     */
+    private $result;
+
+    /**
+     * @var boolean
+     */
+    private $worthRerunning = false;
 
     /**
      * @param Suite   $suite
@@ -60,5 +75,18 @@ class SuiteEvent extends Event implements EventInterface
     public function getResult()
     {
         return $this->result;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWorthRerunning()
+    {
+        return $this->worthRerunning;
+    }
+
+    public function markAsWorthRerunning()
+    {
+        $this->worthRerunning = true;
     }
 }

@@ -17,10 +17,6 @@ use PhpSpec\Event\ExampleEvent;
 use PhpSpec\Formatter\Presenter\PresenterInterface as Presenter;
 use PhpSpec\Formatter\Template as TemplateInterface;
 
-/**
- * Class ReportFailedItem
- * @package PhpSpec\Formatter\Html
- */
 class ReportFailedItem
 {
     /**
@@ -53,12 +49,12 @@ class ReportFailedItem
     }
 
     /**
-     * @param $index
+     * @param int $index
      */
     public function write($index)
     {
         $code = $this->presenter->presentException($this->event->getException(), true);
-        $this->template->render(Template::DIR . '/Template/ReportFailed.html',
+        $this->template->render(Template::DIR.'/Template/ReportFailed.html',
             array(
                 'title' => htmlentities(strip_tags($this->event->getTitle())),
                 'message' => htmlentities(strip_tags($this->event->getMessage())),
@@ -84,6 +80,6 @@ class ReportFailedItem
             }
         }
 
-        return rtrim($backtrace, "<br />" . PHP_EOL);
+        return rtrim($backtrace, "<br />".PHP_EOL);
     }
 }

@@ -17,14 +17,10 @@ use PhpSpec\Event\ExampleEvent;
 use PhpSpec\Formatter\Presenter\PresenterInterface;
 use PhpSpec\Formatter\Template as TemplateInterface;
 
-/**
- * Class ReportItemFactory
- * @package PhpSpec\Formatter\Html
- */
 class ReportItemFactory
 {
     /**
-     * @var Template
+     * @var TemplateInterface
      */
     private $template;
 
@@ -42,13 +38,15 @@ class ReportItemFactory
      *
      * @return ReportFailedItem|ReportPassedItem|ReportPendingItem
      */
-    public function create(ExampleEvent $event, PresenterInterface $presenter = null)
+    public function create(ExampleEvent $event, PresenterInterface $presenter)
     {
         switch ($event->getResult()) {
             case ExampleEvent::PASSED:
                 return new ReportPassedItem($this->template, $event);
             case ExampleEvent::PENDING:
                 return new ReportPendingItem($this->template, $event);
+            case ExampleEvent::SKIPPED:
+                return new ReportSkippedItem($this->template, $event);
             case ExampleEvent::FAILED:
             case ExampleEvent::BROKEN:
                 return new ReportFailedItem($this->template, $event, $presenter);

@@ -13,10 +13,6 @@
 
 namespace PhpSpec\Wrapper;
 
-/**
- * Class DelayedCall
- * @package PhpSpec\Wrapper
- */
 class DelayedCall
 {
     /**
@@ -25,7 +21,7 @@ class DelayedCall
     private $callable;
 
     /**
-     * @param $callable
+     * @param callable $callable
      */
     public function __construct($callable)
     {

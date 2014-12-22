@@ -13,14 +13,11 @@
 
 namespace PhpSpec\Wrapper\Subject;
 
+use PhpSpec\Exception\Fracture\FactoryDoesNotReturnObjectException;
 use PhpSpec\Formatter\Presenter\PresenterInterface;
 use PhpSpec\Wrapper\Unwrapper;
 use PhpSpec\Exception\Wrapper\SubjectException;
 
-/**
- * Class WrappedObject
- * @package PhpSpec\Wrapper\Subject
- */
 class WrappedObject
 {
     /**
@@ -35,6 +32,10 @@ class WrappedObject
      * @var string
      */
     private $classname;
+    /**
+     * @var callable|null
+     */
+    private $factoryMethod;
     /**
      * @var array
      */
@@ -74,9 +75,10 @@ class WrappedObject
         }
 
         $this->classname      = $classname;
-        $unwrapper            = new Unwrapper;
+        $unwrapper            = new Unwrapper();
         $this->arguments      = $unwrapper->unwrapAll($arguments);
         $this->isInstantiated = false;
+        $this->factoryMethod  = null;
     }
 
     /**
@@ -93,7 +95,42 @@ class WrappedObject
             ));
         }
 
+        if ($this->isInstantiated()) {
+            throw new SubjectException('You can not change object construction method when it is already instantiated');
+        }
+
         $this->beAnInstanceOf($this->classname, $args);
+    }
+
+    /**
+     * @param callable|string|null $factoryMethod
+     * @param array                $arguments
+     */
+    public function beConstructedThrough($factoryMethod, array $arguments = array())
+    {
+        if (
+            is_string($factoryMethod) &&
+            false === strpos($factoryMethod, '::') &&
+            method_exists($this->classname, $factoryMethod)
+        ) {
+            $factoryMethod = array($this->classname, $factoryMethod);
+        }
+
+        if ($this->isInstantiated()) {
+            throw new SubjectException('You can not change object construction method when it is already instantiated');
+        }
+
+        $this->factoryMethod = $factoryMethod;
+        $unwrapper           = new Unwrapper();
+        $this->arguments     = $unwrapper->unwrapAll($arguments);
+    }
+
+    /**
+     * @return callable|null
+     */
+    public function getFactoryMethod()
+    {
+        return $this->factoryMethod;
     }
 
     /**
@@ -161,16 +198,39 @@ class WrappedObject
             return $this->instance;
         }
 
-        $reflection = new \ReflectionClass($this->classname);
-
-        if (empty($this->arguments)) {
-            $this->instance = $reflection->newInstance();
+        if ($this->factoryMethod) {
+            $this->instance = $this->instantiateFromCallback($this->factoryMethod);
         } else {
-            $this->instance = $reflection->newInstanceArgs($this->arguments);
+            $reflection = new \ReflectionClass($this->classname);
+
+            $this->instance = empty($this->arguments) ?
+                $reflection->newInstance() :
+                $reflection->newInstanceArgs($this->arguments);
         }
 
         $this->isInstantiated = true;
 
         return $this->instance;
+    }
+
+    /**
+     * @param callable $factoryCallable
+     *
+     * @return object
+     */
+    private function instantiateFromCallback($factoryCallable)
+    {
+        $instance = call_user_func_array($factoryCallable, $this->arguments);
+
+        if (!is_object($instance)) {
+            throw new FactoryDoesNotReturnObjectException(sprintf(
+                'The method %s::%s did not return an object, returned %s instead',
+                $this->factoryMethod[0],
+                $this->factoryMethod[1],
+                gettype($instance)
+            ));
+        }
+
+        return $instance;
     }
 }

@@ -16,17 +16,11 @@ namespace PhpSpec\Formatter;
 use PhpSpec\IO\IOInterface as IO;
 use PhpSpec\Formatter\Presenter\PresenterInterface;
 use PhpSpec\Listener\StatisticsCollector;
-
 use PhpSpec\Event\SuiteEvent;
 use PhpSpec\Event\SpecificationEvent;
 use PhpSpec\Event\ExampleEvent;
-use PhpSpec\Exception\Example\PendingException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-/**
- * Class BasicFormatter
- * @package PhpSpec\Formatter
- */
 abstract class BasicFormatter implements EventSubscriberInterface
 {
     /**
@@ -66,7 +60,7 @@ abstract class BasicFormatter implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed
+     * @return IO
      */
     protected function getIO()
     {
@@ -74,7 +68,7 @@ abstract class BasicFormatter implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed
+     * @return PresenterInterface
      */
     protected function getPresenter()
     {
@@ -82,53 +76,11 @@ abstract class BasicFormatter implements EventSubscriberInterface
     }
 
     /**
-     * @return mixed
+     * @return StatisticsCollector
      */
     protected function getStatisticsCollector()
     {
         return $this->stats;
-    }
-
-    /**
-     * @param ExampleEvent $event
-     */
-    protected function printException(ExampleEvent $event)
-    {
-        if (null === $exception = $event->getException()) {
-            return;
-        }
-
-        $title = str_replace('\\', DIRECTORY_SEPARATOR, $event->getSpecification()->getTitle());
-        $title = str_pad($title, 50, ' ', STR_PAD_RIGHT);
-        $message = $this->presenter->presentException($exception, $this->io->isVerbose());
-
-        if ($exception instanceof PendingException) {
-            $this->io->writeln(sprintf('<pending-bg>%s</pending-bg>', $title));
-            $this->io->writeln(sprintf(
-                '<lineno>%4d</lineno>  <pending>- %s</pending>',
-                $event->getExample()->getFunctionReflection()->getStartLine(),
-                $event->getExample()->getTitle()
-            ));
-            $this->io->writeln(sprintf('<pending>%s</pending>', lcfirst($message)), 6);
-        } elseif (ExampleEvent::FAILED === $event->getResult()) {
-            $this->io->writeln(sprintf('<failed-bg>%s</failed-bg>', $title));
-            $this->io->writeln(sprintf(
-                '<lineno>%4d</lineno>  <failed>✘ %s</failed>',
-                $event->getExample()->getFunctionReflection()->getStartLine(),
-                $event->getExample()->getTitle()
-            ));
-            $this->io->writeln(sprintf('<failed>%s</failed>', lcfirst($message)), 6);
-        } else {
-            $this->io->writeln(sprintf('<broken-bg>%s</broken-bg>', $title));
-            $this->io->writeln(sprintf(
-                '<lineno>%4d</lineno>  <broken>! %s</broken>',
-                $event->getExample()->getFunctionReflection()->getStartLine(),
-                $event->getExample()->getTitle()
-            ));
-            $this->io->writeln(sprintf('<broken>%s</broken>', lcfirst($message)), 6);
-        }
-
-        $this->io->writeln();
     }
 
     /**

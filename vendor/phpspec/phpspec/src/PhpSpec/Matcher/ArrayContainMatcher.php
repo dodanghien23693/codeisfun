@@ -14,13 +14,8 @@
 namespace PhpSpec\Matcher;
 
 use PhpSpec\Formatter\Presenter\PresenterInterface;
-
 use PhpSpec\Exception\Example\FailureException;
 
-/**
- * Class ArrayContainMatcher
- * @package PhpSpec\Matcher
- */
 class ArrayContainMatcher extends BasicMatcher
 {
     /**

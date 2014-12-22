@@ -1,0 +1,11 @@
+<link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="<?php echo asset('assets/frontend/bootstrap/css/bootstrap.min.css'); ?>" />
+<link href="https://fonts.googleapis.com/css?family=Cabin+Condensed|Source+Sans+Pro:200" rel="stylesheet" type="text/css">
+<link href="/assets/cif/css/stylesheet.css" rel="stylesheet" type="text/css">
+<link href="/assets/cif/css/social-buttons.css" rel="stylesheet" type="text/css">
+<link href="assets/frontend/bootstrap/css/bootstrap-glyphicons.css" rel="stylesheet" type="text/css">
+
+
+<?php $__env->startSection('style'); ?>
+
+<?php echo $__env->yieldSection(); ?>

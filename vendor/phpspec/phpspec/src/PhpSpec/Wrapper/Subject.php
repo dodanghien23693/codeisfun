@@ -16,16 +16,10 @@ namespace PhpSpec\Wrapper;
 use PhpSpec\Wrapper\Subject\WrappedObject;
 use PhpSpec\Wrapper\Subject\Caller;
 use PhpSpec\Wrapper\Subject\SubjectWithArrayAccess;
-use PhpSpec\Wrapper\Subject\Expectation;
 use PhpSpec\Wrapper\Subject\ExpectationFactory;
 use PhpSpec\Util\Instantiator;
-
 use ArrayAccess;
 
-/**
- * Class Subject
- * @package PhpSpec\Wrapper
- */
 class Subject implements ArrayAccess, WrapperInterface
 {
     /**
@@ -54,7 +48,7 @@ class Subject implements ArrayAccess, WrapperInterface
     private $expectationFactory;
 
     /**
-     * @param object                 $subject
+     * @param mixed                  $subject
      * @param Wrapper                $wrapper
      * @param WrappedObject          $wrappedObject
      * @param Caller                 $caller
@@ -90,7 +84,16 @@ class Subject implements ArrayAccess, WrapperInterface
     }
 
     /**
-     * @return object
+     * @param array|string $factoryMethod
+     * @param array        $arguments
+     */
+    public function beConstructedThrough($factoryMethod, array $arguments = array())
+    {
+        $this->wrappedObject->beConstructedThrough($factoryMethod, $arguments);
+    }
+
+    /**
+     * @return mixed
      */
     public function getWrappedObject()
     {
@@ -156,12 +159,10 @@ class Subject implements ArrayAccess, WrapperInterface
     /**
      * @param string|integer $key
      * @param mixed          $value
-     *
-     * @return Subject
      */
     public function offsetSet($key, $value)
     {
-        return $this->wrap($this->arrayAccess->offsetSet($key, $value));
+        $this->arrayAccess->offsetSet($key, $value);
     }
 
     /**
@@ -169,7 +170,7 @@ class Subject implements ArrayAccess, WrapperInterface
      */
     public function offsetUnset($key)
     {
-        $this->arrayAccess->offsetUnset($key);;
+        $this->arrayAccess->offsetUnset($key);
     }
 
     /**
@@ -251,7 +252,7 @@ class Subject implements ArrayAccess, WrapperInterface
     private function makeSureWeHaveASubject()
     {
         if (null === $this->subject && $this->wrappedObject->getClassname()) {
-            $instantiator = new Instantiator;
+            $instantiator = new Instantiator();
 
             return $instantiator->instantiate($this->wrappedObject->getClassname());
         }
