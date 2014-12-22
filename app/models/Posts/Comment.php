@@ -1,7 +1,6 @@
 <?php
-use LaravelBook\Ardent\Ardent;
 
-class Comment extends Ardent{
+class Comment extends Eloquent{
     
     protected $table = "comments";
     
@@ -17,6 +16,7 @@ class Comment extends Ardent{
         'commentable_type' => 'required',
         'parent_commentable_id'    => 'integer'
     );
+    
     
     /* post
      * 

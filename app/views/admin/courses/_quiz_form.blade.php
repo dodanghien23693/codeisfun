@@ -172,15 +172,18 @@
         var hard_deadline = $("#quiz-form-modal input[name='hard_deadline']").val();
         var description = $("#quiz-form-modal input[name='description']").val();
      $.post('<?php echo url('admin/quiz/edit'); ?>',{action:"update" ,name : name,id:id,duration_minus:duration_minus,max_attempts:max_attempts, due_date:due_date, hard_deadline:hard_deadline,description:description},
-     
     function(response,status){
-            if(status=='success'){       
-            $("#list-quiz .dd-item[data-id='"+id+"'] .quiz-name").html(name);
-            $(".tab-pane a[href='#quiz"+id+"']").html(name);
-            registerEventQuiz();
-            toastr.success(response.message);
-            $("#edit-quiz-modal").modal('hide');
-                
+            if(status=='success'){ 
+                if(response.status=='success'){ 
+                    $("#list-quiz .dd-item[data-id='"+id+"'] .quiz-name").html(name);
+                    $(".tab-pane a[href='#quiz"+id+"']").html(name);
+                    registerEventQuiz();
+                    toastr.success(response.message);
+                    $("#edit-quiz-modal").modal('hide');
+                }
+                if(response.status=='invalid'){
+                    toastr.error(response.message);
+                }
             }    
             if(status=='error'){
                 alert('Không thành công');

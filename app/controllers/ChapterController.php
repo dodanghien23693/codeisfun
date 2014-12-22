@@ -72,17 +72,35 @@ class ChapterController extends BaseController {
     
     public function updateOrderOfLecture()
     {
-        $chapter_id = Input::get('chapter_id');
-        
-        $order_list = Input::get('order_lecture');
-        $order_list = json_decode($order_list);
-        $i = 0;
- 
-        foreach($order_list as $item){
-            Lecture::where('id','=',$item->id)->update(array('order_of_lecture'=>$i));
-            $i++;
+        if(Request::ajax())
+        {
+            
+            $chapter_id = Input::get('chapter_id');
+            if(Auth::user()->isOwnerOfChapter($chapter_id))
+            {
+                $order_list = Input::get('order_lecture');
+                $order_list = json_decode($order_list);
+                $i = 0;
+
+                foreach($order_list as $item){
+                    Lecture::where('id','=',$item->id)->update(array('order_of_lecture'=>$i));
+                    $i++;
+                }
+                return Response::json(array(
+                    'status' => 'success',
+                    'message' => 'Update order of lecture in this chapter successful'
+                ));
+            }
+            else
+            {
+                return Response::json(array(
+                    'status' => 'invalid',
+                    'message' => 'You unable update order lecture of this chapter'
+                ));
+            }
+            
         }
-        return 'cap nhat thanh cong';
+        
     }
 
     public function getEditChapterForm()
@@ -118,12 +136,18 @@ class ChapterController extends BaseController {
     
     public function updateChapter()
     {
-        $chapter = Chapter::find(Input::get('id'));
-        $chapter->name = Input::get('name');
-        if($chapter->save()){
-            return 'thanh cong';
+        if(Request::ajax())
+        {
+            $chapter = Chapter::find(Input::get('id'));
+            $chapter->name = Input::get('name');
+            if($chapter->save()){
+                return Response::json(array(
+                    'status' => 'success',
+                    'message' => 'Update chapter successful'
+                ));
+            }
         }
-        
+
     }
     
 }

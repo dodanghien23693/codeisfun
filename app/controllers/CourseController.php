@@ -154,7 +154,7 @@ class CourseController extends BaseController {
             }
             else //Không phải là chủ nhân của course
             {
-                return View::make('admin.message')->with('message', 'Bạn không có quyền cập nhật thông tin khóa học này!');
+                return View::make('admin.message')->with('message', 'You unable edit general information of this course!');
             }
         }
 
@@ -265,8 +265,16 @@ class CourseController extends BaseController {
             }
             $chapters = Course::find($course_id)->chapters()->orderBy('order_of_chapter')->get();
             return Response::json(array(
+                'status' => 'success',
                 'html' =>  View::make('admin.courses._lecture_form', array('chapters'=>$chapters))->render(),
-                'message' => 'cap nhat thanh cong'
+                'message' => 'Update order successful'
+            ));
+        }
+        else
+        {
+            return Response::json(array(
+                'status' => 'invalid',
+                'message' => 'You unable update order of chapter in this course'
             ));
         }
         

@@ -14,7 +14,8 @@
          <link rel="stylesheet" href="<?php echo asset('assets/plugins/toastr/toastr.css'); ?>">
          <link rel="stylesheet" href="<?php echo asset('assets/plugins/bootstrap-multiselect/bootstrap-multiselect.css'); ?>">
          
-        
+        <link rel="stylesheet" href="<?php echo asset('assets/backend/js/selectboxit/jquery.selectBoxIt.css');?>">
+         
 	 <script src="<?php echo asset('assets/backend/js/jquery-1.11.0.min.js'); ?>"></script>
        
         

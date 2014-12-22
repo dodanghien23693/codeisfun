@@ -29,13 +29,6 @@
                         </a>
                     </li>
 
-                    <li>
-                        <a href="mailbox.html">
-                            <i class="entypo-mail">
-                            </i>
-                            Inbox
-                        </a>
-                    </li>
 
                     <li>
                         <a href="extra-calendar.html">
@@ -45,13 +38,6 @@
                         </a>
                     </li>
 
-                    <li>
-                        <a href="#">
-                            <i class="entypo-clipboard">
-                            </i>
-                            Tasks
-                        </a>
-                    </li>
                 </ul>
             </li>
 

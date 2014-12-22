@@ -104,14 +104,29 @@
         
         $(".create-lecture-btn").click(function() {
             
-            $("#edit-lecture-modal").modal('show');
-            $("#edit-lecture-modal #save-lecture").show(500);
-            $("#edit-lecture-modal #iframe-lecture").hide(100);
-            $("#edit-lecture-modal  #save-lecture").addClass('create-lecture-with-name');
-            $("#edit-lecture-modal  #save-lecture").removeClass('update-lecture-with-name');
+            
             
             var chapter_id = $(this).closest('.tab-pane').attr('chapter-id');
-            $("#edit-lecture-modal input[name='chapter_id']").val(chapter_id);
+            
+            $.get('<?php echo url('admin/lecture/get-edit-form'); ?>',{action:"create" ,chapter_id : chapter_id},function(response, status){
+                if (status == 'success') {
+                    if(response.status=='success'){
+                        $("#edit-lecture-modal").modal('show');
+                        $("#edit-lecture-modal #save-lecture").show(500);
+                        $("#edit-lecture-modal #iframe-lecture").hide(100);
+                        $("#edit-lecture-modal  #save-lecture").addClass('create-lecture-with-name');
+                        $("#edit-lecture-modal  #save-lecture").removeClass('update-lecture-with-name');
+                        $("#edit-lecture-modal input[name='chapter_id']").val(chapter_id);
+                    }
+                    if(response.status=='invalid')
+                    {
+                        toastr.error(response.message);
+                    }
+                    
+                }
+            });
+            
+            
             /*
             $('#edit-lecture-modal .modal-body').html('Is loading.......');
             
@@ -190,8 +205,13 @@
 
             $.post('<?php echo url('admin/chapter/update-order-lecture') ?>', {order_lecture: order, chapter_id: chapter_id}, function(response, status) {
                 if (status == 'success') {
-
-                    toastr.success(response);
+                    if(response.status=='success'){
+                        toastr.success(response.message);
+                    }
+                    if(response.status=='invalid'){
+                        toastr.error(response.message);
+                    }
+                    
                 }
                 if (status == 'error') {
                     toastr.error('cập nhật thất bại');

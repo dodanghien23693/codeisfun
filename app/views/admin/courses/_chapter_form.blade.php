@@ -77,14 +77,16 @@
        
         $.post('<?php echo url('admin/course/update-order-chapter') ?>',{order_chapter: order,course_id : <?php echo $course->id; ?> },function(response,status){
             if(status=='success'){
-               
-                $("#lecture-tab-content").html(response.html);
-                alert(response.message);
+               if(response.status=='success'){
+                   $("#lecture-tab-content").html(response.html);
+                   toastr.success(response.message);
+               }
+               if(response.status=='invalid'){
+                   toastr.error(response.message);
+               }
+                
             }
-            if(status=='error'){
-                alert('cập nhật thất bại');
-            }
-            
+        
         });
         
      });
@@ -156,9 +158,13 @@
         var name =  $(".edit-chapter-form-modal input[name='name']").val();
         $.post('<?php echo url('admin/chapter/edit') ?>',{id:id, name:name},function(response,status){
            if(status=='success'){
-               $(".list-chapter .dd-item[data-id='"+id+"'] .chapter-name").html(name);
-               $(".tab-pane a[href='#chapter"+id+"']").html(name);
-              $("#edit-chapter-modal").modal('hide');
+               if(response.status=='success'){
+                    $(".list-chapter .dd-item[data-id='"+id+"'] .chapter-name").html(name);
+                    $(".tab-pane a[href='#chapter"+id+"']").html(name);
+                    $("#edit-chapter-modal").modal('hide');
+                    toastr.success(response.message);
+               }
+              
            } 
            if(status=='error'){
                alert('that bai');

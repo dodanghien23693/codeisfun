@@ -15,6 +15,20 @@
  *  get notification
  */
 
+Route::get('admin/get-comment',function(){
+    /*
+   for($i=0;$i<10;$i++)
+   {
+       Auth::user()->comments()->save(new Comment(array('content'=>'comment thu '.$i,'commentable_type'=>'Post','commentable_id'=>1)));
+   }
+     * 
+     */
+    
+    $comments = Auth::user()->comments()->get();
+    //return var_dump($comments);
+    return View::make('admin.comments._comment')->with('comments', $comments);
+});
+
 
 Route::get('admin/notification',function(){
     

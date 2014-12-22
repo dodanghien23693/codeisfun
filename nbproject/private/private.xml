@@ -4,16 +4,22 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/menu.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Posts/PostStatus.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/QuizController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/writer-menu.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/QuestionController.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/LectureController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_notification.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/new_course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/edit_course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/_ide_helper.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_quiz_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Role.php</file>
             <file>file:/C:/codeisfun/laravel/app/routes.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_chapter_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/CourseController.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/admin-menu.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_styles.blade.php</file>
             <file>file:/C:/codeisfun/laravel/vendor/laravel/framework/src/Illuminate/Auth/Guard.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Notification.php</file>
@@ -23,14 +29,21 @@
             <file>file:/C:/codeisfun/laravel/app/controllers/AuthController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_lecture_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/User.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Posts/Comment.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_edit_quiz_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/database/migrations/2014_10_28_02_create_users_table.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/comments/_comment.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/posts/create.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/ChapterController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_question_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_course_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/manager-menu.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_scripts.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Courses/Resource.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_edit_question_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_accept_invitation.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/models/Posts/Post.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/menu/user-menu.blade.php</file>
         </group>
     </open-files>
 </project-private>

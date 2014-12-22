@@ -154,11 +154,13 @@ class LectureController extends BaseController {
             
             if(Input::get('action')=='create')
             {
+                
                 if(Auth::user()->isOwnerOfChapter($chapter_id))
                 {
                     return Response::json(array(
                         'status' => 'success',
-                        'html'  => View::make('admin.courses._edit_lecture_form',array('lecture'=>$lecture))->render()
+                        'html'  => View::make('admin.courses._edit_lecture_form',array('lecture'=>$lecture))->render(),
+                        
                     ));     
                     
                 }

@@ -30,23 +30,43 @@ class QuizController extends BaseController {
                 };
 
             }
+            
             else if(Input::get('action')=='update'){
                 $quiz_id = Input::get('id');
+                
+                if($quiz_id)
+                {
+                    $quiz = Quiz::find($quiz_id);
+                    if($quiz)
+                    {
+                        if(Auth::user()->isOwnerOfQuiz($quiz_id))
+                        {
+                            $quiz->name = Input::get('name');
+                            $quiz->duration_minus = Input::get('duration_minus');
+                            $quiz->max_attempts = Input::get('max_attempts');
+                            $quiz->due_date = Input::get('due_date');
+                            $quiz->hard_deadline = Input::get('hard_deadline');
+                            $quiz->description = Input::get('description');
 
-                $quiz = Quiz::find($quiz_id);
+                            if($quiz->save()){               
+                                return Response::json(array(
+                                     'status' => 'success',
+                                     'message' => 'Update Quiz successful',
+                                    ));
+                            };
+                        }
+                        else
+                        {
+                            return Response::json(array(
+                                'status' => 'invalid',
+                                'message' => 'You unable edit this quiz',
+                               ));
+                        }
+                    }
+                }
+                
 
-                $quiz->name = Input::get('name');
-                $quiz->duration_minus = Input::get('duration_minus');
-                $quiz->max_attempts = Input::get('max_attempts');
-                $quiz->due_date = Input::get('due_date');
-                $quiz->hard_deadline = Input::get('hard_deadline');
-                $quiz->description = Input::get('description');
-
-                if($quiz->save()){               
-                    return Response::json(array(
-                         'message' => 'Update Quiz successful',
-                        ));
-                };
+                
             }
         }
         
@@ -71,7 +91,7 @@ class QuizController extends BaseController {
                     {
                         return Response::json(array(
                             'status' => 'invalid',
-                            'message' => 'Error'
+                            'message' => 'You unable delete this quiz'
                         ));
                     }
                 }
@@ -94,8 +114,6 @@ class QuizController extends BaseController {
 
     }
     
-    
-
     public function getEditForm()
     {
         if(Request::ajax()){

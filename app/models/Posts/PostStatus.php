@@ -18,7 +18,7 @@ class PostStatus extends Eloquent{
      * 
      */
     public function posts(){
-        return $this->hasMany("Post", "status_id");
+        return $this->hasMany("Post", "post_status_id");
     }
 
 }
