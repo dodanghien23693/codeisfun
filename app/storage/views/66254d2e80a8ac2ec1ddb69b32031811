@@ -89,7 +89,7 @@ var url = '<?php echo url('reset-password');?>';
                                 $("#form_forgot_password1").on('submit',function(e){
                                     e.preventDefault();
                                     var url = $("#form_forgot_password").attr('action');
-                                    var email = var url = $("#form_forgot_password input[name='email']").val();
+                                    var email = $("#form_forgot_password input[name='email']").val();
                                     $.post('<?php echo route('password.request'); ?>',{email:email},function(response,status){
                                         
                                     });

@@ -15,14 +15,17 @@
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/edit_course.blade.php</file>
             <file>file:/C:/codeisfun/laravel/_ide_helper.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_quiz_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/posts/edit.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Role.php</file>
             <file>file:/C:/codeisfun/laravel/app/routes.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/PostController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_chapter_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/controllers/CourseController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/menu/admin-menu.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_styles.blade.php</file>
             <file>file:/C:/codeisfun/laravel/vendor/laravel/framework/src/Illuminate/Auth/Guard.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Notification.php</file>
+            <file>file:/C:/codeisfun/laravel/app/controllers/UserController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_modal_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Courses/ResourceType.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_raw_notifications.blade.php</file>
@@ -37,12 +40,14 @@
             <file>file:/C:/codeisfun/laravel/app/controllers/ChapterController.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_question_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_course_form.blade.php</file>
+            <file>file:/C:/codeisfun/laravel/app/views/admin/users/index.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/menu/manager-menu.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/layouts/_scripts.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Courses/Resource.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_edit_question_form.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/courses/_accept_invitation.blade.php</file>
             <file>file:/C:/codeisfun/laravel/app/models/Posts/Post.php</file>
+            <file>file:/C:/codeisfun/laravel/app/config/local/database.php</file>
             <file>file:/C:/codeisfun/laravel/app/views/admin/menu/user-menu.blade.php</file>
         </group>
     </open-files>

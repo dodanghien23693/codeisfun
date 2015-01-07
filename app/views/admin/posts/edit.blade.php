@@ -1,5 +1,14 @@
 @extends('admin.layouts.default')
 
+@section('scripts')
+<script src="<?php echo asset('aehlke-tag-it/js/tag-it.js'); ?>"></script>
+@stop
+
+@section('styles')
+<link rel="stylesheet" href="<?php echo asset('aehlke-tag-it/css/jquery.tagit.css'); ?>">
+<link rel="stylesheet" href="<?php echo asset('aehlke-tag-it/css/tagit.ui-zendesk.css'); ?>">
+@stop
+
 @section('content')
 
 <div class="row">
@@ -70,7 +79,7 @@ if($role=="Manager"){
             }
             if($role=="Writer")
             {
-                 $avail_statuses = PostStatus::where('name','Hide')->lists('name','id');
+                 $avail_statuses = PostStatus::lists('name','id');
             }
                  ?>
               {{ Form::select('post_status_id',$avail_statuses ,null,array('class'=>'form-control') ) }}
@@ -82,7 +91,7 @@ if($role=="Manager"){
 <div class="form-group">
     {{ Form::label('public_time', 'Public_time:', array('class'=>'col-md-2 control-label')) }}
     <div class="col-sm-10">
-        <input type="date" class="form-control" placeholder="Public_time" disabled="disabled" name="public_time" id="public_time" value={{$post->public_time}}>
+        <input type="date" class="form-control" placeholder="Public_time" name="public_time" id="public_time" value="{{$post->public_time}}">
     </div>
 </div>
 
@@ -122,10 +131,31 @@ if($role=="Manager"){
             </div>
         </div>
     <div class="form-group">
-        {{ Form::label('post_tag[]', 'Tag:', array('class'=>'col-md-2 control-label')) }}
+
+        {{ Form::label('post_tags', 'Tag:', array('class'=>'col-md-2 control-label')) }}
         <div class="col-sm-10">
-              {{Form::select('post_tag[]', Tag::lists('name','id'),Post::find($post->id)->tags->lists('id') , array('multiple','class'=>'form-control'));}}
+                 {{ Form::text('post_tags', Input::old('post_tags'), array('class'=>'form-control','placeholder'=>'Tag')) }}
+              {{"";//Form::select('post_tag[]', Tag::lists('name','id'),Post::find($post->id)->tags->lists('id') , array('multiple','class'=>'form-control'));}}
         </div>
+
+
+        <script>
+        jQuery(document).ready(function()
+        {
+        tags=[<?php 
+        $tags=[];
+        foreach(Tag::all() as $tag)
+        {
+            $tags[]='"'.$tag->name.'"';
+        }
+        echo implode(',',$tags);
+        ?>];
+         jQuery('#post_tags').tagit({
+                availableTags: tags,
+                // This will make Tag-it submit a single form value, as a comma-delimited field.
+            });
+     });
+        </script>
     </div>
 
 

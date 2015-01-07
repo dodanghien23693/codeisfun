@@ -1,5 +1,12 @@
 @extends('admin.layouts.default')
+@section('scripts')
+<script src="<?php echo asset('aehlke-tag-it/js/tag-it.js'); ?>"></script>
+@stop
 
+@section('styles')
+<link rel="stylesheet" href="<?php echo asset('aehlke-tag-it/css/jquery.tagit.css'); ?>">
+<link rel="stylesheet" href="<?php echo asset('aehlke-tag-it/css/tagit.ui-zendesk.css'); ?>">
+@stop
 @section('content')
 
 <div class="row">
@@ -22,7 +29,7 @@
             {{ Form::label('user_id', 'User_name:', array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
 			 <input type="text" name="username" value="<?php echo Auth::user()->username ?>" class = "form-control" disabled = "disabled" />
-             <input type="hidden" name="user_id" value="<?php echo Auth::user()->id ?>" class = "form-control"  />
+                        <input type="hidden" name="user_id" value="<?php echo Auth::user()->id ?>" class = "form-control"  />
             </div>
         </div>
 
@@ -64,17 +71,20 @@
         <div class="form-group">
             {{ Form::label('status_id', 'Status:', array('class'=>'col-md-2 control-label')) }}
             <div class="col-sm-10">
-                <?php 
-                $role = Auth::user()->role->name;
-if($role=="Admin" || $role == "Manager"){
+             <?php 
+                $role = Auth::user()->role->name;               
+                $avail_statuses = '';
+                if($role=="Admin" || $role == "Manager"){
                 $avail_statuses = PostStatus::lists('name','id');
             }
             if($role=="Writer")
             {
-                 $avail_statuses = PostStatus::where('name','Hide')->lists('name','id');
+                 $avail_statuses = PostStatus::lists('name', 'id');
+                 
             }
                  ?>
               {{ Form::select('post_status_id',$avail_statuses ,null,array('class'=>'form-control') ) }}
+              
             </div>
         </div>
 
@@ -110,10 +120,28 @@ if($role=="Admin" || $role == "Manager"){
             </div>
         </div>
     <div class="form-group">
-        {{ Form::label('post_tag[]', 'Tag:', array('class'=>'col-md-2 control-label')) }}
+       {{ Form::label('post_tags', 'Tag:', array('class'=>'col-md-2 control-label')) }}
         <div class="col-sm-10">
-              {{Form::select('post_tag[]', Tag::lists('name','id'),Input::old('post_tag') , array('multiple','class'=>'form-control'));}}
+                 {{ Form::text('post_tags', Input::old('post_tags'), array('class'=>'form-control','placeholder'=>'Tag')) }}
+              {{"";//Form::select('post_tag[]', Tag::lists('name','id'),Post::find($post->id)->tags->lists('id') , array('multiple','class'=>'form-control'));}}
         </div>
+            <script>
+        jQuery(document).ready(function()
+        {
+        tags=[<?php 
+        $tags=[];
+        foreach(Tag::all() as $tag)
+        {
+            $tags[]='"'.$tag->name.'"';
+        }
+        echo implode(',',$tags);
+        ?>];
+         jQuery('#post_tags').tagit({
+                availableTags: tags,
+                // This will make Tag-it submit a single form value, as a comma-delimited field.
+            });
+     });
+        </script>
     </div>
 
 

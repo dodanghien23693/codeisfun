@@ -380,6 +380,7 @@ Route::group(array('before'=>'auth'), function(){
 
 
 
+    Route::get('/admin/user/search', 'UserController@search');
     Route::group(array('prefix'=>'admin'), function(){
         Route::resource('post', 'PostController');
         Route::resource('user', 'UserController');

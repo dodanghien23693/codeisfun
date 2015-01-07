@@ -1,0 +1,41 @@
+<?php $__env->startSection('content'); ?>
+
+<h1>All Tags</h1>
+
+<p><?php echo link_to_route('admin.tag.create', 'Add New Tag', null, array('class' => 'btn btn-lg btn-success')); ?></p>
+
+<?php if($tags->count()): ?>
+	<table class="table table-striped">
+		<thead>
+			<tr>
+				<th>Name</th>
+				
+			</tr>
+		</thead>
+
+		<tbody>
+			<?php foreach($tags as $tag): ?>
+				<tr>
+					<td><?php echo e($tag->name); ?></td>
+				
+                    <td>
+                        <?php echo Form::open(array('style' => 'display: inline-block;', 'method' => 'DELETE', 'route' => array('admin.tag.destroy', $tag->id))); ?>
+
+                            <?php echo Form::submit('Delete', array('class' => 'btn btn-danger')); ?>
+
+                        <?php echo Form::close(); ?>
+
+                        <?php echo link_to_route('admin.tag.edit', 'Edit', array($tag->id), array('class' => 'btn btn-info')); ?>
+
+                    </td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+<?php else: ?>
+	There are no tag
+<?php endif; ?>
+
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('admin.layouts.default', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

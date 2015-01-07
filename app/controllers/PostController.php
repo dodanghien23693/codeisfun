@@ -14,7 +14,7 @@ class PostController extends BaseController {
     {
        if(Auth::user())
        {
-        if(Auth::user()->role->id==3 || Auth::user()->role->id==4||Auth::user()->role->id==2)
+        if(Auth::user()->isManager() || Auth::user()->isAdmin()||Auth::user()->isWriter())
         {
 
         }
@@ -25,16 +25,15 @@ class PostController extends BaseController {
         }
        }
     }//
-    
     public function index() {
 
 
         $posts = Post::all();
         if(Auth::check())
         {
-            if(Auth::user()->role->id==4){};
-            if(Auth::user()->role->id==3){};
-            if(Auth::user()->role->id==2){
+            if(Auth::user()->isAdmin()){};
+            if(Auth::user()->isManager()){};
+            if(Auth::user()->isWriter()){
                 $posts=Auth::user()->posts()->paginate(10);
             }
         }
@@ -66,7 +65,7 @@ class PostController extends BaseController {
     public function create() {
        if(Auth::user())
        {
-        if(Auth::user()->role->id==3 || Auth::user()->role->id==4||Auth::user()->role->id==2)
+        if(Auth::user()->isManager() || Auth::user()->isAdmin()||Auth::user()->isWriter())
         {
                 return View::make('admin.posts.create');    
         }
@@ -85,14 +84,23 @@ class PostController extends BaseController {
      */
     public function store() {
         $input = array_except(Input::all(), array('_method', '_token', 'cover_image_file','post_category','post_tag'));
-                $post = Post::create($input);
-$post=Post::find($post->id);
-        if ($post) {
+                $post = new Post();
+                
+                $post->user_id = Auth::user()->id;
+                $post->title = Input::get('title');
+                $post->slug = Input::get('slug');
+                $post->description = Input::get('description');
+                $post->content = Input::get('content');
+                $post->post_status_id = Input::get('post_status_id');
+                $post->public_time = Input::get('public_time');
+                
+               
+        if ($post->save()) {
 
-$post->tags()->sync(array_merge(array(),(array)Input::get('post_tag')));
+                $post->tags()->sync(array_merge(array(),(array)Input::get('post_tag')));
 
-$post->categories()->sync(array_merge(array(),(array)Input::get('post_category')));
-$post->save();
+                $post->categories()->sync(array_merge(array(),(array)Input::get('post_category')));
+                $post->save();
             if (Input::hasFile('cover_image_file')) {
                 $file = Input::file('cover_image_file');
                 $destinationPath = public_path() . '/img/';
@@ -118,7 +126,7 @@ $post->save();
 
       if(Auth::user())
        {
-        if(Auth::user()->role->id==3 ||Auth::user()->role->id==2)
+        if(Auth::user()->isManager() ||Auth::user()->isWriter())
         {
 
         }
@@ -131,7 +139,7 @@ $post->save();
 
         $post = Post::find($id);
         if ($post) {
-            if(Auth::user()->role->id==2)
+            if(Auth::user()->isWriter())
             {
                 if($post->user->id!==Auth::user()->id){die("Wrong Site");}
             }
@@ -153,10 +161,10 @@ $post->save();
         $post = Post::find($id);
                 $post->update($input);
 
-$post->tags()->sync(array_merge(array(),(array)Input::get('post_tag')));
+        $post->tags()->sync(array_merge(array(),(array)Input::get('post_tag')));
 
-$post->categories()->sync(array_merge(array(),(array)Input::get('post_category')));
-$post->save();
+        $post->categories()->sync(array_merge(array(),(array)Input::get('post_category')));
+        $post->save();
         if ($post) {
             if (Input::hasFile('cover_image_file')) {
                 $file = Input::file('cover_image_file');
@@ -205,7 +213,7 @@ $post->save();
     {
         if(Auth::user())
        {
-        if(Auth::user()->role->id==3)
+        if(Auth::user()->isManager())
         {
 
         }
@@ -223,7 +231,7 @@ $post->save();
    public function getPendingPost($id) {
     if(Auth::user())
        {
-        if(Auth::user()->role->id==3)
+        if(Auth::user()->isManager())
         {
 
         }

@@ -118,13 +118,7 @@
     <div class="form-group">
         {{ Form::label('post_tag[]', 'Tag:', array('class'=>'col-md-2 control-label')) }}
         <div class="col-sm-10">
-             <?php 
-                $post_tags = $post->tags->lists('name');
-                if($post_tags)
-                {
-                    echo implode(', ',$post_tags);
-                }
-                ?>
+            {{$post->post_tags}}
         </div>
     </div>
 
