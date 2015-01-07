@@ -126,7 +126,6 @@ return array(
             'Way\Generators\GeneratorsServiceProvider',
             'Artdarek\OAuth\OAuthServiceProvider',
             'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-            'Pqb\FilemanagerLaravel\FilemanagerLaravelServiceProvider',
             'Barryvdh\Debugbar\ServiceProvider',
 
 	),
@@ -199,7 +198,7 @@ return array(
             
                
                 'OAuth'           => 'Artdarek\OAuth\Facade\OAuth',
-                'FilemanagerLaravel'=> 'Pqb\FilemanagerLaravel\Facades\FilemanagerLaravel',
+                
                 'Debugbar' => 'Barryvdh\Debugbar\Facade',
 
 	),

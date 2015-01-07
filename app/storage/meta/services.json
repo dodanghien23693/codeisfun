@@ -29,7 +29,6 @@
         "Way\\Generators\\GeneratorsServiceProvider",
         "Artdarek\\OAuth\\OAuthServiceProvider",
         "Barryvdh\\LaravelIdeHelper\\IdeHelperServiceProvider",
-        "Pqb\\FilemanagerLaravel\\FilemanagerLaravelServiceProvider",
         "Barryvdh\\Debugbar\\ServiceProvider"
     ],
     "eager": [
@@ -42,7 +41,6 @@
         "Illuminate\\Workbench\\WorkbenchServiceProvider",
         "Way\\Generators\\GeneratorsServiceProvider",
         "Artdarek\\OAuth\\OAuthServiceProvider",
-        "Pqb\\FilemanagerLaravel\\FilemanagerLaravelServiceProvider",
         "Barryvdh\\Debugbar\\ServiceProvider"
     ],
     "deferred": {

@@ -8,10 +8,10 @@ var editor_config = {
         "advlist autolink lists link image charmap print preview hr anchor pagebreak",
         "searchreplace wordcount visualblocks visualchars code fullscreen",
         "insertdatetime media nonbreaking save table contextmenu directionality",
-        "emoticons template paste textcolor colorpicker textpattern responsivefilemanager"
+        "emoticons template paste textcolor colorpicker textpattern"
     ],
     toolbar1: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
-    toolbar2: "print preview media | responsivefilemanager | forecolor backcolor emoticons",
+    toolbar2: "print preview media | forecolor backcolor emoticons",
     image_advtab: true,
     image_class_list: [
         {title: 'None', value: ''},
@@ -22,10 +22,7 @@ var editor_config = {
         {title: 'Test template 2', content: 'Test 2'}
     ],
     
-    external_filemanager_path:"/filemanager/",
-    filemanager_title:"Filemanager" ,
-    external_plugins: { "filemanager" : "/filemanager/plugin.min.js"},
-    filemanager_access_key:"dodanghien" ,
+    
     /*
     file_browser_callback : function(field_name, url, type, win) { 
                 // from http://andylangton.co.uk/blog/development/get-viewport-size-width-and-height-javascript
