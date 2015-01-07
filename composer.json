@@ -12,9 +12,7 @@
 		"barryvdh/laravel-ide-helper": "~1.11",
 		"doctrine/dbal": "~2.3",
                 
-                "fzaninotto/faker": "1.4.*@dev" ,
-                
-		"barryvdh/laravel-debugbar": "~1.8"
+                "fzaninotto/faker": "1.4.*@dev"
 	},
         "require-dev": {
         "way/generators": "~2.0",

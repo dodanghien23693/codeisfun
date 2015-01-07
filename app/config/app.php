@@ -126,7 +126,7 @@ return array(
             'Way\Generators\GeneratorsServiceProvider',
             'Artdarek\OAuth\OAuthServiceProvider',
             'Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider',
-            'Barryvdh\Debugbar\ServiceProvider',
+            
 
 	),
 
@@ -199,7 +199,7 @@ return array(
                
                 'OAuth'           => 'Artdarek\OAuth\Facade\OAuth',
                 
-                'Debugbar' => 'Barryvdh\Debugbar\Facade',
+             
 
 	),
 
