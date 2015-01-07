@@ -110,12 +110,6 @@
             </a>
         </li>
 
-        <li class="root-level" id="media-manager">
-            <a href="/filemanager/dialog.php" \>
-                <i class="entypo-video"></i>
-                <span style="">Media Manager</span>
-            </a>
-        </li>
 
         <li class="root-level" id="user-manager">
             <a href="<?php echo url('admin/user') ?>" >
@@ -124,21 +118,6 @@
             </a>
         </li>
 
-        <li class="root-level" id="activities">
-            <a href="index.html" target="_blank">
-                <i class="glyphicon glyphicon-tasks"></i>
-                <span style="">Activities</span>
-            </a>
-        </li>
-
-        <li class="root-level" id="statistics">
-            <a href="index.html" target="_blank">
-                <i class="entypo-chart-line"></i>
-                <span style="">Statistics</span>
-            </a>
-        </li>
-
-      
 
     </ul>
 

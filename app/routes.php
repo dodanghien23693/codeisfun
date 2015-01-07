@@ -395,8 +395,7 @@ Route::group(array('before'=>'auth'), function(){
 
 
 
-//file manager
-Route::controller('filemanager', 'FilemanagerLaravelController');
+
 
 Route::get('file',function(){
     return View::make('file');

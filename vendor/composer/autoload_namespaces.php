@@ -33,7 +33,6 @@ return array(
     'Psr\\Log\\' => array($vendorDir . '/psr/log'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src'),
     'Predis' => array($vendorDir . '/predis/predis/lib'),
-    'Pqb\\FilemanagerLaravel\\' => array($vendorDir . '/pqb/filemanager-laravel/src'),
     'PhpSpec' => array($vendorDir . '/phpspec/phpspec/src'),
     'Patchwork' => array($vendorDir . '/patchwork/utf8/class'),
     'PHPParser' => array($vendorDir . '/nikic/php-parser/lib'),
